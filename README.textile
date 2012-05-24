@@ -1,3 +1,5 @@
-h1. Biscoito
+h1. Biscoito 0.1.0
 
-Descricao em breve...
+Em breve...
+
+*Para acompanhar o desenvolvimento da primeira fornada, acesse a branch DEV.*

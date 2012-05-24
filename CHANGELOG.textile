@@ -1,2 +1,2 @@
-*0.1.0* (2012/05/04)
-Criação do projeto com fontes codificados até esta data
+*0.1.0* (24/05/2012)
+Criação do projeto Biscoito
