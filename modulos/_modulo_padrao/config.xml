@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<modulo_config>
+    <descricao></descricao>
+    <autor></autor>
+    <versao></versao>
+    <data_criacao></data_criacao>
+    <namespace>Biscoito\Modulos\{NOME}</namespace>
+    <classes>
+        <TAlbum arquivo="" controle="false">
+            <nome>VARCHAR(200) NOT NULL</nome>
+            <dataCriacao>TIMESTAMP NOT NULL DEFAULT 'now'</dataCriacao>
+            <publicado>CHAR(1) NOT NULL DEFAULT 'S'</publicado>
+        </TAlbum>
+        <TSubClasse sub-modulo="" arquivo="" controle="true">
+        </TSubClasse>
+    </classes>
+</modulo_config>

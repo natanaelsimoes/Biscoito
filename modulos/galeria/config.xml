@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<modulo_config>
+    <nome>Galeria</nome>
+    <descricao></descricao>
+    <autor></autor>
+    <versao></versao>
+    <data_criacao></data_criacao>
+    <namespace>Biscoito\Modulos\Galeria</namespace>
+    <classes>
+        <TGaleriaControl arquivo="galeria.control.php" controle="true"></TGaleriaControl>
+        <TGaleria arquivo="galeria.class.php">
+            <nome>VARCHAR(200) NOT NULL</nome>
+            <categoria relacionamento="TCategoriaGaleria" cardinalidade="1"></categoria>
+            <descricao>VARCHAR(500)</descricao>
+            <fonte>VARCHAR(200)</fonte>
+            <dataCriacao>TIMESTAMP NOT NULL DEFAULT now()</dataCriacao>
+            <publicado>CHAR(1) NOT NULL DEFAULT 'S'</publicado>
+            <capa relacionamento="TFoto" cardinalidade="1"></capa>
+        </TGaleria>
+        <TFoto arquivo="foto.class.php">
+            <descricao>VARCHAR(500)</descricao>
+            <caminho>VARCHAR(1000) NOT NULL</caminho>
+            <galeria relacionamento="TGaleria" cardinalidade="1"></galeria>
+        </TFoto>
+        <TCategoriaGaleriaControl sub-modulo="categoriagaleria" arquivo="categoriagaleria.control.php"></TCategoriaGaleriaControl>
+        <TCategoriaGaleria sub-modulo="categoriagaleria" arquivo="categoriagaleria.class.php">
+            <nome>VARCHAR(200) NOT NULL</nome>
+        </TCategoriaGaleria>
+    </classes>
+    <menu>
+        <opcao>Adicionar</opcao>
+        <opcao>Gerenciar</opcao>
+    </menu>
+</modulo_config>
