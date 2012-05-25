@@ -1,5 +1,38 @@
-h1. Biscoito 0.1.0
+h1. Biscoito 0.2.0 (primeira fornada em desenvolvimento)
 
-Em breve...
+Biscoito é um framework de desenvolvimento em PHP que trabalha com trabalha com estruturas altamente modularizadas com alto nível de abstração. Conta com diversos recursos interessantes para desenvolvedores que primam por agilidade na hora de programar, mas que não abrem mão do desempenho da aplicação. 
 
-*Para acompanhar o desenvolvimento da primeira fornada, acesse a branch DEV.*
+h2. Um pouco sobre a estrutura
+
+Construído sobre uma sintaxe legível aos olhos mais leigos, com curva de aprendizagem acentuada, programar PHP nunca foi tão fácil como é com Biscoito. 
+
+Quer um exemplo? Todos os arquivos criados no Biscoito pertencem, necessariamente, a um namespace. Quando quiser usar uma classe, não interessa onde ela esteja fisicamente no seu computador/servidor, não há necessidade das funções <code>require()</code> ou <code>include()</code> apontando o caminho, basta utilizar a sintaxe <code>use Namespace/Classe</code> (nativa no PHP desde a versão 5.3) informando ao PHP que você fará uso da classe e sair instanciando normalmente, pois o próprio Biscoito se incube de carregar o arquivo para você. 
+
+Simples, não? Tudo isso e muito mais sem perder desempenho.
+
+O que o difere de muitas outras frameworks é que nesta não há necessidade de ficar rodando infinitamente scripts para realizar alterações na estrutura do seu aplicativo. Todo módulo, inclusive o próprio Biscoito, tem um arquivo de configuração chamado config.xml. Nele todo o módulo é identificado inclusive as classes e relacionamentos entre classes, além de configurações dos atributos para que, se necessário, o Biscoito possa criar campos, tabelas e relacionamentos entre tabelas. Quer adicionar um novo atributo numa classe, declare-o, configure-o e salve as alterações. Pronto, o poderoso ORM de Biscoito se encarrega de cuidar do banco pra você.
+
+A modularização de Biscoito também é um ponto muito forte. Toda a arquitetura foi desenvolvida com este propósito: que a URL http://meusite.com/noticias/listar/ possa tanto carregar uma página inteira do site quanto ser apenas uma simples lista de notícias como resposta de uma requisição HTTP enviada por AJAX. Em poucas palavras seria isto, porém as possibilidades são infinitas.
+
+Mas como nem todo bom CMS é feito apenas de um bom núcleo principal, Biscoito igualmente se destaca pela quantidade de recursos incríveis que pode oferecer contendo uma vasta biblioteca de classes auxiliares de todo tipo, de calcular a distância de dois pontos no plano cartesiano até fazer buscas em coleções de dados de n-dimensões. 
+
+h2. Algumas funções
+
+* Cálculos matemáticos
+* Manipulação avançada de datas, imagens, textos e vetores
+* Gerador de HTML
+* ORM (nesta versão apenas com MySQL)
+
+h2. Colabore!
+
+Os planos para o futuro do Biscoito são amplamente ambiciosos e ainda há uma série de ideias que precisam ser concebidas para chegar aos melhores resultados. Por isso, preciso da sua colaboração para poder impulsionar o projeto para chegarmos a uma versão estável o mais rápido possível. Para isto, clone a branch “dev” (https://github.com/natanaelsimoes/Biscoito/tree/dev), veja os fontes, entenda o funcionamento, questione se tiver dúvidas e dê suas sugestões.
+
+Desde já agradeço muito sua dedicação pelo open-source!
+
+h2. Contato
+
+*Natanael Simões*
+
+* *Email:* natanaelsimoes@gmail.com
+* *Twitter:* @natanaelsimoes
+* *Facebook:* http://www.facebook.com/natanaelsimoes
