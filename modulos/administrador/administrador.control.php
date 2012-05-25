@@ -13,10 +13,21 @@ class TAdministradorControl {
     }
 
     public function __call($acao, $args) {
-        $moduloAuxiliar = $GLOBALS['_Biscoito']->getModuloAuxiliar();
+        
+        global $_Biscoito;
+        
+        $moduloAuxiliar = $_Biscoito->getModuloAuxiliar();
 
-        $classeAuxiliar = $GLOBALS['_Biscoito']->getClasseControleModuloAvulso($moduloAuxiliar);
+        $classeAuxiliar = $_Biscoito->getClasseControleModuloAvulso($moduloAuxiliar);
 
+        if ($acao == $moduloAuxiliar) {
+            
+            $xmlModuloConfig = $_Biscoito->getConfiguracaoXML($moduloAuxiliar);
+            
+            $acao = strval($xmlModuloConfig->index->acao);
+            
+        }
+        
         $objetoAuxiliar = new $classeAuxiliar;
 
         ob_start();

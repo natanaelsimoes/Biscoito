@@ -6,6 +6,10 @@
     <versao></versao>
     <data_criacao></data_criacao>
     <namespace>Biscoito\Modulos\Galeria</namespace>
+    <index>
+        <controle>TGaleriaControl</controle>
+        <acao>Gerenciar</acao>
+    </index>
     <classes>
         <TGaleriaControl arquivo="galeria.control.php" controle="true"></TGaleriaControl>
         <TGaleria arquivo="galeria.class.php">

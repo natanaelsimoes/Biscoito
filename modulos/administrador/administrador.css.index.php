@@ -892,4 +892,21 @@
         text-indent: 40px;
         font-size: 14px;
     }
+
+    .ui-dialog h1 {
+        padding: 0;
+        margin: 0; 
+        font-size: 40px;
+        font-weight: normal;
+    }
+    
+    .ui-dialog .divisor {
+        clear: both;
+        border-bottom: 1px solid #aaa;
+        margin-bottom: 10px;
+    }
+    
+    .ui-dialog button {
+        float: right;
+    }
 </style>

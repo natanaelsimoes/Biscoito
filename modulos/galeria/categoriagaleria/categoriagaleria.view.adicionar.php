@@ -1,13 +1,19 @@
 <?php
 
 namespace Biscoito\Modulos\Galeria\CategoriaGaleria\View;
+
+include('categoriagaleria.js.php');
+
+include('categoriagaleria.js.adicionar.php');
 ?>
 
 <header><h1>Adicionar Categoria</h1></header>
 <div class="divisor"></div>
-<fieldset>
-    <label for="textNome">Nome:</label>
-    <input type="text" name="textNome" id="textNome">
-</fieldset>
+<form name="FrmCategoriaGaleria">
+    <fieldset>
+        <label for="nomeCategoriaGaleria">Nome:</label>
+        <input type="text" name="nomeCategoriaGaleria" id="nomeCategoriaGaleria">
+    </fieldset>
+</form>
 <div class="divisor"></div>
-<button type="button" onclick="ValidarCategoria()">Salvar</button>
+<button type="button" id="btnAdicionarCategoriaGaleria">Salvar</button>

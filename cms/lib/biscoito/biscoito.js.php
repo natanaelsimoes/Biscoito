@@ -90,7 +90,7 @@
             
                 $.ajax({
                     
-                    async: assincrono,
+                    async: false,
                     
                     type: tipoEncapsulamento,
                     
@@ -148,6 +148,8 @@
          * @example _Biscoito.ExecutarAcao('noticias/deletar','id=1',true,'POST');
          */
         this.ExecutarAcao = function(moduloAcao, dados, retornar, assincrono, tipoEncapsulamento) {
+        
+            var retorno;
             
             try {
                 
@@ -169,11 +171,13 @@
                     
                     data: dados,
                     
-                    success: function(retorno) {
-                        if (retornar) return retorno;
+                    success: function(retornoExecucao) { 
+                        retorno = retornoExecucao
                     }
             
                 });
+                
+                if (retornar) return retorno;
                 
             }
             catch(erro) {

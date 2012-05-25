@@ -4,8 +4,6 @@ namespace Biscoito\Modulos\Galeria\View;
 
 use Biscoito\Modulos\Galeria\CategoriaGaleria\TCategoriaGaleriaControl;
 
-include('galeria.css.form.php');
-
 include('galeria.js.form.php');
 ?>
 
@@ -16,12 +14,12 @@ include('galeria.js.form.php');
     <input type="text" name="textNome" id="textNome">
 </fieldset>
 <fieldset>
-    <label for="selectCategoria">Categoria:</label>
-    <?php TCategoriaGaleriaControl::ExibirSelecaoCategorias() ?>
+    <label for="selectCategoriaGaleria">Categoria:</label>
+    <div class="selectCategoriaGaleria"><?php TCategoriaGaleriaControl::ExibirSelecaoCategorias() ?></div>
 </fieldset>
 <fieldset>
     <label for="textFonte">Fonte:</label>
     <input type="text" name="textFonte" id="textFonte" style="width:92%;">
 </fieldset>
 <div class="divisor"></div>
-<button type="button" onclick="ValidarGaleria()">Adicionar fotos >></button>
+<button type="button" onclick="adicionarGaleria()">Adicionar fotos >></button>

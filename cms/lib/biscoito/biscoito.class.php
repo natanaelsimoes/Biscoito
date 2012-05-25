@@ -20,37 +20,39 @@ define('ADM_MODULOS', 'menu');
  * @version 1.0
  */
 class TBiscoito {
-    
+
     /**
      * Namespace ao qual o modulo/auxiliar pertence
      * @var string
      */
     private $namespace;
-    
+
     /**
      * Nome do modulo principal executado pelo Biscoito
      * @var string
      */
     private $modulo;
     
+    private $variaveisDaURL;
+
     /**
      * Nome do submodulo principal executado pelo Biscoito
      * @var String
      */
     private $subModulo;
-    
+
     /**
      * Nome do modulo auxiliar principal executado pelo Biscoito
      * @var string
      */
     private $moduloAuxiliar;
-    
+
     /**
      * Nome da classe de controle principal executado pelo Biscoito
      * @var string
      */
     private $classeControle;
-    
+
     /**
      * Funcao executada na classe principal pelo Biscoito
      * @var type 
@@ -63,7 +65,7 @@ class TBiscoito {
      * modulos, acao a executar e banco de dados
      */
     public function __construct() {
-        
+
         global $_BiscoitoConfig;
 
         $countURLVars = 0;
@@ -81,6 +83,8 @@ class TBiscoito {
         if ($countURLVars > 0) {
 
             $this->modulo = $arrURLVars[0];
+            
+            $this->variaveisDaURL = array_slice($arrURLVars, 1);
 
             $xmlModuloConfig = $this->getConfiguracaoXML($this->modulo);
 
@@ -89,7 +93,7 @@ class TBiscoito {
 
             else {
 
-                $this->acao = str_replace('_', '', array_pop($arrURLVars));
+                $this->moduloAuxiliar = $this->acao = str_replace('_', '', array_pop($arrURLVars));
 
                 $countURLVars--;
             }
@@ -107,7 +111,10 @@ class TBiscoito {
 
             $this->namespace = substr($this->namespace, 0, -1);
 
-            $this->moduloAuxiliar = $this->subModulo = array_pop($arrURLVars);
+            $this->subModulo = array_pop($arrURLVars);
+            
+            if($this->modulo != $this->subModulo)
+                $this->moduloAuxiliar = $this->subModulo;
         }
 
         else {
@@ -215,7 +222,7 @@ class TBiscoito {
     public function getConfiguracaoXML($modulo) {
         return $xmlBiscoitoConfig = simplexml_load_file("modulos/$modulo/config.xml");
     }
-    
+
     /**
      * Retorna o (nome da pasta) modulo principal executado pelo Biscoito
      * @return string 
@@ -224,14 +231,14 @@ class TBiscoito {
         return $this->modulo;
     }
 
-     /**
+    /**
      * Retorna o modulo auxiliar principal (o ultimo de uma serie de submodulos, responsavel pela acao) executado pelo Biscoito
      * @return string 
      */
     public function getModuloAuxiliar() {
         return $this->moduloAuxiliar;
     }
-    
+
     /**
      * Retorno o namespace do modulo (ou modulo auxiliar se houver)
      * @return string 
@@ -239,7 +246,7 @@ class TBiscoito {
     public function getNamespace() {
         return $this->namespace;
     }
-    
+
     /**
      * Retorna o nome do modulo principal executado pelo Biscoito segundo o arquivo de configuracao XML do modulo
      * @return string 
@@ -257,7 +264,24 @@ class TBiscoito {
     public function getSite() {
         global $_BiscoitoConfig;
         return $_BiscoitoConfig->site;
-    }    
+    }
+    
+    public function getVariaveisDaURL() {
+        return $this->variaveisDaURL;
+    }
+
+    /**
+     * Exibe uma imagem na tela configurando-a seguindo as exigencias do Biscoito
+     * @param string $src Caminho relativo da imagem a partir da raiz do site
+     * @param string $title Titulo da imagem
+     * @param string $alt Texto alternativo a imagem
+     */
+    public function imagem($src, $title, $alt = '') {
+
+        $imagem = '<img title="%s" alt="%s" src="%s%s">';
+
+        echo sprintf($imagem, $title, $alt, $this->getSite(), $src);
+    }
 
     /**
      * Exibe um link na tela configurando-o segundo as exigencias do Biscoito
@@ -269,7 +293,7 @@ class TBiscoito {
     public function link($texto, $alt, $modulo, $_ = null) {
 
         $href = '';
-        
+
         $link = '<a href="%s%s" alt="%s">%s</a>';
 
         $args = array_slice(func_get_args(), 1);
@@ -280,7 +304,7 @@ class TBiscoito {
         echo sprintf($link, $this->getSite(), $href, $alt, $texto);
     }
 
-     /**
+    /**
      * Ordena os objetos dentro de uma colecao (array)
      * @param array $array Objetos Colecao de objetos
      * @param string $atributo Nome do atributo que regera a ordenacao
@@ -289,7 +313,7 @@ class TBiscoito {
      */
     public function ordenarObjetos($arrayObjetos, $atributo, $ordem = SORT_ASC) {
 
-        $resolucaoFormat = 'return ($arrayObjetos[$j+1]->%s <= $arrayObjetos[$j]->%s);';
+        $resolucaoFormat = 'return (strtolower($arrayObjetos[$j+1]->%s) <= strtolower($arrayObjetos[$j]->%s));';
 
         $resolucaoString = sprintf($resolucaoFormat, $atributo, $atributo);
 
@@ -314,7 +338,7 @@ class TBiscoito {
 
         return $arrayObjetos;
     }
-    
+
     /**
      * Carrega os arquivos JavaScript do Biscoito 
      */
@@ -322,7 +346,7 @@ class TBiscoito {
         include('biscoito.js.erros.php');
         include('biscoito.js.php');
     }
-    
+
     /**
      * Carrega uma folha de estilo
      * @param string $src Caminho relativo da folha de estilo a partir da raiz do site
@@ -331,7 +355,7 @@ class TBiscoito {
         $styleTag = '<style type="text/css">@import "%s%s"</style>';
         echo sprintf($styleTag, $this->getSite(), $src);
     }
-    
+
     /**
      * Carrega a biblioteca JQuery para uso
      */

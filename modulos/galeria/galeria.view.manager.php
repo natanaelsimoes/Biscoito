@@ -8,7 +8,7 @@
 
     <div class="module_content">
 
-        <button type="button" onclick="GerenciarGaleria('exibir_formulario_adicionar')">+ Adicionar Galeria</button>
+        <button type="button" onclick="_Biscoito.AbrirPopup('FrmGaleria', 700, 'galeria/exibir_formulario_adicionar')">+ Adicionar Galeria</button>
 
         <div class="spacer"></div>
 

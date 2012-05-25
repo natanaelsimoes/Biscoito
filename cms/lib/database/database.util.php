@@ -122,11 +122,11 @@ class TDatabaseUtil {
         $refObj = new \ReflectionClass($classe);
 
         $filenameFormat = '%s%s\config.xml';
-        
+
         $filename = sprintf($filenameFormat, '', dirname($refObj->getFileName()));
 
         if (!file_exists($filename))
-            $filename = sprintf ($filenameFormat, 'modulos\\', $GLOBALS['_Biscoito']->getModulo());
+            $filename = sprintf($filenameFormat, 'modulos\\', $GLOBALS['_Biscoito']->getModulo());
 
         return simplexml_load_file($filename);
     }
@@ -233,9 +233,17 @@ class TMySQLUtil implements TIDatabaseUtil {
 
                 return true;
 
-            default: echo TDatabaseUtil::MontarMensagemErro($pdoE->getCode(), $pdoE->getMessage());
+            case 1062:
+
+                header("Content-Type: text/html; charset=ISO-8859-1", true);
+                
+                echo 'Já existe um registro com estas informações. Por favor tente uma entrada diferente.';
+
                 exit;
-                break;
+
+            default: echo TDatabaseUtil::MontarMensagemErro($pdoE->getCode(), $pdoE->getMessage());
+
+                exit;
         }
     }
 
