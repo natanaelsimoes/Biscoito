@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <modulo_config>
-    <nome>Usuário</nome>
+    <nome>Usuários</nome>
     <descricao></descricao>
     <autor></autor>
     <versao></versao>
@@ -15,9 +15,5 @@
             <ultimoLogin>TIMESTAMP</ultimoLogin>
             <tipo>INTEGER NOT NULL</tipo>
         </TUsuario>
-    </classes>
-    <menu>
-        <opcao>Adicionar</opcao>
-        <opcao>Gerenciar</opcao>
-    </menu>
+    </classes>    
 </modulo_config>

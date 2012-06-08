@@ -1,5 +1,7 @@
 <?php
 
+namespace Biscoito\Lib\Util;
+
 /**
  * FUNCOES GLOBAIS :: VETOR
  *
@@ -26,7 +28,7 @@
  * @version     1.04
  * @link        http://www.fabricadecodigo.com.br/
  */
-class CMS_Vetor {
+class TVetor {
 
     // <editor-fold defaultstate="collapsed" desc="#Atributos">
     /**
@@ -34,15 +36,19 @@ class CMS_Vetor {
      * @var mixed
      * @access private
      */
-    public $dados;
+    private $dados;
     /**
      * Quantidade de itens no primeiro nivel do array
      * @var integer
-     * @access public
+     * @access private     
      */
-    public $Tamanho;
+    private $Tamanho;
 
     // </editor-fold>
+    public function setDados($value) { $this->dados = $value; }
+    public function getDados() { return $this->dados; }
+    public function getTamanho() { return count($this->dados); }
+    
     // <editor-fold defaultstate="collapsed" desc="function __construct($_ = null)">
     /**
      * Inicializa um objeto de GF_Vetor.
@@ -63,7 +69,7 @@ class CMS_Vetor {
         $dados = func_get_args();
 
         if (!is_null($dados))
-            call_user_method_array('Adicionar', $this, $dados);
+            @call_user_method_array('Adicionar', $this, $dados);
 
         else
             $this->Tamanho = 0;

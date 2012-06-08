@@ -2,7 +2,7 @@
 
 namespace Biscoito\Modulos\Galeria;
 
-class TGaleriaControl {
+class TGaleriaControl {       
     
     public function ExibirFormularioAdicionar() {
         
@@ -12,8 +12,13 @@ class TGaleriaControl {
     
     public function Gerenciar() {
         
-        include('galeria.view.manager.php');
+        include('galeria.view.gerenciar.php');
         
+    }
+    
+    public function Editar() {
+        global $_Biscoito;
+        var_dump($_Biscoito->getVariaveisDaURL());
     }
     
     public function CarregarGalerias() {
@@ -24,7 +29,7 @@ class TGaleriaControl {
         
         $galerias = $galeria->ListarTodos($pagina, 20);
         
-        include('galeria.view.admlist.php');
+        include('galeria.view.listar.php');
         
     }
     

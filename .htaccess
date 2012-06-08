@@ -1,5 +1,11 @@
+# BEGIN Biscoito
+<IfModule mod_rewrite.c>
 RewriteEngine On
+RewriteBase /Biscoito
+RewriteRule ^index\.php$ - [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(!.(\.gif|\.jpg|\.png|\.css|\.js|\.txt|\.php|\.htm|\.html)|.+[^/])$ /$1/ [L]
-RewriteRule ^([^-]+)/$ index.php?frase=$1&%{QUERY_STRING} [L]
+RewriteRule . /Biscoito/index.php [L]
+</IfModule>
+
+# END Biscoito

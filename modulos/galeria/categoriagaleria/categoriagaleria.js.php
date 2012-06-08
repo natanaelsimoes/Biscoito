@@ -19,69 +19,63 @@
     
     function TCategoriaGaleriaJSForm() {
         
-        this.Adicionar = function() {
+        this.Salvar = function() {
         
             var categoria = new TCategoriaGaleria();
         
             if(Validar(categoria)) {
                 
-                var msg = _Biscoito.ExecutarAcao('galeria/categoriagaleria/adicionar', $('.FrmCategoriaGaleria form').serialize(), true);
+                var msg = _Biscoito.ExecutarAcao('galeria/categoriagaleria/salvar', $('.FrmCategoriaGaleria form').serialize(), true);
                 
                 if (msg != '') alert(msg);
                 
-                else {
-                
-                    var categorias = _Biscoito.ExecutarAcao('galeria/categoriagaleria/exibir_selecao_categorias', null, true);
-                
-                    $('div.selectCategoriaGaleria').html(categorias);
-                
-                    _Biscoito.FecharPopup('FrmCategoriaGaleria');
-                
-                }
+                else RecarregarCategorias();
                 
             }
         
-        }
+        }                
         
-        this.Alterar = function() {
+        this.Excluir = function() {
             
-            var categoria = new TCategoriaGaleria();
-        
-            if(Validar(categoria)) {
+            if($('#selectCategoriaGaleria').val() != '') 
                 
-                var msg = _Biscoito.ExecutarAcao('galeria/categoriagaleria/alterar', $('.FrmCategoriaGaleria form').serialize(), true);
-                
-                if (msg != '') alert(msg);
-                
-                else {
-                
-                    var categorias = _Biscoito.ExecutarAcao('galeria/categoriagaleria/exibir_selecao_categorias', null, true);
-                
-                    $('div.selectCategoriaGaleria').html(categorias);
-                
-                    _Biscoito.FecharPopup('FrmCategoriaGaleria');
-                
-                }
-                
+            if(confirm('Deseja realmente excluir a categoria selecionada?')) {
+                    
+                _Biscoito.ExecutarAcao('galeria/categoriagaleria/excluir', $('.FrmGaleriaForm').serialize());
+                    
+                RecarregarCategorias();    
+                    
             }
             
-        }
+    }
     
-        var Validar = function(categoria) {
-        
-            if(categoria.getNome() == '') {
-         
-                alert('Insira um nome na categoria.');
-         
-                categoria.DOMNome.focus();
-            
-                return false;
-         
-            }
-        
-            else return true;
-        
-        }
+    var RecarregarCategorias = function() {
+    
+        var categorias = _Biscoito.ExecutarAcao('galeria/categoriagaleria/exibir_selecao_categorias', null, true);
+                
+        $('div.selectCategoriaGaleria').html(categorias);
+                
+        _Biscoito.FecharPopup('FrmCategoriaGaleria');
     
     }
+    
+    var Validar = function(categoria) {
+        
+        if(categoria.getNome() == '') {
+         
+            alert('Insira um nome na categoria.');
+         
+            categoria.DOMNome.focus();
+            
+            return false;
+         
+        }
+        
+        else return true;
+        
+    }
+    
+}
+    
+categoriaGaleriaJSForm = new TCategoriaGaleriaJSForm();
 </script>

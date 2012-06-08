@@ -204,26 +204,31 @@ class TMySQLUtil implements TIDatabaseUtil {
                 #var_dump($configuracaoClasse);
 
                 $atributosClasse = array_keys(get_object_vars($configuracaoClasse->classes->$classe));
+
+                #var_dump($atributosClasse);
                 #var_dump($relacaoClasse);
 
                 $campoInexistente = TDatabaseUtil::getParametroErro($pdoE->getMessage());
 
-                $campoInexistenteSemId = str_replace('_id', '', $campoInexistente);
-
                 #var_dump($campoInexistente);               
 
-                if (in_array($campoInexistente, $atributosClasse))
+                if ((strpos($campoInexistente, '_id') === false) && (in_array($campoInexistente, $atributosClasse))) 
                     $orm->AdicionarCampo($tabela, $campoInexistente, $configuracaoClasse->classes->$classe->$campoInexistente, $obj);
+                
+                else if (in_array($campoInexistente, $atributosClasse)) {
 
-                else if (in_array($campoInexistenteSemId, $atributosClasse)) {
+                    $configuracaoCampoInexistente = $configuracaoClasse->classes->$classe->$campoInexistente;
+                    
+                    $nulo = ($configuracaoCampoInexistente['nulo'] == 'true') ? '' : 'NOT NULL';                    
+                    
+                    $orm->AdicionarCampo($tabela, $campoInexistente, "INTEGER $nulo", $obj);
 
-                    $orm->AdicionarCampo($tabela, $campoInexistente, 'INTEGER NOT NULL', $obj);
-
-                    $tabelaEstrangeira = $GLOBALS['_Biscoito']->getClasseRelacionamento($tabela, $campoInexistenteSemId);
+                    $tabelaEstrangeira = $GLOBALS['_Biscoito']->getClasseRelacionamento($tabela, $campoInexistente);
 
                     $nomeChaveEstrangeira = sprintf('fk_%s_%s', $tabela, $tabelaEstrangeira);
 
                     $orm->AdicionarChaveEstrangeira($nomeChaveEstrangeira, $tabela, $campoInexistente, $tabelaEstrangeira, 'id', $obj);
+                    
                 } else if (substr($campoInexistente, 0, -3) == $defaultTable) {
                     ORM::adicionarCampo($classe, $campoInexistente, 'INTEGER NOT NULL', $conexao);
                     ORM::adicionarChaveEstrangeira('fk_' . $campoInexistente, SQLUtil::retornaTabelaComando($comando), $campoInexistente, $defaultTable, 'id', $conexao);
@@ -236,7 +241,7 @@ class TMySQLUtil implements TIDatabaseUtil {
             case 1062:
 
                 header("Content-Type: text/html; charset=ISO-8859-1", true);
-                
+
                 echo 'Já existe um registro com estas informações. Por favor tente uma entrada diferente.';
 
                 exit;
@@ -278,7 +283,7 @@ class TORM {
      * @param resource $conexao Recurso de conexÃ£o com o banco de dados
      */
     public function AdicionarChaveEstrangeira($nomeChave, $tabelaLocal, $colunaLocal, $tabelaEstrangeira, $colunaEstrangeira, $obj) {
-        echo $comando = "ALTER TABLE $tabelaLocal ADD FOREIGN KEY $nomeChave ($colunaLocal) REFERENCES $tabelaEstrangeira ($colunaEstrangeira) ON DELETE CASCADE ON UPDATE CASCADE";
+        $comando = "ALTER TABLE $tabelaLocal ADD FOREIGN KEY $nomeChave ($colunaLocal) REFERENCES $tabelaEstrangeira ($colunaEstrangeira) ON DELETE CASCADE ON UPDATE CASCADE";
         $this->ExecutarComando($comando, $obj);
     }
 

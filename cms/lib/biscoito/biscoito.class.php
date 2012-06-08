@@ -5,6 +5,8 @@ namespace Biscoito\Lib;
 use Biscoito\Lib\Util;
 
 require_once('cms/lib/util/texto.class.php');
+require_once('cms/lib/util/navegador.class.php');
+require_once('cms/lib/util/vetor.class.php');
 
 define('PATHJQUERY', 'cms/js/jquery-1.7.2.min.js');
 define('PATHJQUERYUI', 'cms/js/jquery-ui-1.8.20.custom.min.js');
@@ -32,7 +34,6 @@ class TBiscoito {
      * @var string
      */
     private $modulo;
-    
     private $variaveisDaURL;
 
     /**
@@ -70,7 +71,7 @@ class TBiscoito {
 
         $countURLVars = 0;
 
-        $arrOffset = (strpos($_SERVER['HTTP_HOST'], 'localhost') === false) ? 1 : 2;
+        $arrOffset = (strpos($_SERVER['HTTP_HOST'], '.') !== false) ? 1 : 2;
 
         $requestURI = $_SERVER['REQUEST_URI'];
 
@@ -78,12 +79,12 @@ class TBiscoito {
 
         array_pop($arrURLVars);
 
-        $countURLVars = count($arrURLVars);
+        $countURLVars = count($arrURLVars); 
 
         if ($countURLVars > 0) {
 
             $this->modulo = $arrURLVars[0];
-            
+
             $this->variaveisDaURL = array_slice($arrURLVars, 1);
 
             $xmlModuloConfig = $this->getConfiguracaoXML($this->modulo);
@@ -111,10 +112,15 @@ class TBiscoito {
 
             $this->namespace = substr($this->namespace, 0, -1);
 
-            $this->subModulo = array_pop($arrURLVars);
-            
-            if($this->modulo != $this->subModulo)
+            //$this->subModulo = array_pop($arrURLVars);
+            if (!empty($this->variaveisDaURL))
+                $this->subModulo = $this->variaveisDaURL[0];
+
+            if ($this->modulo != $this->subModulo)
                 $this->moduloAuxiliar = $this->subModulo;
+
+            if ($this->moduloAuxiliar == $this->acao)
+                $this->moduloAuxiliar = $this->modulo;
         }
 
         else {
@@ -256,6 +262,11 @@ class TBiscoito {
         return $xml->nome;
     }
 
+    public function getNomeModuloAuxiliar() {
+        $xml = $this->getConfiguracaoXML($this->getModuloAuxiliar());
+        return $xml->nome;
+    }
+
     /**
      * Retorna a URL principal do site (sem variaveis e modulos)
      * @global Biscoito\Lib\TBiscoitoConfig $_BiscoitoConfig
@@ -265,7 +276,11 @@ class TBiscoito {
         global $_BiscoitoConfig;
         return $_BiscoitoConfig->site;
     }
-    
+
+    public function getSubModulo() {
+        return $this->subModulo;
+    }
+
     public function getVariaveisDaURL() {
         return $this->variaveisDaURL;
     }
@@ -296,12 +311,24 @@ class TBiscoito {
 
         $link = '<a href="%s%s" alt="%s">%s</a>';
 
-        $args = array_slice(func_get_args(), 1);
+        $args = array_slice(func_get_args(), 2);
 
         foreach ($args as $arg)
             $href.=strtolower("$arg/");
 
         echo sprintf($link, $this->getSite(), $href, $alt, $texto);
+    }
+
+    public function montarLink($modulo, $_ = null) {
+
+        $dir = func_get_args();
+
+        $link = $this->getSite();
+
+        foreach ($dir as $part)
+            $link.= "$part/";
+
+        return $link;
     }
 
     /**
@@ -339,10 +366,29 @@ class TBiscoito {
         return $arrayObjetos;
     }
 
+    public function usarBootstrap() {
+        $this->usarEstilo('plugins/bootstrap/css/bootstrap.css');
+        $this->usarEstilo('plugins/bootstrap/css/bootstrap-responsive.css');
+        $this->usarScript('plugins/bootstrap/js/jquery.js');
+        $this->usarScript('plugins/bootstrap/js/bootstrap-transition.js');
+        $this->usarScript('plugins/bootstrap/js/bootstrap-alert.js');
+        $this->usarScript('plugins/bootstrap/js/bootstrap-modal.js');
+        $this->usarScript('plugins/bootstrap/js/bootstrap-dropdown.js');
+        $this->usarScript('plugins/bootstrap/js/bootstrap-scrollspy.js');
+        $this->usarScript('plugins/bootstrap/js/bootstrap-tab.js');
+        $this->usarScript('plugins/bootstrap/js/bootstrap-tooltip.js');
+        $this->usarScript('plugins/bootstrap/js/bootstrap-popover.js');
+        $this->usarScript('plugins/bootstrap/js/bootstrap-button.js');
+        $this->usarScript('plugins/bootstrap/js/bootstrap-collapse.js');
+        $this->usarScript('plugins/bootstrap/js/bootstrap-carousel.js');
+        $this->usarScript('plugins/bootstrap/js/bootstrap-typeahead.js');        
+    }
+    
     /**
      * Carrega os arquivos JavaScript do Biscoito 
      */
     public function usarBiscoitoJS() {
+        $this->usarScript('plugins/phpjs/js/php.default.min.js');
         include('biscoito.js.erros.php');
         include('biscoito.js.php');
     }
@@ -378,6 +424,34 @@ class TBiscoito {
     public function usarScript($src) {
         $scriptTag = '<script type="text/javascript" src="%s%s"></script>';
         echo sprintf($scriptTag, $this->getSite(), $src);
+    }
+
+    public function requisitarAcao($classe, $acao) {
+
+        if (!class_exists($classe)) {
+            $classe = $this->getClasseControleModuloAvulso($this->variaveisDaURL[0]);
+            if (empty($classe))
+                throw new Exception('ERRRRRRO');
+        }
+
+        $metodosClasse = get_class_methods($classe);
+        
+        $vetor = new Util\TVetor(get_class_methods($classe));        
+        
+        if (count(@$vetor->Procurar($this->variaveisDaURL[1])) > 0)
+            $this->acao = $acao = $this->variaveisDaURL[1];
+
+        ob_start();
+
+        $objeto = new $classe;
+
+        $objeto->$acao();
+
+        $requisicao = ob_get_contents();
+
+        ob_end_clean();
+
+        return $requisicao;
     }
 
 }

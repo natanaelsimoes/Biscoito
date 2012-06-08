@@ -1,17 +1,18 @@
-<?php
-
-namespace Biscoito\Modulos\Administrador\Menu;
-
-use Biscoito\Lib\Util;
-
-global $_Biscoito;
-
-foreach ($menuList as $modulo) { ?>
-    <h3><?php echo $modulo[0] ?></h3>
-    <ul class="toggle">
-        <?php foreach ($modulo[1] as $opcao) { 
-            $modulo[0] = Util\TTexto::RemoverAcentos($modulo[0]); ?>
-            <li class="icn_new_article"><?php $_Biscoito->link($opcao, 'administrador', $modulo[0],$opcao); ?></li>
-        <?php } ?>
-    </ul>
-<?php } ?>
+<div class="row-fluid">    
+    <?php for ($i = 0, $maxMenuList = count($menuList), $menu = $menuList[0]; $i < $maxMenuList; $i++, @$menu = $menuList[$i]) : ?>    
+        <?php if ($i & $i % 4 == 0) : ?>    
+            <div class="row-fluid">
+            <?php endif; ?>        
+            <div class="span3">
+                <a href="<?php echo $GLOBALS['_Biscoito']->montarLink('administrador', $menu->getDiretorio()); ?>">
+                    <p style="text-align: center">
+                        <img class="icone" src="<?php echo $menu->getIcone(); ?>" alt="<?php echo $menu->getNome(); ?>">
+                    </p>                        
+                    <p style="text-align: center"><?php echo $menu->getNome(); ?></p>
+                </a>
+            </div>        
+            <?php if ($i & $i % 4 == 0) : ?>         
+            </div>
+        <?php endif; ?>
+    <?php endfor; ?>
+</div>

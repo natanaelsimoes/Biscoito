@@ -74,8 +74,8 @@ class TDatabase {
      * @param mixed $obj Objeto sendo tratado
      * @return mixed Array com a coleção de dados retornados 
      */
-    public function Selecionar($comando, $obj) {
-        return $this->database->Selecionar($comando, $obj, $pagina = 0, $quantidade = 0);
+    public function Selecionar($comando, $obj, $pagina = 0, $quantidade = 0) {
+        return $this->database->Selecionar($comando, $obj, $pagina, $quantidade);
     }
 
 }
@@ -139,8 +139,14 @@ class TMySQL implements TIDatabase {
         $this->ExecutarComando($comando, $obj);
 
         $objs = array();
-        while ($objFetched = $this->pdoStatement->fetchObject(get_class($obj)))
-            array_push($objs, clone($objFetched));
+        
+        $class = get_class($obj);
+        
+        while ($objFetched = $this->pdoStatement->fetchObject()) {            
+            $objClass = new $class;
+            $objClass->CarregarObjeto($objFetched);
+            array_push($objs, clone($objClass));
+        }
         
         return $objs;
     }

@@ -1,22 +1,25 @@
 <?php
 
 function __autoload($namespace) {
-    
+
     global $_Biscoito;
 
     $arrClasses = explode('\\', $namespace);
 
-    $classe = array_pop($arrClasses);
+    if ($arrClasses[1] != 'Lib') {
 
-    $configuracaoClasses = $_Biscoito->getConfiguracaoXML($arrClasses[2]);
+        $classe = array_pop($arrClasses);
 
-    $caminhoModulo = $_Biscoito->getCaminhoModulo(array_slice($arrClasses, 2));
+        $configuracaoClasses = $_Biscoito->getConfiguracaoXML($arrClasses[2]);
 
-    $classeAtributos = $configuracaoClasses->classes->$classe;
+        $caminhoModulo = $_Biscoito->getCaminhoModulo(array_slice($arrClasses, 2));
 
-    $arquivoClasse = $classeAtributos['arquivo'];
+        $classeAtributos = $configuracaoClasses->classes->$classe;
 
-    require_once("modulos/{$caminhoModulo}{$arquivoClasse}");
+        $arquivoClasse = $classeAtributos['arquivo'];
+
+        require_once("modulos/{$caminhoModulo}{$arquivoClasse}");
+    }
 }
 
 ?>

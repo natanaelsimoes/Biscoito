@@ -19,12 +19,11 @@
         
         /**
          * Realiza montagem de uma URL baseado no modulo/submodulo/acao requisitados
-         * @private
          * @param string moduloAcao: Referencia modulos, submodulos e acao no Biscoito
          * @return string URL montada
          * @example MontarURLAcao('noticia/listar');
          */
-        var MontarURLAcao = function(moduloAcao) {            
+        this.MontarURLAcao = function(moduloAcao) {            
             return sprintf('%s%s/', self.getSite(),moduloAcao);         
         }
         
@@ -94,7 +93,7 @@
                     
                     type: tipoEncapsulamento,
                     
-                    url: MontarURLAcao(moduloAcao),
+                    url: self.MontarURLAcao(moduloAcao),
                     
                     data: dados,
                     
@@ -167,7 +166,7 @@
                     
                     type: tipoEncapsulamento,
                     
-                    url: MontarURLAcao(moduloAcao),
+                    url: self.MontarURLAcao(moduloAcao),
                     
                     data: dados,
                     
@@ -216,7 +215,7 @@
                 
                 if(moduloAcao == null) throw 3;
             
-                location.href = MontarURLAcao(moduloAcao);
+                location.href = self.MontarURLAcao(moduloAcao);
             
             }
             catch(erro) {
@@ -231,5 +230,5 @@
         
     }
     
-    var _Biscoito = new TBiscoitoJS();
+    var _Biscoito = new TBiscoitoJS();     
 </script>

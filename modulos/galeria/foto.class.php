@@ -12,6 +12,7 @@ class TFoto extends TObjeto {
     private $largura;
     private $altura;
     private $tipo;
+    private $galeria_id;
     
     protected $imagem;
     
@@ -42,9 +43,14 @@ class TFoto extends TObjeto {
         return $this->tipo;
     }
     
+    public function getGaleria() {
+        
+    }
+    
     public function setDescricao($descricao) {
         $this->descricao = $descricao;
     }
+    
 }
 
 ?>

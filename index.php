@@ -46,4 +46,6 @@ try {
     echo "<p>A função {$controleAcao}() não existe na classe {$controleModulo} do pacote {$_Biscoito->getNamespace()}</p><br/>";
     echo $e->getMessage();
 }
+
+$nav = new Util\TNavegador;
 ?>

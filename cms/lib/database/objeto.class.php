@@ -63,7 +63,8 @@ class TObjeto {
      * @return string
      */
     public function __toString() {
-        return serialize($this);
+        $serial = serialize($this);
+        return str_replace("\0", "~~NULL_BYTE~~", $serial);
     }
 
     /**
@@ -83,24 +84,26 @@ class TObjeto {
      */
     public function DeletarRegistro() {
 
-        $table = strtolower(get_class($this));
+        $table = TDatabaseUtil::getClasseNamespace(get_class($this));
 
-        switch ($this->FiEstado) {
+        /*     switch ($this->getEstado()) {
 
-            case CREATED:
+          case CREATED:
 
-                die(__METHOD__ . '(). O objeto nunca foi salvo no banco de dados ou o método foi chamado de um local não permitido.');
+          die(__METHOD__ . '(). O objeto nunca foi salvo no banco de dados ou o método foi chamado de um local não permitido.');
 
-            default:
+          default:
+         */
+        $query = " DELETE FROM $table WHERE id = {$this->getId()} ";
 
-                $query = " DELETE FROM $table WHERE id = {$this->getId()} ";
+        $bd = new TDatabase;
 
-                $bd = new CMS_Dados();
+        $bd->AbrirConexao();
 
-                $bd->execute($query);
+        $bd->ExecutarComando($query, $this);
 
-                break;
-        }
+        /*         break;
+          } */
     }
 
     private function ExistePropriedade($obj, $attr) {
@@ -119,11 +122,15 @@ class TObjeto {
         $this->FiEstado = READED;
     }
 
-    private function CarregarObjeto($obj) {
+    public function CarregarObjeto($obj) {
 
         foreach (get_object_vars($obj) as $attr => $value)
-            if (!ExistePropriedade($obj, $attr))
+            if (!$this->ExistePropriedade($obj, $attr))
                 throw new InvalidArgumentException('Atributo inexistente na classe \'' . __CLASS__ . '\': ' . $attr);
+            else if ($attr != 'FiId') {
+                $setAttr = "set$attr";
+                $this->$setAttr($value);
+            }
             else
                 $this->$attr = $value;
 
@@ -132,24 +139,42 @@ class TObjeto {
         $this->FiEstado = READED;
     }
 
-    private function CarregarString($serial) {
-        if (gettype($serial) != 'string')
-            throw new InvalidArgumentException('Serial inv�lida');
+    public function CarregarSerial($serial) {
 
-        $obj = unserialize($serial);
+        if (!empty($serial) && is_string($serial)) {
 
-        if (($className = get_class($obj)) === false)
-            throw new InvalidArgumentException('Serial não criou um objeto');
+            $serial = str_replace("~~NULL_BYTE~~", "\0", $serial);
 
-        if ($className != ($expectedClassName = (get_class($this))))
-            throw new InvalidArgumentException('Serial criou um objeto da classe \'' . $className . '\'. Classe esperada: \'' . $expectedClassName);
+            $obj = unserialize($serial);
 
-        foreach (get_object_vars(unserialize($serial)) as $attr => $value)
-            $this->$attr = $value;
+            if (($className = get_class($obj)) === false)
+                throw new \InvalidArgumentException('Serial não criou um objeto');
 
-        $this->FiEstado = clone($this);
+            if ($className != ($expectedClassName = (get_class($this))))
+                throw new \InvalidArgumentException('Serial criou um objeto da classe \'' . $className . '\'. Classe esperada: \'' . $expectedClassName);
 
-        $this->FobAntigo = READED;
+            $arrClassName = explode('\\', $className);
+
+            $trueClassName = end($arrClassName);
+
+            foreach ($this->MapearClasse($this) as $attr => $value) {
+
+                $attr = str_replace("$trueClassName.", '', $attr);
+
+                $attrSet = "set$attr";
+
+                $attrGet = "get$attr";
+
+                $this->$attrSet($obj->$attrGet());
+            }
+
+            foreach (get_object_vars($obj) as $attr => $value)
+                $this->$attr = $value;
+
+            $this->FobAntigo = clone($this);
+
+            $this->FiEstado = READED;
+        }
     }
 
     public function DeletarObjetoRelacionado(&$array, $obj) {
@@ -203,13 +228,20 @@ class TObjeto {
 
         $query = $fields = $values = $where = '';
 
-        switch ($this->FiEstado) {
-            case CREATED: #INSERT 
+        switch ($this->getId()) {
+            case false: #INSERT 
+
                 foreach ($this->MapearClasse($this) as $col => $value) {
 
                     $colInfo = explode('.', $col);
+
                     $colTable = $colInfo[0];
+
                     $colName = $colInfo[1];
+
+                    $getCol = "get$colName";
+
+                    $value = $this->$getCol();
 
                     $hasDefaultValue = (strpos(strtoupper($configuracaoClasse->classes->$table->$colName), 'DEFAULT') !== false);
 
@@ -240,13 +272,19 @@ class TObjeto {
 
                 break;
 
-            case UPDATED:   #UPDATE
+            case true:   #UPDATE
 
                 foreach ($this->MapearClasse($this) as $col => $value) {
 
                     $colInfo = explode('.', $col);
+
                     $colTable = $colInfo[0];
+
                     $colName = $colInfo[1];
+
+                    $getCol = "get$colName";
+
+                    $value = $this->$getCol();
 
                     $hasDefaultValue = (strpos(strtoupper($configuracaoClasse->classes->$table->$colName), 'DEFAULT') !== false);
 
@@ -275,8 +313,6 @@ class TObjeto {
                                 $queuedQueries[] = $queryForeign;
                             }
                         }
-                    } else if ($col == 'id') {
-                        $where.= "id = $value";
                     } else if ($hasDefaultValue && $value == '') {
                         $value.= "$col = DEFAULT,";
                     } else {
@@ -284,10 +320,11 @@ class TObjeto {
                     }
                 }
 
+                $where = "id = {$this->getId()}";
+
                 $values = substr($values, 0, -1);
 
-                if ($this->FiEstado == UPDATED)
-                    $query = " UPDATE $table SET $values WHERE $where ";
+                $query = " UPDATE $table SET $values WHERE $where ";
 
                 break;
         }
@@ -331,13 +368,15 @@ class TObjeto {
 
         $fields = substr($fields, 0, -1);
 
-        $query = "SELECT $fields FROM $table";
+        $query = "SELECT $table.id FiId,$fields FROM $table";
 
         $bd = new TDatabase;
 
         $bd->AbrirConexao();
 
-        return $bd->Selecionar($query, $this, $pagina, $quantidade);
+        $lista = $bd->Selecionar($query, $this, $pagina, $quantidade);
+
+        return $lista;
     }
 
     public function ListarTodosOnde($campo, $sinal, $valor, $pagina = null, $quantidade = null) {
@@ -351,7 +390,7 @@ class TObjeto {
 
         $fields = substr($fields, 0, -1);
 
-        $query = " SELECT $fields FROM $table WHERE $campo $sinal $valor ";
+        $query = " SELECT $table.id FiId,$fields FROM $table WHERE $campo $sinal $valor ";
 
         $bd = new TDatabase;
 
@@ -359,7 +398,7 @@ class TObjeto {
 
         return $bd->Selecionar($query, $this, $pagina, $quantidade);
     }
-    
+
     public function ListarPorId($id) {
 
         $fields = "";
@@ -371,7 +410,7 @@ class TObjeto {
 
         $fields = substr($fields, 0, -1);
 
-        $query = " SELECT $fields FROM $table WHERE id = $id ";
+        $query = " SELECT $table.id FiId,$fields FROM $table WHERE id = $id ";
 
         $bd = new TDatabase;
 
@@ -412,10 +451,7 @@ class TObjeto {
 
                     $ARR_LIST_CLASS = TDatabaseUtil::getClasseNamespace($ARR_LIST_MATCH[1]);
 
-                    if (strpos($matches[0], 'Object') !== false)
-                        $matches[1] = sprintf('%s.%s_id', $obj_class, $ARR_LIST_MATCH[0]);
-                    else
-                        $matches[1] = sprintf('%s.%s', $obj_class, $ARR_LIST_MATCH[0]);
+                    $matches[1] = sprintf('%s.%s', $obj_class, $ARR_LIST_MATCH[0]);
 
                     if (mb_stripos($matches[2], 'array') !== false) {
 

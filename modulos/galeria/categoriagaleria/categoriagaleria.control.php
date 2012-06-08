@@ -2,21 +2,49 @@
 
 namespace Biscoito\Modulos\Galeria\CategoriaGaleria;
 
-class TCategoriaGaleriaControl {
+class TCategoriaGaleriaControl {    
     
-    public function Adicionar() {
+    public function Salvar() {
         
         $categoria = new TCategoriaGaleria();
         
-        $categoria->setNome($_POST['nomeCategoriaGaleria']);
+        $categoria->CarregarSerial($_REQUEST['objCategoriaGaleria']);
+        
+        $categoria->setNome($_REQUEST['nomeCategoriaGaleria']);
         
         $categoria->Salvar();
+        
+    }
+    
+    public function Excluir() {
+        
+        $categoria = new TCategoriaGaleria();
+        
+        $categoria->CarregarSerial($_REQUEST['selectCategoriaGaleria']);
+        
+        $categoria->DeletarRegistro();
         
     }
 
     public static function ExibirFormularioAdicionar() {
         
-        include('categoriagaleria.view.adicionar.php');
+        $categoria = new TCategoriaGaleria();
+        
+        $acao = 'Adicionar';
+        
+        include('categoriagaleria.view.edicao.php');
+        
+    }
+    
+    public static function ExibirFormularioAlterar() {
+        
+        $categoria = new TCategoriaGaleria();
+        
+        $categoria->CarregarSerial($_REQUEST['selectCategoriaGaleria']);
+        
+        $acao = 'Alterar';
+        
+        include('categoriagaleria.view.edicao.php');
         
     }
     

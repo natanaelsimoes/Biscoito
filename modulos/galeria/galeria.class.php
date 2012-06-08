@@ -9,21 +9,18 @@ use Biscoito\Modulos\Galeria\CategoriaGaleria\TCategoriaGaleria;
 class TGaleria extends TObjeto {
 
     private $nome;
-    private $categoria;
     private $descricao;
     private $fonte;
     private $dataCriacao;
     private $publicado;
-    private $capa;
-    private $fotos;
+    private $categoria_id;
+    private $capa_id;
 
     public function __construct() {
-        $this->categoria = new TCategoriaGaleria();
-        $this->capa = new TFoto();
         $this->fotos = array();
         parent::__construct();
     }
-    
+
     public function getNome() {
         return $this->nome;
     }
@@ -47,41 +44,29 @@ class TGaleria extends TObjeto {
     public function getPublicado() {
         return $this->publicado;
     }
-    
+
     public function getCapa() {
-        return $this->capa;
+        $foto = new TFoto();
+        if (!empty($this->capa_id))
+            $foto = $foto->ListarPorId($this->capa_id);
+        return $foto;
     }
-    
-    public function getFotos() {
-        $this->CarregarFotos();
-        return $this->fotos;
+
+    public function getFotos($pagina, $quantidade) {
+        $fotos = new TFoto();
+        return $fotos->ListarTodosOnde('galeria_id', '=', $this->getId(), $pagina, $quantidade);
     }
-    
+
     public function getQuantidadeFotos() {
-        $this->CarregarFotos();
-        return count($this->fotos);
+        return count($this->getFotos());
     }
-    
-    public function CarregarFotos($pagina = null, $quantidade = null) {
-        if (!isset($this->fotos)) {
-            $fotos = new TFoto();
-            $this->fotos = $fotos->ListarTodosOnde('galeria_id', '=', $this->getId(), $pagina, $quantidade);
-        }
-    }
-    
-    private function CarregarCapa() {
-        if(!isset($this->capa)) {
-            $foto = new TFoto();
-            $this->capa = $foto->ListarPorId($this->capa->id);
-        }
-    }
-    
+
     public function setNome($nome) {
         $this->nome = $nome;
     }
 
-    public function setCategoria(TCategoria $categoria) {
-        $this->categoria = $categoria;
+    public function setCategoria_id($categoria_id) {
+        $this->categoria_id = $categoria_id;
     }
 
     public function setDescricao($descricao) {
@@ -91,20 +76,17 @@ class TGaleria extends TObjeto {
     public function setFonte($fonte) {
         $this->fonte = $fonte;
     }
+    
+    public function setDataCriacao($dataCriacao) {
+        $this->dataCriacao = $dataCriacao;
+    }
 
     public function setPublicado($publicado) {
         $this->publicado = $publicado;
     }
-    
-    public function setCapa($capa) {
-        $this->capa = $capa;
-    }
-    
-    public function ListarTodos($pagina = null, $quantidade = null) {
-        $galerias = parent::ListarTodos($pagina, $quantidade);
-        foreach($galerias as $galeria) 
-            $galeria->CarregarCapa();
-        return $galerias;
+
+    public function setCapa_id($capa_id) {
+        $this->capa_id = $capa_id;
     }
 
 }

@@ -12,7 +12,9 @@
     <classes>
         <TAdministradorControl arquivo="administrador.control.php" controle="true"></TAdministradorControl>
         <TMenu arquivo="menu.class.php"></TMenu>
+        <TMenuOpcao arquivo="opcao.class.php"></TMenuOpcao>
         <TMenuControl sub-modulo="menu" arquivo="menu.control.php" controle="true"></TMenuControl>
-        <TTeste></TTeste>
+        <TBreadcrumb arquivo="breadcrumbs.class.php"></TBreadcrumb>
+        <TBreadcrumbsControl sub-modulo="breadcrumbs" arquivo="breadcrumbs.control.php" controle="true"></TBreadcrumbsControl>
     </classes>    
 </modulo_config>

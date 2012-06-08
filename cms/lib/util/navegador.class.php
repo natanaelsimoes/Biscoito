@@ -1,5 +1,14 @@
 <?php
 
+namespace Biscoito\Lib\Util;
+
+define('NAVEGADOR_IE', 'Internet Explorer');
+define('NAVEGADOR_FF', 'Mozilla Firefox');
+define('NAVEGADOR_GC', 'Google Chrome');
+define('NAVEGADOR_IE_ABR', 'IE');
+define('NAVEGADOR_FF_ABR', 'FF');
+define('NAVEGADOR_GC_ABR', 'GC');
+
 /**
  * FUNCOES GLOBAIS :: NAVEGADOR
  *
@@ -21,7 +30,79 @@
  * @version     1.02
  * @link        http://www.fabricadecodigo.com.br/
  */
-class CMS_Navegador {
+class TNavegador {
+
+    public static function getNome() {
+
+        $infoNavegador = $_SERVER['HTTP_USER_AGENT'];
+
+        if (strpos($infoNavegador, 'MSIE') !== false)
+            return NAVEGADOR_IE;
+
+        else if (strpos($infoNavegador, 'Firefox') !== false)
+            return NAVEGADOR_FF;
+
+        else if (strpos($infoNavegador, 'Chrome') != false)
+            return NAVEGADOR_GC;
+    }
+
+    public static function getSigla() {
+
+        $nomeNavegador = TNavegador::getNome();
+
+        switch ($nomeNavegador) {
+
+            case NAVEGADOR_IE: return NAVEGADOR_IE_ABR;
+
+            case NAVEGADOR_FF: return NAVEGADOR_FF_ABR;
+
+            case NAVEGADOR_GC: return NAVEGADOR_GC_ABR;
+        }
+    }
+
+    public static function getVersao() {
+
+        $infoNavegador = $_SERVER['HTTP_USER_AGENT'];
+
+        if (($pos = strpos($infoNavegador, 'MSIE')) !== false) {
+
+            $posVer = strpos($infoNavegador, ';');
+
+            return substr($infoNavegador, $pos + 5, $posVer - $pos + 5);
+        } else if (($pos = strpos($infoNavegador, 'Firefox')) !== false) {
+
+            $posVer = strpos($infoNavegador, '/', $pos) + 1;
+
+            return substr($infoNavegador, $posVer);
+        } else if (($pos = strpos($infoNavegador, 'Chrome')) != false) {
+
+            $posVer = strpos($infoNavegador, '/', $pos) + 1;
+
+            $posVerStop = strpos($infoNavegador, ' ', $posVer);
+
+            return substr($infoNavegador, $posVer, $posVerStop - $posVer);
+        }
+    }
+
+    public static function SuportaHTML5() {
+
+        $versaoNavegador = TNavegador::getVersao();
+        
+        switch (TNavegador::getSigla()) {
+
+            case 'FF':
+
+                return ($versaoNavegador) >= 4;
+
+            case 'GC':
+
+                return ($versaoNavegador) >= 10;
+
+            case 'IE':
+
+                return ($versaoNavegador) >= 9;
+        }
+    }
 
     // <editor-fold defaultstate="collapsed" desc="static public AdicionarScript($referencia)">
     /**
@@ -139,6 +220,7 @@ class CMS_Navegador {
     static public function Redirecionar($caminho) {
         echo "<script type=\"text/javascript\"> location.href = '$caminho'; </script>";
     }
+
 }
 
 ?>

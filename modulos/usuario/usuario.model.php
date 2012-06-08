@@ -47,6 +47,10 @@ class TUsuario extends TObjeto {
     public function setNome($value) {
         $this->nome = $value;
     }
+    
+    public function setSenha($value) {
+        $this->senha = $value;
+    }
 
     public function setUsuario($value) {
         $this->usuario = $value;
