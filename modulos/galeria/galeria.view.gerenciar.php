@@ -4,9 +4,9 @@
 
 <article class="subhead">    
     
-    <header class="row">
+    <header class="row page-header">
             <h1 class="span6">Galeria</h1>                                
-            <button type="button" onclick="_Biscoito.AbrirPopup('FrmGaleria', 800, 'galeria/exibir_formulario_adicionar')" class="btn btn-large btn-primary pull-right"><i class="icon-plus-sign"></i> Adicionar Galeria</button>        
+            <div class="pull-right"><?php include('galeria.view.button.adicionar.php'); ?></div>
     </header>    
     
     <div>                

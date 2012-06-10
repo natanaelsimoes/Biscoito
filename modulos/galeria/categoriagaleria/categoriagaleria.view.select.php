@@ -7,20 +7,20 @@ global $_Biscoito;
 include_once('categoriagaleria.js.php');
 ?>
 
-<select name="selectCategoriaGaleria" id="selectCategoriaGaleria" style="width: 90%">
+<select name="categoriagaleria" id="selectCategoriaGaleria">
     <option value="">Selecione uma categoria...</option>
     <?php foreach ($categorias as $categoria) { ?>
         <option value='<?php echo $categoria; ?>'><?php echo $categoria->getNome() ?></option>
     <?php } ?>
 </select>
-<a href="#" onclick="_Biscoito.AbrirPopup('FrmCategoriaGaleria', 600, 'galeria/categoriagaleria/exibir_formulario_alterar', $('.FrmGaleriaForm').serialize());">
-    <?php $_Biscoito->imagem('cms/images/icn_edit.png', 'Alterar'); ?>
-</a>
-<a href="#" onclick="categoriaGaleriaJSForm.Excluir()">
-    <?php $_Biscoito->imagem('cms/images/icn_trash.png', 'Excluir'); ?>
-</a>
-<p style="text-align: right; margin-right: 20px;">
-    <a href="#" onclick="_Biscoito.AbrirPopup('FrmCategoriaGaleria', 600, 'galeria/categoriagaleria/exibir_formulario_adicionar');">
-        + Adicionar Categoria
+<p class="help-block">
+    <a href="#" class="btn" onmouseover="$(this).tooltip('show')" onclick="categoriaGaleriaJSForm.btnEditar_Click()" title="Editar categoria selecionada">
+        <i class="icon-edit"></i>
+    </a>
+    <a href="#" class="btn" onmouseover="$(this).tooltip('show')" onclick="categoriaGaleriaJSForm.btnExcluir_Click()" title="Excluir categoria selecionada">
+        <i class="icon-remove"></i>
+    </a>
+    <a href="#" class="btn" onclick="_Biscoito.AbrirPopupDinamico('FrmCategoriaGaleria', 'galeria/categoriagaleria/exibir_formulario_adicionar');">
+        <i class="icon-plus-sign"></i> Adicionar Categoria
     </a>
 </p>

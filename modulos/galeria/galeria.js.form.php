@@ -17,7 +17,7 @@
         else {
             var id = _Biscoito.ExecutarAcao('galeria/adicionar', $('.FrmGaleria form').serialize());
             var dados = sprintf('id=%s', id);
-            _Biscoito.AbrirPopup('FrmGaleria', 700, 'galeria/exibir_formulario_adicionar_fotos', dados);
+            _Biscoito.AbrirPopupDinamico('FrmGaleria', 700, 'galeria/exibir_formulario_adicionar_fotos', dados);
         }
         
     }

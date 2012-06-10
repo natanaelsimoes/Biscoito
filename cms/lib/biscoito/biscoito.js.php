@@ -62,6 +62,56 @@
             return '<?php echo $_Biscoito->getSite(); ?>';
         }
         
+        
+        this.AbrirPopupEstatico = function(nomePopup, conteudo) {
+           
+            var divPopup, PopupAnterior, idPopup;
+        
+            try {
+                
+                PopupAnterior = $('.modal.in').attr('id');                
+                
+                if(PopupAnterior != null) 
+                    self.FecharPopup(PopupAnterior);                                                                    
+               
+                else $('body').append('<div class="modal-backdrop fade in"></div>');
+                
+                divPopup = sprintf('<div class="modal fade hide" id="%s"><div class="hide idPopupAnterior">%s</div></div>', nomePopup, PopupAnterior);
+                
+                idPopup = sprintf('#%s', nomePopup);                                                           
+                        
+                $(idPopup).remove();
+                        
+                $('body').append(divPopup);
+                        
+                $(idPopup).append(conteudo);
+                        
+                $(idPopup).modal({
+                            
+                    backdrop: false,
+                            
+                    show: true                        
+                            
+                });           
+                        
+                $(idPopup).on('hidden', function () {
+                    
+                    VoltarPopup($(this).attr('id'));
+                    
+                });
+                
+            }
+            catch(erro) {
+            
+                biscoitoJSErros.TratarErro(erro);
+                
+                return false;
+                
+            }
+           
+        }
+        
+        
         /**
          * Abre uma janela popup sobre o conteúdo exibido mantando o foco sobre si 
          * bloqueando o conteudo exibido antes de sua abertura
@@ -71,17 +121,11 @@
          * @param string dados: Variaveis e valores ordenados no formato de URL 
          * que serao passados como parametro para o modulo/submodulo requisitado
          * @param string tipoEncapsulamento: Define o tipo de encapsulmento dos dados: GET ou POST(padrao, se nulo)
-         * @example _Biscoito.AbrirPopup('FrmNoticia',500,'noticias/editar','id=1','POST');
+         * @example _Biscoito.AbrirPopupDinamico('FrmNoticia',500,'noticias/editar','id=1','POST');
          */
-        this.AbrirPopup = function(nomePopup, larguraPopup, moduloAcao, dados, tipoEncapsulamento) {
+        this.AbrirPopupDinamico = function(nomePopup, moduloAcao, dados, tipoEncapsulamento) {                    
         
-            var divPopup, classePopup;
-        
-            try {
-                
-                divPopup = sprintf('<div class="%s"></div>', nomePopup);
-                
-                classePopup = sprintf('.%s', nomePopup);
+            try {                               
                 
                 if(moduloAcao == null) throw 2;
                 
@@ -97,138 +141,146 @@
                     
                     data: dados,
                     
-                    success: function(retorno) {
+                    success: function(retorno) {                                                
                         
-                        $(classePopup).remove();
-                        
-                        $('body').append(divPopup);
-                        
-                        $(classePopup).html(retorno);
-                        
-                        $(classePopup).dialog({
-                            
-                            autoOpen:false,
-                            
-                            draggable: false,
-                            
-                            modal:true,
-                            
-                            resizable:false,
-                            
-                            width: larguraPopup
-                            
-                        });
-                        
-                        $(classePopup).dialog('open');
+                        self.AbrirPopupEstatico(nomePopup, retorno);
                         
                     }
             
                 });
                 
             }
-            catch(erro) {
+        catch(erro) {
             
-                biscoitoJSErros.TratarErro(erro);
+            biscoitoJSErros.TratarErro(erro);
                 
-                return false;
+            return false;
                 
-            }
-        
         }
         
+}
         
-        /**
-         * Atraves de uma requisicao HTTP, o servidor executa a funcao parametrizada
-         * @param string moduloAcao: Referencia modulos, submodulos e acao no Biscoito
-         * @param string dados: Variaveis e valores ordenados no formato de URL 
-         * @param bool retornar: Define se a funcao deve retornar o resultado da acao. Por padrao a funcao nao retornara qualquer resultado.
-         * @param bool assincrono Define se a execucao da acao de ser assincrona. Por padrao a funcao e sincrona.
-         * @param string tipoEncapsulamento: Define o tipo de encapsulmento dos dados: GET ou POST(padrao, se nulo)
-         * @example _Biscoito.ExecutarAcao('noticias/deletar','id=1',true,'POST');
-         */
-        this.ExecutarAcao = function(moduloAcao, dados, retornar, assincrono, tipoEncapsulamento) {
         
-            var retorno;
+/**
+ * Atraves de uma requisicao HTTP, o servidor executa a funcao parametrizada
+ * @param string moduloAcao: Referencia modulos, submodulos e acao no Biscoito
+ * @param string dados: Variaveis e valores ordenados no formato de URL 
+ * @param bool retornar: Define se a funcao deve retornar o resultado da acao. Por padrao a funcao nao retornara qualquer resultado.
+ * @param bool assincrono Define se a execucao da acao de ser assincrona. Por padrao a funcao e sincrona.
+ * @param string tipoEncapsulamento: Define o tipo de encapsulmento dos dados: GET ou POST(padrao, se nulo)
+ * @example _Biscoito.ExecutarAcao('noticias/deletar','id=1',true,'POST');
+ */
+this.ExecutarAcao = function(moduloAcao, dados, retornar, assincrono, tipoEncapsulamento) {
+        
+    var retorno;
             
-            try {
+    try {
                 
-                if(moduloAcao == null) throw 1;
+        if(moduloAcao == null) throw 1;
             
-                retornar = (retornar == null) ? false : retornar;
+        retornar = (retornar == null) ? false : retornar;
                 
-                assincrono = (assincrono == null) ? false : assincrono;
+        assincrono = (assincrono == null) ? false : assincrono;
                 
-                tipoEncapsulamento = (tipoEncapsulamento == null) ? 'POST' : tipoEncapsulamento;
+        tipoEncapsulamento = (tipoEncapsulamento == null) ? 'POST' : tipoEncapsulamento;
             
-                $.ajax({
+        $.ajax({
                     
-                    async: assincrono,
+            async: assincrono,
                     
-                    type: tipoEncapsulamento,
+            type: tipoEncapsulamento,
                     
-                    url: self.MontarURLAcao(moduloAcao),
+            url: self.MontarURLAcao(moduloAcao),
                     
-                    data: dados,
+            data: dados,
                     
-                    success: function(retornoExecucao) { 
-                        retorno = retornoExecucao
-                    }
-            
-                });
-                
-                if (retornar) return retorno;
-                
-            }
-            catch(erro) {
-            
-                biscoitoJSErros.TratarErro(erro);
-            
-                return false;
-                
+            success: function(retornoExecucao) { 
+                retorno = retornoExecucao
             }
             
-        }
-        
-        /**
-         * Fecha uma janela popup
-         * @param string nomePopup: Nome da janela que sera fechada
-         * @example _Biscoito.FecharPopup('FrmNoticia');
-         */
-        this.FecharPopup = function(nomePopup) {
-        
-            var classePopup;
-            
-            classePopup = sprintf('.%s', nomePopup);
-            
-            $(classePopup).dialog('close');
-            
-        } 
-        
-        /**
-         * Redireciona o navegador para um modulo/submodulo/acao especificos
-         * @param string moduloAcao: Referencia modulos, submodulos e acao no Biscoito
-         * @example _Biscoito.IrPara('administrador');
-         */
-        this.IrPara = function(moduloAcao) {
-            
-            try {
+        });
                 
-                if(moduloAcao == null) throw 3;
-            
-                location.href = self.MontarURLAcao(moduloAcao);
-            
-            }
-            catch(erro) {
+        if (retornar) return retorno;
                 
-                biscoitoJSErros.TratarErro(erro);
-                
-                return false;
-                
-            }
-            
-        }
-        
     }
+    catch(erro) {
+            
+        biscoitoJSErros.TratarErro(erro);
+            
+        return false;
+                
+    }
+            
+}
+        
+/**
+ * Fecha uma janela popup
+ * @param string nomePopup: Nome da janela que sera fechada
+ * @example _Biscoito.FecharPopup('FrmNoticia');
+ */
+this.FecharPopup = function(nomePopup) {
+        
+    var idPopup, PopupAnterior, idPopupAnterior;
+            
+    idPopup = sprintf('#%s', nomePopup);
+            
+    $(idPopup).modal('hide');                        
+            
+}
+        
+this.IrParaPopup = function(nomePopup) {
+            
+    while($('.modal.in').attr('id') != nomePopup) {
+                
+        $('.modal.in').modal('hide');
+                
+    }
+            
+}
+        
+var VoltarPopup = function(PopupAtual) {
+            
+    var idPopupAtual, PopupAnterior, idPopupAnterior;
+            
+    idPopupAtual = sprintf('#%s', PopupAtual);
+                        
+    PopupAnterior = $(idPopupAtual).children('.idPopupAnterior').html();
+            
+    idPopupAnterior = sprintf('#%s', PopupAnterior);
+                
+    if(PopupAnterior != 'undefined')                
+        $(idPopupAnterior).modal('show');
+            
+    else if($('.modal.in').attr('id') == null)
+        $('.modal-backdrop').remove();
+            
+}
+        
+/**
+ * Redireciona o navegador para um modulo/submodulo/acao especificos
+ * @param string moduloAcao: Referencia modulos, submodulos e acao no Biscoito
+ * @example _Biscoito.IrPara('administrador');
+ */
+this.IrPara = function(moduloAcao) {
+            
+    try {
+                
+        if(moduloAcao == null) throw 3;
+            
+        location.href = self.MontarURLAcao(moduloAcao);
+            
+    }
+    catch(erro) {
+                
+        biscoitoJSErros.TratarErro(erro);
+                
+        return false;
+                
+    }
+            
+}
+        
+}
     
-    var _Biscoito = new TBiscoitoJS();     
+var _Biscoito = new TBiscoitoJS();     
 </script>

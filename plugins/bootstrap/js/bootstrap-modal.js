@@ -131,7 +131,7 @@
     var that = this
       , animate = this.$element.hasClass('fade') ? 'fade' : ''
 
-    if (this.isShown && this.options.backdrop) {
+    if (this.isShown && this.options.backdrop) { 
       var doAnimate = $.support.transition && animate
 
       this.$backdrop = $('<div class="modal-backdrop ' + animate + '" />')

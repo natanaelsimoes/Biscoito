@@ -19,6 +19,15 @@
     
     function TCategoriaGaleriaJSForm() {
         
+        this.btnEditar_Click = function() {
+            if ($('#selectCategoriaGaleria').val() != '')
+                _Biscoito.AbrirPopupDinamico('FrmCategoriaGaleria', 'galeria/categoriagaleria/exibir_formulario_alterar', $('.FrmGaleriaForm').serialize());
+            else {                
+                bsUtilForm = new BootstrapUtilForm();
+                bsUtilForm.mudarEstado('#selectCategoriaGaleria', 'warning', 'Você não selecionou uma categoria para editar');
+            }
+        }
+        
         this.Salvar = function() {
         
             var categoria = new TCategoriaGaleria();
@@ -35,47 +44,56 @@
         
         }                
         
-        this.Excluir = function() {
+        this.btnExcluir_Click = function() {
             
-            if($('#selectCategoriaGaleria').val() != '') 
+            if($('#selectCategoriaGaleria').val() != '') {
                 
-            if(confirm('Deseja realmente excluir a categoria selecionada?')) {
+                if(confirm('Deseja realmente excluir a categoria selecionada?')) {
                     
-                _Biscoito.ExecutarAcao('galeria/categoriagaleria/excluir', $('.FrmGaleriaForm').serialize());
+                    _Biscoito.ExecutarAcao('galeria/categoriagaleria/excluir', $('.FrmGaleriaForm').serialize());
                     
-                RecarregarCategorias();    
+                    RecarregarCategorias();    
                     
+                }
+            
+            }
+            else {
+                
+                bsUtilForm = new BootstrapUtilForm();
+                
+                bsUtilForm.mudarEstado('#selectCategoriaGaleria', 'warning', 'Você não selecionou uma categoria para deletar');
+                
             }
             
-    }
-    
-    var RecarregarCategorias = function() {
-    
-        var categorias = _Biscoito.ExecutarAcao('galeria/categoriagaleria/exibir_selecao_categorias', null, true);
-                
-        $('div.selectCategoriaGaleria').html(categorias);
-                
-        _Biscoito.FecharPopup('FrmCategoriaGaleria');
-    
-    }
-    
-    var Validar = function(categoria) {
-        
-        if(categoria.getNome() == '') {
-         
-            alert('Insira um nome na categoria.');
-         
-            categoria.DOMNome.focus();
-            
-            return false;
-         
         }
+    
+        var RecarregarCategorias = function() {
+    
+            var categorias = _Biscoito.ExecutarAcao('galeria/categoriagaleria/exibir_selecao_categorias', null, true);
+                
+            $('div.selectCategoriaGaleria').html(categorias);
+                
+            _Biscoito.FecharPopup('FrmCategoriaGaleria');
+    
+        }
+    
+        var Validar = function(categoria) {
         
-        else return true;
+            if(categoria.getNome() == '') {
+         
+                alert('Insira um nome na categoria.');
+         
+                categoria.DOMNome.focus();
+            
+                return false;
+         
+            }
         
+            else return true;
+        
+        }
+    
     }
     
-}
-    
-categoriaGaleriaJSForm = new TCategoriaGaleriaJSForm();
+    categoriaGaleriaJSForm = new TCategoriaGaleriaJSForm();
 </script>

@@ -381,7 +381,8 @@ class TBiscoito {
         $this->usarScript('plugins/bootstrap/js/bootstrap-button.js');
         $this->usarScript('plugins/bootstrap/js/bootstrap-collapse.js');
         $this->usarScript('plugins/bootstrap/js/bootstrap-carousel.js');
-        $this->usarScript('plugins/bootstrap/js/bootstrap-typeahead.js');        
+        $this->usarScript('plugins/bootstrap/js/bootstrap-typeahead.js');   
+        $this->usarScript('plugins/bootstrap/js/bootstrap.util.form.js');   
     }
     
     /**

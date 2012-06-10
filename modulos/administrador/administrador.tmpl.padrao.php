@@ -3,8 +3,11 @@
 namespace Biscoito\Modulos\Administrador\View;
 
 use Biscoito\Modulos\Administrador\Menu;
+
 use Biscoito\Modulos\Administrador\Breadcrumbs;
+
 use Biscoito\Modulos\Usuario;
+
 use Biscoito\Lib\Util;
 
 global $_Biscoito;
@@ -14,13 +17,13 @@ global $_Biscoito;
 <html lang="en">
     <head>
         <meta charset="iso-8859-1">
-        <title>Biscoito - Painel Administrativo</title>                
-        <?php $_Biscoito->usarBootstrap(); ?>
-        <?php $_Biscoito->usarEstilo('plugins/bootstrap/css/metro-ui-bootstrap.css'); ?>        
-        <?php $_Biscoito->usarBiscoitoJS(); ?>               
+        <title>Biscoito - Painel Administrativo</title>                        
+        <?php $_Biscoito->usarBiscoitoJS(); ?> 
+        <?php $_Biscoito->usarBootstrap(); ?>                              
         <!--[if lt IE 9]>
           <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->        
+        <?php $_Biscoito->usarEstilo('plugins/bootstrap/css/metro-ui-bootstrap.css'); ?>        
         <?php include_once('administrador.css.padrao.php'); ?>        
     </head>
     <body>
@@ -70,8 +73,9 @@ global $_Biscoito;
         <footer>
             <hr />
             <p><strong>Copyright &copy; 2012 Natanael Simões</strong></p>           
-        </footer>
-
+        </footer>        
+        
+        
     </body>
 
 </html>

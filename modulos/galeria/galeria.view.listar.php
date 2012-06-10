@@ -1,38 +1,45 @@
 <?php
 
-namespace Biscoito\Modulos\Galeria;
+header('Content-Type: text/html; charset=iso-8859-1');
 
 global $_Biscoito;
-?>
 
-<?php foreach ($galerias as $galeria) { ?>
-    <div class="galeria" id="galeria">
+if (!empty($galerias)) :
 
-        <div class="album">
+    foreach ($galerias as $galeria) :
+        ?>
+        <div class="galeria" id="galeria">
 
-            <h4 class="album_titulo"><?php echo $galeria->getNome(); ?></h4>
+            <div class="album">
 
-            <div class="album_capa"><img src="<?php echo $galeria->getCapa()->getCaminho(); ?>" /></div>
+                <h4 class="album_titulo"><?php echo $galeria->getNome(); ?></h4>
 
-            <div class="album_opcoes">
+                <div class="album_capa"><img src="<?php echo $galeria->getCapa()->getCaminho(); ?>" /></div>
 
-                <p class="align-center">
+                <div class="album_opcoes">
 
-                    <a href="<?php echo $_Biscoito->montarLink('administrador', 'galeria', 'editar', $galeria->getId()); ?>" class="btn">
-                        <i class="icon-camera"></i>
-                        Editar
-                    </a>
+                    <p class="align-center">
 
-                    <a href="#" class="btn">
-                        <i class="icon-trash"></i>
-                        Excluir
-                    </a>
-                    
-                </p>
-                
+                        <a href="<?php echo $_Biscoito->montarLink('administrador', 'galeria', 'editar', $galeria->getId()); ?>" class="btn">
+                            <i class="icon-camera"></i>
+                            Editar
+                        </a>
+
+                        <a href="#" class="btn">
+                            <i class="icon-trash"></i>
+                            Excluir
+                        </a>
+
+                    </p>
+
+                </div>
+
             </div>
 
         </div>
-
-    </div>
-<?php } ?>
+        <?php
+    endforeach;
+else:
+    ?>
+    Não há galeria alguma cadastrada. Clique em <?php include('galeria.view.button.adicionar.php'); ?> para começar a usar!
+<?php endif; ?>

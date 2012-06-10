@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <biscoito_config>
-    <site>http://pombovirtual:8080/Biscoito/</site>
+    <site>http://localhost:8080/Biscoito/</site>
     <index>
         <modulo>administrador</modulo>
         <controle>TAdministradorControl</controle>
