@@ -25,7 +25,7 @@ if (!empty($galerias)) :
                             Editar
                         </a>
 
-                        <a href="#" class="btn">
+                        <a href="#" class="btn btn">
                             <i class="icon-trash"></i>
                             Excluir
                         </a>

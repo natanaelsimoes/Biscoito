@@ -8,7 +8,7 @@ require_once('cms/lib/util/texto.class.php');
 require_once('cms/lib/util/navegador.class.php');
 require_once('cms/lib/util/vetor.class.php');
 
-define('PATHJQUERY', 'cms/js/jquery-1.7.2.min.js');
+define('PATHJQUERY', 'plugins/bootstrap/js/jquery.js');
 define('PATHJQUERYUI', 'cms/js/jquery-ui-1.8.20.custom.min.js');
 define('PATHJQUERYUICSS', 'cms/css/jqueryui/smoothness/jquery-ui-1.8.20.custom.css');
 define('ADM_MODULOS', 'menu');
@@ -79,7 +79,7 @@ class TBiscoito {
 
         array_pop($arrURLVars);
 
-        $countURLVars = count($arrURLVars); 
+        $countURLVars = count($arrURLVars);
 
         if ($countURLVars > 0) {
 
@@ -368,8 +368,7 @@ class TBiscoito {
 
     public function usarBootstrap() {
         $this->usarEstilo('plugins/bootstrap/css/bootstrap.css');
-        $this->usarEstilo('plugins/bootstrap/css/bootstrap-responsive.css');
-        $this->usarScript('plugins/bootstrap/js/jquery.js');
+        $this->usarEstilo('plugins/bootstrap/css/bootstrap-responsive.css');        
         $this->usarScript('plugins/bootstrap/js/bootstrap-transition.js');
         $this->usarScript('plugins/bootstrap/js/bootstrap-alert.js');
         $this->usarScript('plugins/bootstrap/js/bootstrap-modal.js');
@@ -381,10 +380,13 @@ class TBiscoito {
         $this->usarScript('plugins/bootstrap/js/bootstrap-button.js');
         $this->usarScript('plugins/bootstrap/js/bootstrap-collapse.js');
         $this->usarScript('plugins/bootstrap/js/bootstrap-carousel.js');
-        $this->usarScript('plugins/bootstrap/js/bootstrap-typeahead.js');   
-        $this->usarScript('plugins/bootstrap/js/bootstrap.util.form.js');   
+        $this->usarScript('plugins/bootstrap/js/bootstrap-typeahead.js');
+        $this->usarScript('plugins/bootstrap/js/bootstrap.util.form.js');
+        echo '<!--[if lt IE 9]>
+                <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+              <![endif]--> ';
     }
-    
+
     /**
      * Carrega os arquivos JavaScript do Biscoito 
      */
@@ -436,9 +438,9 @@ class TBiscoito {
         }
 
         $metodosClasse = get_class_methods($classe);
-        
-        $vetor = new Util\TVetor(get_class_methods($classe));        
-        
+
+        $vetor = new Util\TVetor(get_class_methods($classe));
+
         if (count(@$vetor->Procurar($this->variaveisDaURL[1])) > 0)
             $this->acao = $acao = $this->variaveisDaURL[1];
 

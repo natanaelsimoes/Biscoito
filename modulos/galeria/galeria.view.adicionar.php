@@ -38,7 +38,7 @@ include_once('galeria.js.form.php');
                 
                 <label class="control-label" for="selectCategoriaGaleria">Categoria:</label>
                 
-                <div class="controls">
+                <div class="controls selectCategoriaGaleria">
                     
                     <?php TCategoriaGaleriaControl::ExibirSelecaoCategorias() ?>
                     

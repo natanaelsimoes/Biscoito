@@ -20,7 +20,7 @@ include_once('categoriagaleria.js.php');
     <a href="#" class="btn" onmouseover="$(this).tooltip('show')" onclick="categoriaGaleriaJSForm.btnExcluir_Click()" title="Excluir categoria selecionada">
         <i class="icon-remove"></i>
     </a>
-    <a href="#" class="btn" onclick="_Biscoito.AbrirPopupDinamico('FrmCategoriaGaleria', 'galeria/categoriagaleria/exibir_formulario_adicionar');">
+    <a href="#" class="btn" onclick="categoriaGaleriaJSForm.btnAdicionar_Click()">
         <i class="icon-plus-sign"></i> Adicionar Categoria
     </a>
 </p>

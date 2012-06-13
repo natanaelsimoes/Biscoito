@@ -1,10 +1,18 @@
 function BootstrapUtilForm() {
     
-    this.confirm = function(mensagem, titulo, onSim, onNao) {
-        
-        titulo = (titulo == null) ? 'Confirmação' : tituto;
+    var self = this;      
+    
+    var confirmResult = false;
+    
+    this.getConfirmResult = function() { return confirmResult; }
+    
+    this.confirm = function(mensagem, onSim, onNao, fecharAoConfirmar) {                
         
         var content, modalheader, header, modalbody, message, modalfooter, simIcon, simButton, naoIcon, naoButton;
+        
+        var titulo = 'Confirmação';
+        
+        fecharAoConfirmar = (fecharAoConfirmar == null) ? true : fecharAoConfirmar;
         
         content = document.createElement();
         
@@ -50,10 +58,13 @@ function BootstrapUtilForm() {
         
         $(simButton).click(function(){
             
-            if(onSim != null)
-                onSim;
+            confirmResult = true;
             
-            _Biscoito.FecharPopup('ConfirmBS');
+            if(onSim != null)
+                onSim();                        
+            
+            if (fecharAoConfirmar)
+                _Biscoito.FecharPopup('ConfirmBS');
             
         });       
                     
@@ -73,10 +84,13 @@ function BootstrapUtilForm() {
         
         $(naoButton).click(function(){
             
-            if(onNao != null)
-                onNao;
+            confirmResult = false;
             
-            _Biscoito.FecharPopup('ConfirmBS');
+            if(onNao != null)
+                onNao();                       
+            
+            if(fecharAoConfirmar)
+                _Biscoito.FecharPopup('ConfirmBS');
             
         });                                                        
             
@@ -92,9 +106,9 @@ function BootstrapUtilForm() {
         
     }
     
-    this.alert = function(mensagem, titulo, irParaPopup) {
+    this.alert = function(mensagem, irParaPopup) {
         
-        titulo = (titulo == null) ? 'Mensagem do sistema' : tituto;
+        titulo = 'Mensagem do sistema';
         
         var content, modalheader, header, modalbody, message, modalfooter, okButton;
         

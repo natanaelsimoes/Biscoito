@@ -10,7 +10,7 @@ class TCategoriaGaleriaControl {
         
         $categoria->CarregarSerial($_REQUEST['objCategoriaGaleria']);
         
-        $categoria->setNome($_REQUEST['nomeCategoriaGaleria']);
+        $categoria->setNome($_REQUEST['nome']);
         
         $categoria->Salvar();
         
@@ -20,7 +20,7 @@ class TCategoriaGaleriaControl {
         
         $categoria = new TCategoriaGaleria();
         
-        $categoria->CarregarSerial($_REQUEST['selectCategoriaGaleria']);
+        $categoria->CarregarSerial($_REQUEST['categoriagaleria']);
         
         $categoria->DeletarRegistro();
         
@@ -40,7 +40,7 @@ class TCategoriaGaleriaControl {
         
         $categoria = new TCategoriaGaleria();
         
-        $categoria->CarregarSerial($_REQUEST['selectCategoriaGaleria']);
+        $categoria->CarregarSerial($_REQUEST['categoriagaleria']);
         
         $acao = 'Alterar';
         

@@ -1,5 +1,5 @@
 <button type="button" 
-        onclick="_Biscoito.AbrirPopupDinamico('FrmGaleria', 'galeria/exibir_formulario_adicionar')" 
+        onclick="galeriaJSForm.btnAdicionar_Click()" 
         class="btn btn-large">
     <i class="icon-plus-sign"></i> 
     Adicionar Galeria</button>

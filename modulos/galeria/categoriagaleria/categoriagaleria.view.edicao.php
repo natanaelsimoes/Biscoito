@@ -15,7 +15,7 @@ include_once('categoriagaleria.js.php');
 
 <div class="modal-body">
 
-    <form name="FrmCategoriaGaleria" id="FrmCategoriaGaleria" class="FrmCategoriaGaleriaForm form-horizontal" onsubmit="categoriaGaleriaJSForm.Salvar(); return false;">
+    <form name="FrmCategoriaGaleriaEdicao" id="FrmCategoriaGaleriaEdicao" class="FrmCategoriaGaleriaForm form-horizontal" onsubmit="categoriaGaleriaJSForm.btnSalvar_Click(); return false;">
 
         <fieldset>
 
@@ -43,8 +43,8 @@ include_once('categoriagaleria.js.php');
 
 <div class="modal-footer">
 
-    <button class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+    <button class="btn btn-danger" data-dismiss="modal"><i class="icon-remove-sign"></i> Cancelar</button>
 
-    <button type="submit" class="btn btn-primary">Salvar</button>
+    <button class="btn btn-success" onclick="categoriaGaleriaJSForm.btnSalvar_Click();"><i class="icon-ok-sign"></i> Salvar</button>
     
 </div>

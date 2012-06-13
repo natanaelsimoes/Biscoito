@@ -3,11 +3,8 @@
 namespace Biscoito\Modulos\Administrador\View;
 
 use Biscoito\Modulos\Administrador\Menu;
-
 use Biscoito\Modulos\Administrador\Breadcrumbs;
-
 use Biscoito\Modulos\Usuario;
-
 use Biscoito\Lib\Util;
 
 global $_Biscoito;
@@ -18,12 +15,8 @@ global $_Biscoito;
     <head>
         <meta charset="iso-8859-1">
         <title>Biscoito - Painel Administrativo</title>                        
-        <?php $_Biscoito->usarBiscoitoJS(); ?> 
-        <?php $_Biscoito->usarBootstrap(); ?>                              
-        <!--[if lt IE 9]>
-          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->        
-        <?php $_Biscoito->usarEstilo('plugins/bootstrap/css/metro-ui-bootstrap.css'); ?>        
+        <?php $_Biscoito->usarJQuery(); ?>
+        <?php $_Biscoito->usarBiscoitoJS(); ?>        
         <?php include_once('administrador.css.padrao.php'); ?>        
     </head>
     <body>
@@ -59,11 +52,11 @@ global $_Biscoito;
         </header> <!-- end of header bar -->
 
         <!--<section id="breadcrumbs_container">            
-            <?php echo Breadcrumbs\TBreadcrumbsControl::Exibir(); ?>
+        <?php echo Breadcrumbs\TBreadcrumbsControl::Exibir(); ?>
         </section><!-- end of secondary bar -->        
 
         <section id="main" class="container">                       
-            
+
             <?php echo $view; ?>
 
             <div class="spacer"></div>
@@ -74,8 +67,11 @@ global $_Biscoito;
             <hr />
             <p><strong>Copyright &copy; 2012 Natanael Simões</strong></p>           
         </footer>        
-        
-        
+
+        <?php $_Biscoito->usarBootstrap(); ?>                              
+
+        <?php $_Biscoito->usarEstilo('plugins/bootstrap/css/metro-ui-bootstrap.css'); ?>               
+
     </body>
 
 </html>
