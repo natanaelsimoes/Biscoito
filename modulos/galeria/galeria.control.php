@@ -4,7 +4,7 @@ namespace Biscoito\Modulos\Galeria;
 
 class TGaleriaControl {       
     
-    public function ExibirFormularioAdicionar() {
+    public function Adicionar() {
         
         include('galeria.view.adicionar.php');
         

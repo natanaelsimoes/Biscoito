@@ -225,12 +225,22 @@
         this.FecharPopup = function(nomePopup) {
         
             var idPopup, PopupAnterior, idPopupAnterior;
+            
+            abrindoPopup = false;
     
             nomePopup = (nomePopup == null) ? $('.modal.in').attr('id') : nomePopup;
             
-            idPopup = sprintf('#%s', nomePopup);
+            idPopup = sprintf('#%s', nomePopup);                        
             
             $(idPopup).modal('hide');                            
+            
+        }
+        
+        this.FecharTodasPopups = function() {
+            
+                $('.modal').remove();
+                
+                $('.modal-backdrop').remove();
             
         }
         

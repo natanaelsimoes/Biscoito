@@ -31,6 +31,9 @@ class TBreadcrumbsControl {
             $bcModuloAcao->setClasse('active');
 
             $AdminBreadcrumbs = array($bcModuloAuxiliar, $bcModuloAcao);
+            
+            if($moduloAuxiliar == 'administrador')
+                $AdminBreadcrumbs = array($bcModuloAcao);
 
             include('breadcrumbs.view.index.php');
         }

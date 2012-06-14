@@ -53,13 +53,21 @@
         
         this.btnSalvar_Click = function() {                    
         
-            if(Validar(new TCategoriaGaleria())) {                                
+            if(Validar(new TCategoriaGaleria())) {                                                                
                 
                 var msg = _Biscoito.ExecutarAcao('galeria/categoriagaleria/salvar', $('.FrmCategoriaGaleriaForm').serialize(), true);
                 
                 if (msg != '') alert(msg);
                 
-                else RecarregarCategorias();
+                else {
+                    
+                    RecarregarCategorias();
+                    
+                    var bsUtilForm = new BootstrapUtilForm();  
+                
+                    bsUtilForm.alert('Categoria salva com sucesso!', true);
+                    
+                }
                 
             }
         
@@ -77,7 +85,7 @@
         
                     RecarregarCategorias(); 
                     
-                    bsUtilForm.alert('Categoria excluída com sucesso!', 'FrmGaleria');
+                    bsUtilForm.alert('Categoria excluída com sucesso!', true);
                     
                 }, _Biscoito.FecharPopup, false);  
                                 
@@ -96,9 +104,7 @@
     
             var categorias = _Biscoito.ExecutarAcao('galeria/categoriagaleria/exibir_selecao_categorias', null, true);
                 
-            $('div.selectCategoriaGaleria').html(categorias);
-                
-            _Biscoito.FecharPopup('FrmCategoriaGaleria');
+            $('div.selectCategoriaGaleria').html(categorias);                            
     
         }
     

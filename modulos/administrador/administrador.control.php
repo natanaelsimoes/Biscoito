@@ -66,6 +66,12 @@ class TAdministradorControl {
 
         include('administrador.tmpl.padrao.php');
     }
+    
+    public static function CabecalhoModulo($nomeModulo, $voltarPara) {
+        
+        include('administrador.view.cabecalho.php');
+        
+    }
 
 }
 

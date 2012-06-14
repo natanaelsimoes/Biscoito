@@ -43,7 +43,7 @@ include_once('categoriagaleria.js.php');
 
 <div class="modal-footer">
 
-    <button class="btn btn-danger" data-dismiss="modal"><i class="icon-remove-sign"></i> Cancelar</button>
+    <button class="btn btn-danger" onclick="_Biscoito.FecharPopup()"><i class="icon-remove-sign"></i> Cancelar</button>
 
     <button class="btn btn-success" onclick="categoriaGaleriaJSForm.btnSalvar_Click();"><i class="icon-ok-sign"></i> Salvar</button>
     
