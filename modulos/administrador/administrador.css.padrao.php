@@ -5,9 +5,9 @@
         padding-bottom: 40px;
     }
 
-    #speed-dial .icone {
-        width: 200px;
-        height: 200px;
+    .tile svg {
+        width: 150px;
+        height: 151px;
     }
     
     .clear { clear: both; }

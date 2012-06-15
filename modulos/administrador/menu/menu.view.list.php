@@ -29,7 +29,7 @@
                 
                     <a class="tile tilesquareimage bg-color-white" href="<?php echo $GLOBALS['_Biscoito']->montarLink('administrador', $menu->getDiretorio()); ?>">                        
                         
-                        <img src="<?php echo $menu->getIcone(); ?>" alt="<?php echo $menu->getNome(); ?>">                                                
+                        <?php echo $menu->getIcone(); ?>
                         
                     </a>
                 

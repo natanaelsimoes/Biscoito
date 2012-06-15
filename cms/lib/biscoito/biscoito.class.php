@@ -226,6 +226,9 @@ class TBiscoito {
      * @return SimpleXMLElement 
      */
     public function getConfiguracaoXML($modulo) {
+
+        $modulo = strtolower($modulo);
+
         return $xmlBiscoitoConfig = simplexml_load_file("modulos/$modulo/config.xml");
     }
 
@@ -366,31 +369,32 @@ class TBiscoito {
         return $arrayObjetos;
     }
 
-    public function usarBootstrap() {                        
+    public function usarBootstrap() {
         $this->usarEstilo('plugins/bootstrap/css/bootstrap.css');
-        $this->usarEstilo('plugins/bootstrap/css/bootstrap-responsive.css');                        
+        $this->usarEstilo('plugins/bootstrap/css/bootstrap-responsive.css');
         echo "<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>";
         $this->usarEstilo('plugins/bootstrap/css/metro-ui.css');
         $this->usarEstilo('plugins/bootstrap/css/metro-tiles.css');
         $this->usarEstilo('plugins/bootstrap/css/charms.css');
         //$this->usarEstilo('plugins/bootstrap/css/metro-ui-light.css');        
         $this->usarEstilo('plugins/bootstrap/css/bootstrap-metro-responsive.css');
-        $this->usarEstilo('plugins/bootstrap/css/icomoon.css');        
-        $this->usarScript('plugins/bootstrap/scripts/jquery-1.7.2.min.js');           
+        $this->usarEstilo('plugins/bootstrap/css/icomoon.css');
+        $this->usarScript('plugins/bootstrap/scripts/jquery-1.7.2.min.js');
         $this->usarScript('plugins/bootstrap/scripts/google-code-prettify/prettify.js');
         $this->usarScript('plugins/bootstrap/scripts/jquery.mousewheel.js');
         $this->usarScript('plugins/bootstrap/scripts/jquery.scrollTo.js');
         $this->usarScript('plugins/bootstrap/scripts/bootstrap.min.js');
         $this->usarScript('plugins/bootstrap/scripts/metro.js');
-        $this->usarScript('plugins/bootstrap/scripts/charms.js');           
+        $this->usarScript('plugins/bootstrap/scripts/charms.js');
+        $this->usarScript('plugins/bootstrap/scripts/bootstrap.util.form.js');
         echo '<script type="text/javascript">
                 $(".metro").metro();
               </script>';
     }
-    
+
     public function usarBootstrap2() {
         $this->usarEstilo('plugins/bootstrap/css/bootstrap.css');
-        $this->usarEstilo('plugins/bootstrap/css/bootstrap-responsive.css');                
+        $this->usarEstilo('plugins/bootstrap/css/bootstrap-responsive.css');
         $this->usarScript('plugins/bootstrap/js/bootstrap-transition.js');
         $this->usarScript('plugins/bootstrap/js/bootstrap-alert.js');
         $this->usarScript('plugins/bootstrap/js/bootstrap-modal.js');

@@ -39,7 +39,7 @@ class TMenuControl {
 
         $strNomeModulo = utf8_decode(strval($xmlConfiguracaoModulo->nome));       
         
-        $strIconeModulo = $_Biscoito->getSite() . "modulos/$modulo/icone.svg";
+        $strIconeModulo = file_get_contents("modulos/$modulo/icone.svg");
 
         return new TMenu($strNomeModulo, $modulo, $strIconeModulo);
     }

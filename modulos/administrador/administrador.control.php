@@ -14,7 +14,7 @@ class TAdministradorControl {
 
     public function __call($acao, $args) {
 
-        global $_Biscoito;
+        global $_Biscoito; 
 
         $URLVars = $_Biscoito->getVariaveisDaURL();
 

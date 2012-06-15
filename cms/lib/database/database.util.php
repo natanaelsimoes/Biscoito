@@ -116,17 +116,21 @@ class TDatabaseUtil {
     }
 
     public static function getConfiguracaoClasse($classe) {
+        
+        global $_Biscoito;
 
         $filename = $refObj = null;
 
         $refObj = new \ReflectionClass($classe);
 
-        $filenameFormat = '%s%s\config.xml';
+        $filenameFormat = '%s%s/config.xml';
 
         $filename = sprintf($filenameFormat, '', dirname($refObj->getFileName()));
+        
+        $nomeModulo = ($_Biscoito->getModulo() == 'administrador') ? $_Biscoito->getModuloAuxiliar() : $_Biscoito->getModulo();
 
         if (!file_exists($filename))
-            $filename = sprintf($filenameFormat, 'modulos\\', $GLOBALS['_Biscoito']->getModulo());
+            $filename = sprintf($filenameFormat, 'modulos/', $nomeModulo);
 
         return simplexml_load_file($filename);
     }
@@ -163,7 +167,7 @@ class TMySQLUtil implements TIDatabaseUtil {
         $orm = null;
 
         $namespace = get_class($obj);
-        $orm = new TORM;
+        $orm = new TORM; 
 
         switch ($pdoE->getCode()) {
 
@@ -192,7 +196,7 @@ class TMySQLUtil implements TIDatabaseUtil {
                 $configuracaoClasse = array();
 
                 $tabela = TDatabaseUtil::getClasseNamespace($namespace);
-
+                
                 #var_dump($tabela);
 
                 $classe = TDatabaseUtil::getClasseTabela($tabela);
@@ -210,7 +214,7 @@ class TMySQLUtil implements TIDatabaseUtil {
 
                 $campoInexistente = TDatabaseUtil::getParametroErro($pdoE->getMessage());
 
-                #var_dump($campoInexistente);               
+                #var_dump($campoInexistente); 
 
                 if ((strpos($campoInexistente, '_id') === false) && (in_array($campoInexistente, $atributosClasse))) 
                     $orm->AdicionarCampo($tabela, $campoInexistente, $configuracaoClasse->classes->$classe->$campoInexistente, $obj);
