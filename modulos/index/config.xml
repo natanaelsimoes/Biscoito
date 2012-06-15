@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<modulo_config>
+    <nome>Index</nome>
+    <descricao>Responsável por todo o carregamento de páginas excluso o módulo Administrador</descricao>
+    <autor>Natanael Simões</autor>
+    <versao>0.1</versao>
+    <data_criacao>15/06/2012</data_criacao>
+    <namespace>Biscoito\Modulos\Index</namespace>
+    <index>
+        <acao>ExibirPagina</acao>
+    </index>
+    <classes>
+        <TIndexControl arquivo="index.control.php" controle="true"></TIndexControl>        
+    </classes>    
+</modulo_config>

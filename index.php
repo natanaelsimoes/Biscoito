@@ -11,6 +11,7 @@ header('Content-Type: text/html; charset=iso-8859-1');
 
 require 'cms/lib/biscoito/biscoito.class.php';
 require 'cms/lib/biscoito/biscoitoconfig.class.php';
+require 'cms/lib/biscoito/biscoitorouter.class.php';
 require 'cms/lib/database/database.class.php';
 require 'cms/lib/database/database.util.php';
 require 'cms/lib/database/objeto.class.php';
@@ -32,22 +33,11 @@ global $_Biscoito;
 
 $_Biscoito = new Lib\TBiscoito;
 
-$controleModulo = $_Biscoito->getClasseControle();
+$classeGateway = $_Biscoito->getClasseGateway();
 
-$controleAcao = $_Biscoito->getAcao();
+$controleGateway = new $classeGateway;
 
-try {
-    $controleModuloObj = new $controleModulo;
-} catch (\Exception $e) {
-    echo "A classe {$controleModulo} não existe no pacote {$_Biscoito->getNamespace()}.";
-}
-
-try {
-    $controleModuloObj->$controleAcao();
-} catch (\Exception $e) {
-    echo "<p>A função {$controleAcao}() não existe na classe {$controleModulo} do pacote {$_Biscoito->getNamespace()}</p><br/>";
-    echo $e->getMessage();
-}
+$controleGateway->Rotear();
 
 $nav = new Util\TNavegador;
 ?>

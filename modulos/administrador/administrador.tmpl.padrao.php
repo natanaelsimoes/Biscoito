@@ -29,15 +29,15 @@ global $_Biscoito;
     </head>
     <body>
 
-        <?php if ($_Biscoito->getModuloAuxiliar() == '') : ?>
+        <?php if ($_Biscoito->getModulo() == 'administrador') : ?>
             <header id="nav-bar" class="container-fluid">
                 <div class="row-fluid">
                     <div class="span12">
                         <h1>Painel Administrativo</h1>
                         <a id="user-info" class="pull-right" href="#">
                             <div class="user-info-block">
-                                <h3><?php echo Usuario\TUsuarioControl::getNomeUsuario(); ?></h3>
-                                <h4>LastName</h4>
+                                <h3><?php echo Usuario\TUsuarioControl::getPrimeiroNome(); ?></h3>
+                                <h4><?php echo Usuario\TUsuarioControl::getUltimoNome(); ?></h4>
                             </div>
                             <div class="user-info-block">
                                 <b class="icon-user"></b>
@@ -48,7 +48,7 @@ global $_Biscoito;
             </header>
         <?php endif; ?>
 
-        <div id="charms" class="win-ui-dark">
+        <div id="charms" class="win-ui-dark" style="z-index: 1">
             <div id="charms-header" class="row">
                 <div class="span1 align-left">
                     <a id="close-charms" class="win-backbutton" href="#"></a>
@@ -62,8 +62,8 @@ global $_Biscoito;
 
                     <div class="row">
                         <div class="span2">
-                            <h3><?php echo Usuario\TUsuarioControl::getNomeUsuario(); ?></h3>
-                            <h4>LastName</h4>
+                            <h3><?php echo Usuario\TUsuarioControl::getPrimeiroNome(); ?></h3>
+                            <h4><?php echo Usuario\TUsuarioControl::getUltimoNome(); ?></h4>
                         </div>
                         <div class="span1">
                             <img src="http://www.gravatar.com/avatar/6cc5a644d49a9bfe88bc0819ae7bdea6.png?s=48" alt="user" />

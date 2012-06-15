@@ -81,7 +81,7 @@
                 
                 bsUtilForm.confirm('Deseja realmente excluir a categoria selecionada?', function(){
                     
-                    alert(_Biscoito.ExecutarAcao('galeria/categoriagaleria/excluir', $('#selectCategoriaGaleria').serialize(), true));
+                    _Biscoito.ExecutarAcao('galeria/categoriagaleria/excluir', $('#selectCategoriaGaleria').serialize(), true);
         
                     RecarregarCategorias(); 
                     

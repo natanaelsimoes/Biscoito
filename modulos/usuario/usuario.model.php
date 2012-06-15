@@ -9,7 +9,8 @@ define('USUARIO_TIPO_ADMINISTRADOR', 1);
 
 class TUsuario extends TObjeto {
 
-    private $nome;
+    private $primeiroNome;
+    private $ultimoNome;
     private $usuario;
     private $senha;
     private $ultimoLogin;
@@ -20,8 +21,12 @@ class TUsuario extends TObjeto {
      */
     private $tipo;
 
-    public function getNome() {
-        return $this->nome;
+    public function getPrimeiroNome() {
+        return $this->primeiroNome;
+    }
+    
+    public function  getUltimoNome() {
+        return $this->ultimoNome;
     }
 
     public function getUsuario() {
@@ -44,8 +49,12 @@ class TUsuario extends TObjeto {
         return $this->tipo;
     }
 
-    public function setNome($value) {
-        $this->nome = $value;
+    public function setPrimeiroNome($value) {
+        $this->primeiroNome = $value;
+    }
+    
+    public function setUltimoNome($value) {
+        $this->ultimoNome = $value;
     }
     
     public function setSenha($value) {

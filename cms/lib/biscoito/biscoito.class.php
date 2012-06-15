@@ -8,7 +8,7 @@ require_once('cms/lib/util/texto.class.php');
 require_once('cms/lib/util/navegador.class.php');
 require_once('cms/lib/util/vetor.class.php');
 
-define('PATHJQUERY', 'plugins/bootstrap/js/jquery.js');
+define('PATHJQUERY', 'plugins/bootstrap/scripts/jquery-1.7.2.min.js');
 define('PATHJQUERYUI', 'cms/js/jquery-ui-1.8.20.custom.min.js');
 define('PATHJQUERYUICSS', 'cms/css/jqueryui/smoothness/jquery-ui-1.8.20.custom.css');
 define('ADM_MODULOS', 'menu');
@@ -59,6 +59,7 @@ class TBiscoito {
      * @var type 
      */
     private $acao;
+    private $gateway;
 
     /**
      * Ao instanciar um objeto desta classe, este sera carregado inicialmente
@@ -83,47 +84,43 @@ class TBiscoito {
 
         if ($countURLVars > 0) {
 
-            $this->modulo = $arrURLVars[0];
+            $this->gateway = ($arrURLVars[0] == 'administrador') ? $arrURLVars[0] : 'index';
 
-            $this->variaveisDaURL = array_slice($arrURLVars, 1);
+            $this->modulo = ($arrURLVars[0] == 'administrador' && $countURLVars > 1) ? $arrURLVars[1] : $arrURLVars[0];
 
-            $xmlModuloConfig = $this->getConfiguracaoXML($this->modulo);
+            if ($arrURLVars[0] == 'administrador') {
 
-            if ($countURLVars == 1)
-                $this->acao = strval($xmlModuloConfig->index->acao);
-
-            else {
-
-                $this->moduloAuxiliar = $this->acao = str_replace('_', '', array_pop($arrURLVars));
+                $this->variaveisDaURL = array_slice($arrURLVars, 1);
 
                 $countURLVars--;
             }
 
-            $this->namespace = 'Biscoito\\Modulos\\';
+            else
+                $this->variaveisDaURL = $arrURLVars;
 
-            for ($i = 0; $i < $countURLVars; $i++) {
+            $xmlModuloConfig = $this->getConfiguracaoXML($this->modulo);
 
-                $this->namespace .= "{$arrURLVars[$i]}\\";
+            if ($countURLVars == 1 || $this->modulo == 'administrador')
+                $this->acao = strval($xmlModuloConfig->index->acao);
 
-                if ($i < $countURLVars - 1)
-                    if ($arrURLVars[$i] == 'administrador' && strpos(ADM_MODULOS, $arrURLVars[$i + 1]) === false)
-                        $i = $countURLVars;
-            }
+            else
+                $this->acao = str_replace('_', '', end($arrURLVars));
 
-            $this->namespace = substr($this->namespace, 0, -1);
-
-            //$this->subModulo = array_pop($arrURLVars);
-            if (!empty($this->variaveisDaURL))
-                $this->subModulo = $this->variaveisDaURL[0];
-
-            if ($this->modulo != $this->subModulo)
-                $this->moduloAuxiliar = $this->subModulo;
-
-            if ($this->moduloAuxiliar == $this->acao)
-                $this->moduloAuxiliar = $this->modulo;
+            $this->namespace = "Biscoito\\Modulos\\{$this->modulo}";            
+            
+            $indiceSubModulo = ($this->gateway == 'administrador') ?  2 : 1;
+            
+            if (array_key_exists($indiceSubModulo, $this->variaveisDaURL) && $this->variaveisDaURL[$indiceSubModulo] != $this->acao)
+                $this->subModulo = $this->variaveisDaURL[$indiceSubModulo];
+            
+            if(!empty($this->subModulo))
+                $this->namespace .= "\\$this->subModulo";
+            
         }
 
         else {
+            
+            $this->gateway = 'index';
 
             $this->modulo = strval($_BiscoitoConfig->index->modulo);
 
@@ -133,6 +130,14 @@ class TBiscoito {
 
             $this->classeControle = $this->namespace . '\\' . $_BiscoitoConfig->index->controle;
         }
+    }
+
+    public function getGateway() {
+        return $this->gateway;
+    }
+    
+    public function getClasseGateway() {
+        return $this->getClasseControleModuloAvulso($this->gateway);
     }
 
     /**
@@ -164,10 +169,7 @@ class TBiscoito {
      */
     public function getClasseControle() {
 
-        if (empty($this->classeControle)) {
-
-            if ((strpos($this->namespace, 'administrador') === false && count(explode('\\', $this->namespace)) <= 3) || (strpos($this->namespace, 'administrador') !== false && strpos(ADM_MODULOS, $this->subModulo) === false))
-                $this->subModulo = '';
+        if (empty($this->classeControle)) {                                    
 
             $xmlModuloConfig = $this->getConfiguracaoXML($this->modulo);
 
@@ -208,7 +210,9 @@ class TBiscoito {
      */
     public function getClasseRelacionamento($classe, $atributo) {
 
-        $xmlModuloConfig = $this->getConfiguracaoXML($this->moduloAuxiliar);
+        $nomeModulo = ($this->getModulo() == 'administrador') ? $this->getModuloAuxiliar() : $this->getModulo();
+
+        $xmlModuloConfig = $this->getConfiguracaoXML($nomeModulo);
 
         foreach ($xmlModuloConfig->classes as $classes)
             foreach ($classes as $nomeClasse => $classeVars)

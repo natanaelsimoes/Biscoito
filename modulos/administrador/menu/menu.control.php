@@ -6,11 +6,18 @@ use Biscoito\Lib\Util;
 
 class TMenuControl {
 
-    public static function Listar() {
+    public static function ListarNomes() {
+        
+        $menuList = TMenuControl::CarregarMenus();
+
+        include('menu.view.listanomes.php');
+    }
+    
+    public static function ListarIcones() {
 
         $menuList = TMenuControl::CarregarMenus();
 
-        include('menu.view.list.php');
+        include('menu.view.listaicones.php');
     }
 
     private static function CarregarMenus() {
@@ -19,26 +26,23 @@ class TMenuControl {
 
         $hDiretorio = opendir('modulos');
 
-        while ($hModulo = readdir($hDiretorio)) {
-
-            if (!in_array($hModulo, array('.', '..', 'administrador', '_modulo_padrao'))) {
+        while ($hModulo = readdir($hDiretorio))
+            if (!in_array($hModulo, array('.', '..', 'administrador', 'index', '_modulo_padrao')))
                 array_push($menuList, TMenuControl::CarregarMenu($hModulo));
-            }
-        }
 
         return $menuList;
     }
 
     private static function CarregarMenu($modulo) {
-        
+
         global $_Biscoito;
 
         $strNomeModulo = $strOpcaoModulo = "";
 
         $xmlConfiguracaoModulo = simplexml_load_file("modulos/$modulo/config.xml");
 
-        $strNomeModulo = utf8_decode(strval($xmlConfiguracaoModulo->nome));       
-        
+        $strNomeModulo = utf8_decode(strval($xmlConfiguracaoModulo->nome));
+
         $strIconeModulo = file_get_contents("modulos/$modulo/icone.svg");
 
         return new TMenu($strNomeModulo, $modulo, $strIconeModulo);

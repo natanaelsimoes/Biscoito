@@ -14,7 +14,7 @@ function BootstrapUtilForm() {
         
         fecharAoConfirmar = (fecharAoConfirmar == null) ? true : fecharAoConfirmar;
         
-        content = document.createElement();
+        content = document.createElement('div');
         
         modalheader = document.createElement('div');
         
@@ -112,7 +112,7 @@ function BootstrapUtilForm() {
         
         var content, modalheader, header, modalbody, message, modalfooter, okButton;
         
-        content = document.createElement();
+        content = document.createElement('div');
         
         modalheader = document.createElement('div');
         

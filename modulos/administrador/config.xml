@@ -7,7 +7,7 @@
     <data_criacao>03/05/2012</data_criacao>
     <namespace>Biscoito\Modulos\Administrador</namespace>
     <index>
-        <acao>ExibirPainel</acao>
+        <acao>ExibirPagina</acao>
     </index>
     <classes>
         <TAdministradorControl arquivo="administrador.control.php" controle="true"></TAdministradorControl>

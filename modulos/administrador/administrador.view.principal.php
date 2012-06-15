@@ -1,5 +1,7 @@
+<?php use Biscoito\Modulos\Administrador\Menu; ?>
+
 <aside id="speed-dial">                        
 
-    <?php echo Biscoito\Modulos\Administrador\Menu\TMenuControl::Listar(); ?>
+    <?php echo Menu\TMenuControl::ListarIcones(); ?>
 
 </aside>

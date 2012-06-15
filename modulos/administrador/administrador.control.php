@@ -2,34 +2,15 @@
 
 namespace Biscoito\Modulos\Administrador;
 
+use Biscoito\Lib;
 use Biscoito\Modulos\Usuario;
 
-class TAdministradorControl {
+class TAdministradorControl extends Lib\TBiscoitoRouter {
 
     private $usuarioControl;
 
     public function __construct() {
         $this->usuarioControl = new Usuario\TUsuarioControl();
-    }
-
-    public function __call($acao, $args) {
-
-        global $_Biscoito; 
-
-        $URLVars = $_Biscoito->getVariaveisDaURL();
-
-        $moduloAuxiliar = $URLVars[0];
-
-        $classeAuxiliar = $_Biscoito->getClasseControleModuloAvulso($moduloAuxiliar);
-
-        if ($acao == $moduloAuxiliar) {
-
-            $xmlModuloConfig = $_Biscoito->getConfiguracaoXML($moduloAuxiliar);
-
-            $acao = strval($xmlModuloConfig->index->acao);
-        }
-        
-        $this->ExibirPainel($_Biscoito->requisitarAcao($classeAuxiliar, $acao));
     }
 
     private function VerificarAdministradorLogado() {
@@ -49,7 +30,9 @@ class TAdministradorControl {
         unset($_SESSION['BISCOITO_SESSAO_MSG']);
     }
 
-    public function ExibirPainel($view = null) {
+    public function ExibirPagina($view = null, $ajax = false) {
+
+        $this->VerificarAdministradorLogado();
 
         if (is_null($view)) {
 
@@ -62,15 +45,16 @@ class TAdministradorControl {
             ob_end_clean();
         }
 
-        $this->VerificarAdministradorLogado();
+        if ($ajax)
+            echo $view;
 
-        include('administrador.tmpl.padrao.php');
+        else
+            include('administrador.tmpl.padrao.php');
     }
-    
+
     public static function CabecalhoModulo($nomeModulo, $voltarPara) {
-        
+
         include('administrador.view.cabecalho.php');
-        
     }
 
 }

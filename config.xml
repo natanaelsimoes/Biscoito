@@ -2,9 +2,9 @@
 <biscoito_config>
     <site>http://localhost:8080/Biscoito/</site>
     <index>
-        <modulo>administrador</modulo>
-        <controle>TAdministradorControl</controle>
-        <acao>ExibirPainel</acao>
+        <modulo>index</modulo>
+        <controle>TIndexControl</controle>
+        <acao>ExibirPagina</acao>
     </index>
     <database>
         <driver>MYSQL</driver>

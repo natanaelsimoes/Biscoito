@@ -25,8 +25,8 @@
          * @return string URL montada
          * @example MontarURLAcao('noticia/listar');
          */
-        this.MontarURLAcao = function(moduloAcao) {            
-            return sprintf('%s%s/', self.getSite(),moduloAcao);         
+        this.MontarURLAcao = function(moduloAcao, template) {                                                    
+            return sprintf('%s%s/%s', self.getSite(),moduloAcao,(template)?'':'?ajax');         
         }
         
         /**
@@ -141,7 +141,7 @@
                     
                     type: tipoEncapsulamento,
                     
-                    url: self.MontarURLAcao(moduloAcao),
+                    url: self.MontarURLAcao(moduloAcao, false),
                     
                     data: dados,
                     
@@ -194,7 +194,7 @@
                     
                     type: tipoEncapsulamento,
                     
-                    url: self.MontarURLAcao(moduloAcao),
+                    url: self.MontarURLAcao(moduloAcao, false),
                     
                     data: dados,
                     
@@ -295,7 +295,7 @@
                 
                 if(moduloAcao == null) throw 3;
             
-                location.href = self.MontarURLAcao(moduloAcao);
+                location.href = self.MontarURLAcao(moduloAcao, true);
             
             }
             catch(erro) {
