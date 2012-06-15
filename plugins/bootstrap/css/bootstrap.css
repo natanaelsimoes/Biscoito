@@ -3950,7 +3950,7 @@ input[type="submit"].btn.btn-mini {
   padding: 7px 14px;
   margin: 0 0 18px;
   list-style: none;
-  background-color: #fbfbfb;
+  background-color: #fbfbfb;  
   background-image: -moz-linear-gradient(top, #ffffff, #f5f5f5);
   background-image: -ms-linear-gradient(top, #ffffff, #f5f5f5);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#f5f5f5));

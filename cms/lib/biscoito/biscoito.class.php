@@ -373,7 +373,7 @@ class TBiscoito {
         $this->usarEstilo('plugins/bootstrap/css/metro-ui.css');
         $this->usarEstilo('plugins/bootstrap/css/metro-tiles.css');
         $this->usarEstilo('plugins/bootstrap/css/charms.css');
-        $this->usarEstilo('plugins/bootstrap/css/metro-ui-light.css');        
+        //$this->usarEstilo('plugins/bootstrap/css/metro-ui-light.css');        
         $this->usarEstilo('plugins/bootstrap/css/bootstrap-metro-responsive.css');
         $this->usarEstilo('plugins/bootstrap/css/icomoon.css');        
         $this->usarScript('plugins/bootstrap/scripts/jquery-1.7.2.min.js');           

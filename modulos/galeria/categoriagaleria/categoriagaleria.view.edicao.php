@@ -7,7 +7,7 @@ include_once('categoriagaleria.js.php');
 
 <div class="modal-header">
 
-    <button type="button" class="close" data-dismiss="modal">X</button>
+    <button type="button" class="close" onclick="_Biscoito.FecharPopup()">X</button>
 
     <h3><?php echo $acao ?> Categoria</h3>
 
@@ -43,8 +43,8 @@ include_once('categoriagaleria.js.php');
 
 <div class="modal-footer">
 
-    <button class="btn btn-danger" onclick="_Biscoito.FecharPopup()"><i class="icon-remove-sign"></i> Cancelar</button>
+    <button class="btn btn-danger" onclick="_Biscoito.FecharPopup()"><i class="icon-cancel-2"></i> Cancelar</button>
 
-    <button class="btn btn-success" onclick="categoriaGaleriaJSForm.btnSalvar_Click();"><i class="icon-ok-sign"></i> Salvar</button>
+    <button class="btn btn-success" onclick="categoriaGaleriaJSForm.btnSalvar_Click();"><i class="icon-checkmark-3"></i> Salvar</button>
     
 </div>

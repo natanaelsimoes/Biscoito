@@ -1,4 +1,4 @@
-﻿(function ($) {
+(function ($) {
    $("#user-info").click(function(e){
       e.preventDefault();
       e.stopPropagation();

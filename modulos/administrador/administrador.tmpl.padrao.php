@@ -73,6 +73,7 @@ global $_Biscoito;
                     <hr/>
 
                     <div>
+                        <div class="btn btn-large"><i class="icon-switch"></i> Sair</div>
                         <ul>
                             <li><a href="#">Editar dados</a></li>
                             <li><a href="#" onclick="_Biscoito.IrPara('usuario/logout');">Sair</a></li>

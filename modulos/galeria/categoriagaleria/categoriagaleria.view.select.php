@@ -7,7 +7,7 @@ global $_Biscoito;
 include_once('categoriagaleria.js.php');
 ?>
 
-<select name="categoriagaleria" id="selectCategoriaGaleria">
+<select name="categoriagaleria" id="selectCategoriaGaleria" class="input-xlarge">
     <option value="">Selecione uma categoria...</option>
     <?php foreach ($categorias as $categoria) { ?>
         <option value='<?php echo $categoria; ?>'><?php echo $categoria->getNome() ?></option>

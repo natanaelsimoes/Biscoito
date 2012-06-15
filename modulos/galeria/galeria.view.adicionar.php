@@ -31,7 +31,7 @@ include_once('galeria.js.form.php');
 
                 <div class="controls">
 
-                    <input type="text" class="input-xlarge" id="textNome" name="nome">
+                    <input type="text" class="input-xxlarge" id="textNome" name="nome">
 
                 </div>
 
@@ -56,7 +56,7 @@ include_once('galeria.js.form.php');
 
                 <div class="controls">
 
-                    <input type="text" class="input-xlarge" name="fonte" id="textFonte">   
+                    <input type="text" class="input-xxlarge" name="fonte" id="textFonte">   
 
                 </div>
 
@@ -70,6 +70,6 @@ include_once('galeria.js.form.php');
 
 <div class="modal-footer">    
 
-    <a href="#" class="btn btn-success" onclick="bs = new BootstrapUtilForm(); bs.confirm('oi?')"><i class="icon-plus"></i> Salvar & Adicionar fotos &gt;&gt;</a>
+    <a href="#" class="btn btn-primary" onclick="bs = new BootstrapUtilForm(); bs.confirm('oi?')"><i class="icon-plus"></i> Adicionar fotos &gt;&gt;</a>
 
 </div>
