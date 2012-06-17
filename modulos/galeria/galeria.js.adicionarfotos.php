@@ -1,156 +1,260 @@
 <script type="text/javascript">
     
-    var dropbox, fotos;
-
-    function init() {
-        dropbox = document.getElementById("dropbox");
-        fotos = document.getElementById("fotosGaleria")
-        window.addEventListener("dragenter", dragenter, true);
-        window.addEventListener("dragleave", dragleave, true);
-        dropbox.addEventListener("dragover", dragover, false);
-        dropbox.addEventListener("drop", drop, false);
-    }
-
-    function dragenter(e) {
-        e.preventDefault();
-        dropbox.setAttribute("dragenter", true);
-    }
-
-    function dragleave(e) {
-        dropbox.removeAttribute("dragenter");
-    }
-
-    function dragover(e) {
-        e.preventDefault();
-    }
-
-    function drop(e) {
-        e.preventDefault();
-        var dt = e.dataTransfer;
-        var files = dt.files;
-        dropbox.removeAttribute("dragenter");
-
-        handleFiles(files);
-    }
-
-    function handleFiles(files) {
-        for (var i = 0; i < files.length; i++) {
-            var file = files[i];
-            var imageType = /image.*/;
-
-            if (!file.type.match(imageType)) continue;
-
-            var img = document.createElement("img");
-            img.classList.add("fotoGaleria");
-            img.file = file;
-            fotos.appendChild(img);
-            var reader = new FileReader();
-            reader.onloadend = (function(aImg) { return function(e) { aImg.src = e.target.result; }; })(img);
-            reader.readAsDataURL(file);
-        }
-
-    }
-
-    function FileUpload(img, bin) {
-        this.ctrl = createThrobber(img);
-        var xhr = new XMLHttpRequest();
-
+    function TGaleriaJSAdicionarFotos() {
+        
         var self = this;
-        xhr.upload.addEventListener("progress", function(e) {
-            if (e.lengthComputable) {
-                var percentage = Math.round((e.loaded * 100) / e.total);
-                self.ctrl.update(percentage);
-            }
-        }, false);
-
-        xhr.upload.addEventListener("load", function(e){
-            self.ctrl.update(100);
-            var canvas = self.ctrl.ctx.canvas;
-            canvas.parentNode.removeChild(canvas);
-        }, false);
-
-        xhr.open("POST", "galeria/adicionar_fotos/"+document.getElementById('objGaleria').getAttribute('value'));
-        xhr.overrideMimeType('text/plain; charset=x-user-defined-binary');
-        xhr.sendAsBinary(bin);
-    }
-
-    function sendFiles() {
-        var imgs = document.querySelectorAll(".fotoGaleria");
-        for (var i = 0; i < imgs.length; i++) {
-            var reader = new FileReader();
-            reader.onloadend = (function(aImg) { return function(e) { new FileUpload(aImg, e.target.result); }; })(imgs[i]);
-            reader.readAsBinaryString(imgs[i].file);
-        }
-
-    }
-
-    function createThrobber(img) {
-        var x = img.x;
-        var y = img.y;
-
-        var canvas = document.createElement("canvas");
-        preview.appendChild(canvas);
+    
+        var dropbox, fotos, logo;
         
-        var MAX_WIDTH = 800;
-        var MAX_HEIGHT = 600;
-        var width = img.width;
-        var height = img.height;
- 
-        if (width > height) {
-            if (width > MAX_WIDTH) {
-                height *= MAX_WIDTH / width;
-                width = MAX_WIDTH;
-            }
-        } else {
-            if (height > MAX_HEIGHT) {
-                width *= MAX_HEIGHT / height;
-                height = MAX_HEIGHT;
-            }
-        }
-        canvas.width = width;
-        canvas.height = height;
+        this.indexFotoCanvas;
         
-        var size = Math.min(canvas.height, canvas.width);
-        canvas.style.top = y + "px";
-        canvas.style.left = x + "px";
-        canvas.classList.add("throbber");
-        var ctx = canvas.getContext("2d");
-        ctx.textBaseline = "middle";
-        ctx.textAlign = "center";
-        ctx.font = "15px monospace";
-        ctx.shadowOffsetX = 0;
-        ctx.shadowOffsetY = 0;
-        ctx.shadowBlur = 14;
-        ctx.shadowColor = "white";
+        this.canvasFotos;       
 
-        var ctrl = {};
-        ctrl.ctx = ctx;
-        ctrl.update = function(percentage) {
-            var ctx = this.ctx;
-            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-            ctx.fillStyle = "rgba(0, 0, 0, " + (0.8 - 0.8 * percentage / 100)+ ")";
-            ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-            ctx.beginPath();
-            ctx.arc(ctx.canvas.width / 2, ctx.canvas.height / 2,
-            size / 6, 0, Math.PI * 2, false);
-            ctx.strokeStyle = "rgba(255, 255, 255, 1)";
-            ctx.lineWidth = size / 10 + 4;
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.arc(ctx.canvas.width / 2, ctx.canvas.height / 2,
-            size / 6, -Math.PI / 2, (Math.PI * 2) * (percentage / 100) + -Math.PI / 2, false);
-            ctx.strokeStyle = "rgba(0, 0, 0, 1)";
-            ctx.lineWidth = size / 10;
-            ctx.stroke();
-            ctx.fillStyle = "white";
-            ctx.baseLine = "middle";
-            ctx.textAlign = "center";
-            ctx.font = "10px monospace";
-            ctx.fillText(percentage + "%", ctx.canvas.width / 2, ctx.canvas.height / 2);
+        var create = function() {
+        
+            dropbox = document.getElementById("dropbox");
+        
+            fotos = document.getElementById("fotosGaleria");                                               
+        
+            window.addEventListener("dragenter", dragenter, true);
+        
+            window.addEventListener("dragleave", dragleave, true);
+        
+            dropbox.addEventListener("dragover", dragover, false);
+        
+            dropbox.addEventListener("drop", drop, false);
+            
+            self.indexFotoCanvas = 0;
+            
+            logo = new Image();           
+        
+            logo.src = 'http://localhost:8080/Biscoito/10.jpg';                   
+        
         }
-        ctrl.update(0);
-        return ctrl;
-    }
+        
+        window.addEventListener("load", create, true);
 
-    window.addEventListener("load", init, true);
+        var dragenter = function(e) {
+        
+            e.preventDefault();
+        
+            dropbox.setAttribute("dragenter", true);
+        }
+
+        var dragleave = function(e) {
+        
+            dropbox.removeAttribute("dragenter");
+        
+        }
+
+        var dragover = function(e) {
+        
+            e.preventDefault();
+        
+        }
+
+        var drop = function(e) {
+        
+            e.preventDefault();
+        
+            var dt = e.dataTransfer;
+        
+            var files = dt.files;
+        
+            dropbox.removeAttribute("dragenter");
+        
+            self.manipularImagens(files);
+        
+        }
+
+        this.manipularImagens = function(files) {
+        
+            for (var i = 0; i < files.length; i++) {
+        
+                var file = files[i];
+        
+                var imageType = /image.*/;
+
+                if (!file.type.match(imageType)) continue;
+
+                var img = document.createElement("img");                   
+        
+                img.file = file;
+        
+                var reader = new FileReader();
+        
+                reader.onloadend = (function(aImg) { 
+                
+                    return function(e) { 
+                    
+                        aImg.src = e.target.result; 
+                    
+                        aImg.onload = function() {
+                        
+                            canvastoscreen ( imagetocanvas( this, 800, 600) );
+                        
+                        };
+                
+                    }; 
+            
+                })(img);
+            
+                reader.readAsDataURL(file);                                                
+            
+            }                
+
+        }
+        
+        var canvastoscreen = function(canvas) {                    
+        
+            divFotoInfo = document.createElement('div');
+            
+            $(divFotoInfo).addClass('fotoInfo');
+            
+            formFoto = document.createElement('form');                        
+            
+            inputDescricao = document.createElement('textarea');
+            
+            $(inputDescricao).addClass('xlarge')
+                             .attr('type', 'text')
+                             .attr('name', 'descricao')
+            
+                        
+            quebraLinha = document.createElement('br');
+            
+            checkBoxCapa = document.createElement('input');
+            
+            $(checkBoxCapa).addClass('fotoCapa')
+                           .attr('type', 'checkbox')
+                           .attr('name', 'capa')                            
+            
+            labelCapa = document.createElement('span');
+            
+            $(labelCapa).html(' Capa')                        
+            
+            $(formFoto).append(inputDescricao);
+            
+            $(formFoto).append(quebraLinha);
+            
+            $(formFoto).append(checkBoxCapa);
+            
+            $(formFoto).append(labelCapa);
+                                    
+            $(divFotoInfo).append(canvas);                        
+            
+            $(divFotoInfo).append(formFoto);                        
+            
+            $(fotos).append(divFotoInfo);
+        
+        }
+    
+        var imagetocanvas = function( img, thumbwidth, thumbheight) {
+    
+            c  = document.createElement( 'canvas' );                
+        
+            c.classList.add('fotoGaleria');                
+        
+            cx = c.getContext( '2d' )
+        
+            c.width = thumbwidth;
+        
+            c.height = thumbheight;
+        
+            var dimensions = resize( img.width, img.height, thumbwidth, thumbheight );
+       
+            c.width = dimensions.w;
+        
+            c.height = dimensions.h;
+        
+            dimensions.x = 0;
+        
+            dimensions.y = 0;               
+       
+            cx.drawImage(img, dimensions.x, dimensions.y, dimensions.w, dimensions.h);
+        
+            cx.globalAlpha = 0.5;
+        
+            cx.drawImage(logo, dimensions.x, dimensions.y);
+        
+            return c;
+        
+        }
+    
+        var resize = function( imagewidth, imageheight, thumbwidth, thumbheight ) {
+        
+            var w = 0, h = 0, x = 0, y = 0,
+        
+            widthratio  = imagewidth / thumbwidth,
+        
+            heightratio = imageheight / thumbheight,
+        
+            maxratio    = Math.max( widthratio, heightratio );
+        
+            if ( maxratio > 1 ) {
+            
+                w = imagewidth / maxratio;
+            
+                h = imageheight / maxratio;
+            
+            } 
+        
+            else {
+            
+                w = imagewidth;
+        
+                h = imageheight;
+        
+            }
+        
+            x = ( thumbwidth - w ) / 2;
+        
+            y = ( thumbheight - h ) / 2;
+        
+            return { w:w, h:h, x:x, y:y };
+        
+        }
+
+        this.enviarImagens = function() {                     
+        
+            self.canvasFotos = document.querySelectorAll(".fotoGaleria");        
+        
+            if (self.indexFotoCanvas == self.canvasFotos.length) return;
+        
+            var fotoAtual = self.canvasFotos[self.indexFotoCanvas];
+            
+            var formData = new FormData();
+            
+            formData.append('foto', fotoAtual.toDataURL('image/jpeg'));                        
+        
+            var xhr = new XMLHttpRequest();            
+        
+            xhr.upload.addEventListener("progress", function(e) { 
+            
+                if (e.lengthComputable) {
+                
+                    var percentage = Math.round(((100 / (self.indexFotoCanvas + 1)) * self.indexFotoCanvas) + (((e.loaded * 100) / e.total)/self.canvasFotos.length));        
+                
+                    $('#progresso').html(percentage);
+                
+                }
+            
+            }, false);       
+            
+            xhr.upload.addEventListener("load", function(){ 
+            
+                self.indexFotoCanvas++;
+            
+                self.enviarImagens();
+            
+            }); 
+
+            xhr.open("POST", _Biscoito.MontarURLAcao("galeria/adicionar_fotos_action", false));                    
+
+            xhr.send(formData);                           
+            
+        }                
+            
+    }
+    
+    galeriaJSAdicionarFotos = new TGaleriaJSAdicionarFotos();
 </script>

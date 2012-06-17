@@ -8,7 +8,6 @@ use Biscoito\Modulos\Administrador\TAdministradorControl;
 
 TAdministradorControl::CabecalhoModulo('Galeria', 'administrador/galeria');
 
-include_once('galeria.js.form.php');
 ?>
 
 <div class="modal-header">

@@ -2,7 +2,19 @@
 
 namespace Biscoito\Modulos\Galeria;
 
-class TGaleriaControl {       
+class TGaleriaControl {
+    
+    public function AdicionarFotos() {
+        
+        include('galeria.view.adicionarfotos.php');
+        
+    }
+    
+    public function AdicionarFotosAction() {
+        
+        echo 'oi';
+        
+    }
     
     public function Adicionar() {
         

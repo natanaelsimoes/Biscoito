@@ -42,5 +42,9 @@
         line-height: 17px;
         text-shadow: 0 1px 0 #fff;
         margin: 2px 0;
-    }      
+    }  
+    
+    #dropbox { padding-top: 20px; }
+    .fotoInfo { float: left; margin-left: 25px; }
+    .fotoGaleria { width: 260px; height: 150px; }
 </style>

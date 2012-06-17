@@ -18,7 +18,7 @@ class TCategoriaGaleriaControl {
     
     public function Excluir() {
         
-        $categoria = new TCategoriaGaleria();
+        $categoria = new TCategoriaGaleria();                
         
         $categoria->CarregarSerial($_REQUEST['categoriagaleria']);
         

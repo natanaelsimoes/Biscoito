@@ -63,8 +63,12 @@ class TObjeto {
      * @return string
      */
     public function __toString() {
+
+        global $_Biscoito;
+
         $serial = serialize($this);
-        return str_replace("\0", "~~NULL_BYTE~~", $serial);
+
+        return ($_Biscoito->getSOServidor() == 'Windows') ? str_replace("\0", "~~NULL_BYTE~~", $serial) : base64_encode($serial);
     }
 
     /**
@@ -143,7 +147,9 @@ class TObjeto {
 
         if (!empty($serial) && is_string($serial)) {
 
-            $serial = str_replace("~~NULL_BYTE~~", "\0", $serial);
+            global $_Biscoito;
+
+            $serial = ($_Biscoito->getSOServidor() == 'Windows') ? str_replace("~~NULL_BYTE~~", "\0", $serial) : base64_decode($serial);
 
             $obj = unserialize($serial);
 

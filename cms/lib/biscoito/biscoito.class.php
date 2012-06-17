@@ -60,6 +60,7 @@ class TBiscoito {
      */
     private $acao;
     private $gateway;
+    private $soServidor;
 
     /**
      * Ao instanciar um objeto desta classe, este sera carregado inicialmente
@@ -106,20 +107,19 @@ class TBiscoito {
             else
                 $this->acao = str_replace('_', '', end($arrURLVars));
 
-            $this->namespace = "Biscoito\\Modulos\\{$this->modulo}";            
-            
-            $indiceSubModulo = ($this->gateway == 'administrador') ?  2 : 1;
-            
+            $this->namespace = "Biscoito\\Modulos\\{$this->modulo}";
+
+            $indiceSubModulo = ($this->gateway == 'administrador') ? 2 : 1;
+
             if (array_key_exists($indiceSubModulo, $this->variaveisDaURL) && $this->variaveisDaURL[$indiceSubModulo] != $this->acao)
                 $this->subModulo = $this->variaveisDaURL[$indiceSubModulo];
-            
-            if(!empty($this->subModulo))
+
+            if (!empty($this->subModulo))
                 $this->namespace .= "\\$this->subModulo";
-            
         }
 
         else {
-            
+
             $this->gateway = 'index';
 
             $this->modulo = strval($_BiscoitoConfig->index->modulo);
@@ -132,10 +132,27 @@ class TBiscoito {
         }
     }
 
+    public function getSOServidor() {
+
+        if (empty($this->soServidor)) {
+
+            if (strpos($_SERVER['SERVER_SIGNATURE'], 'Unix') !== false)
+                $this->soServidor = 'Linux';
+            
+            else if (strpos($_SERVER['SERVER_SIGNATURE'], 'Win32') !== false)
+                $this->soServidor = 'Windows';
+            
+            else
+                $this->soServidor = 'Mac';
+        }
+
+        return $this->soServidor;
+    }
+
     public function getGateway() {
         return $this->gateway;
     }
-    
+
     public function getClasseGateway() {
         return $this->getClasseControleModuloAvulso($this->gateway);
     }
@@ -169,7 +186,7 @@ class TBiscoito {
      */
     public function getClasseControle() {
 
-        if (empty($this->classeControle)) {                                    
+        if (empty($this->classeControle)) {
 
             $xmlModuloConfig = $this->getConfiguracaoXML($this->modulo);
 
