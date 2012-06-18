@@ -25,8 +25,8 @@ class TGaleria extends TObjeto {
         return $this->nome;
     }
 
-    public function getCategoria() {
-        return $this->categoria;
+    public function getCategoria_Id() {
+        return $this->categoria_id;
     }
 
     public function getDescricao() {
@@ -50,6 +50,10 @@ class TGaleria extends TObjeto {
         if (!empty($this->capa_id))
             $foto = $foto->ListarPorId($this->capa_id);
         return $foto;
+    }
+    
+    public function getCapa_id() {
+        return $this->capa_id;
     }
 
     public function getFotos($pagina, $quantidade) {

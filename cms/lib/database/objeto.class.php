@@ -342,12 +342,19 @@ class TObjeto {
 
         $bd->AbrirConexao();
 
-        $bd->ExecutarComando($query, $this);
+        $bd->ExecutarComando($query, $this);                
+        
+        if (!$this->getId()) {            
+            
+            $query = "SELECT max(id) id FROM $table";
+            
+            $ultimoRegistro = $bd->Selecionar($query);
+            
+            $this->FiId = $ultimoRegistro[0]->id;
+        }
 
         foreach ($queuedQueries as $query)
-            $bd->ExecutarComando($query, $this);
-
-        $this->FiId = $bd->getUltimoId();
+            $bd->ExecutarComando($query, $this);       
 
         $this->FobAntigo = clone($this);
 

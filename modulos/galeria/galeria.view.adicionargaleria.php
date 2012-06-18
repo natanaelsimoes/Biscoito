@@ -4,17 +4,12 @@ namespace Biscoito\Modulos\Galeria;
 
 use Biscoito\Modulos\Galeria\CategoriaGaleria\TCategoriaGaleriaControl;
 
-use Biscoito\Modulos\Administrador\TAdministradorControl;
-
-TAdministradorControl::CabecalhoModulo('Galeria', 'administrador/galeria');
-
+include_once('galeria.js.php');
 ?>
 
-<div class="modal-header">
+<div class="modal-header">      
 
-    <!--<button type="button" class="close" data-dismiss="modal">X</button>-->
-
-    <h1>Adicionar Galeria</h1>
+    <h2>Enquanto enviamos suas fotos para o servidor, entre com os dados referentes à nova galeria!</h2>
 
 </div>
 
@@ -30,7 +25,7 @@ TAdministradorControl::CabecalhoModulo('Galeria', 'administrador/galeria');
 
                 <div class="controls">
 
-                    <input type="text" class="input-xxlarge" id="textNome" name="nome">
+                    <input type="text" class="input-xlarge" id="textNome" name="nome">
 
                 </div>
 
@@ -55,11 +50,27 @@ TAdministradorControl::CabecalhoModulo('Galeria', 'administrador/galeria');
 
                 <div class="controls">
 
-                    <input type="text" class="input-xxlarge" name="fonte" id="textFonte">   
+                    <input type="text" class="input-xlarge" name="fonte" id="textFonte">   
 
                 </div>
 
             </div>
+
+            <div class="control-group">
+
+                <label class="control-label">Progresso:</label>
+
+                <div class="controls">
+
+                    <div class="progress progress-striped active input-xlarge">
+                        
+                        <div class="bar"style="width: 0%;"></div>
+                        
+                    </div>
+
+                </div>
+
+            </div>            
 
         </fieldset>
 
@@ -67,8 +78,10 @@ TAdministradorControl::CabecalhoModulo('Galeria', 'administrador/galeria');
 
 </div>
 
-<div class="modal-footer">    
+<div class="modal-footer align-center">       
 
-    <a href="#" class="btn btn-primary" onclick="bs = new BootstrapUtilForm(); bs.confirm('oi?')"><i class="icon-plus"></i> Adicionar fotos &gt;&gt;</a>
+    <a href="#" id="btnEnviando" class="btn disabled">Aguarde, enviando fotos...</a>
+
+    <a href="#" id="btnSalvar" class="btn btn-success hidden" onclick="galeriaJSForm.btnSalvar_Click()"><i class="icon-checkmark-3"></i> Salvar</a>
 
 </div>

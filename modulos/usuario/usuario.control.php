@@ -2,8 +2,6 @@
 
 namespace Biscoito\Modulos\Usuario;
 
-session_start();
-
 class TUsuarioControl {
 
     public function __construct() {

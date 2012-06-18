@@ -12,7 +12,7 @@ interface TIDatabase {
 
     public function FecharConexao();
 
-    public function Selecionar($comando, $obj, $pagina = 0, $quantidade = 0);
+    public function Selecionar($comando, $obj = null, $pagina = 0, $quantidade = 0);
 }
 
 class TDatabase {
@@ -37,10 +37,10 @@ class TDatabase {
     public function AbrirConexao() {
         $this->conexaoAberta =
                 $this->database->AbrirConexao(
-                        $this->configuracoes->servidor
-                        , $this->configuracoes->usuario
-                        , $this->configuracoes->senha
-                        , $this->configuracoes->base);
+                $this->configuracoes->servidor
+                , $this->configuracoes->usuario
+                , $this->configuracoes->senha
+                , $this->configuracoes->base);
         if (!$this->conexaoAberta)
             die('ERR-DB-GERAL#001: Falha ao abrir conexão com banco. Verifique as configurações.');
     }
@@ -74,7 +74,7 @@ class TDatabase {
      * @param mixed $obj Objeto sendo tratado
      * @return mixed Array com a coleção de dados retornados 
      */
-    public function Selecionar($comando, $obj, $pagina = 0, $quantidade = 0) {
+    public function Selecionar($comando, $obj = null, $pagina = 0, $quantidade = 0) {
         return $this->database->Selecionar($comando, $obj, $pagina, $quantidade);
     }
 
@@ -87,11 +87,13 @@ class TMySQL implements TIDatabase {
      * @var \PDO
      */
     private $conexao;
+
     /**
      *
      * @var TDatabaseUtil
      */
     private $util;
+
     /**
      *
      * @var \PDOStatement
@@ -131,24 +133,36 @@ class TMySQL implements TIDatabase {
         } while (!$bSQLExecuted);
     }
 
-    public function Selecionar($comando, $obj, $pagina = null, $quantidade = null) {
+    public function Selecionar($comando, $obj = null, $pagina = null, $quantidade = null) {
 
         if (!empty($pagina))
             $comando.= " LIMIT $pagina,$quantidade ";
-        
+
         $this->ExecutarComando($comando, $obj);
 
         $objs = array();
-        
-        $class = get_class($obj);
-        
-        while ($objFetched = $this->pdoStatement->fetchObject()) {            
-            $objClass = new $class;
-            $objClass->CarregarObjeto($objFetched);
-            array_push($objs, clone($objClass));
+
+        if (is_null($obj)) {
+
+            while ($objFetched = $this->pdoStatement->fetchObject())
+                array_push($objs, $objFetched);
+
+            return $objs;
+        } else {
+
+            $class = get_class($obj);
+
+            while ($objFetched = $this->pdoStatement->fetchObject()) {
+
+                $objClass = new $class;
+
+                $objClass->CarregarObjeto($objFetched);
+
+                array_push($objs, clone($objClass));
+            }
+
+            return $objs;
         }
-        
-        return $objs;
     }
 
     public function FecharConexao() {

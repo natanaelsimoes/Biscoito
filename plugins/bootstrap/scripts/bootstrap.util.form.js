@@ -4,7 +4,9 @@ function BootstrapUtilForm() {
     
     var confirmResult = false;
     
-    this.getConfirmResult = function() {return confirmResult;}
+    this.getConfirmResult = function() {
+        return confirmResult;
+    }
     
     this.confirm = function(mensagem, onSim, onNao, fecharAoConfirmar) {                
         
@@ -151,15 +153,18 @@ function BootstrapUtilForm() {
                 _Biscoito.FecharPopup('AlertBS')
             }); 
             
-        if(irParaPopup == true) 
+        else if(irParaPopup == true) 
             $(okButton).click(function(){
                 _Biscoito.FecharTodasPopups();
             });
     
-        else
+        else if(is_string(irParaPopup))
             $(okButton).click(function() {
                 _Biscoito.IrParaPopup(irParaPopup)
             });            
+            
+        else
+            $(okButton).click(irParaPopup);
         
         $(okButton).append('OK');
             

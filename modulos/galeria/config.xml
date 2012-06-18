@@ -24,7 +24,10 @@
         <TFoto arquivo="foto.class.php">
             <descricao>VARCHAR(500)</descricao>
             <caminho>VARCHAR(1000) NOT NULL</caminho>
-            <galeria_id relacionamento="TGaleria" cardinalidade="1"></galeria_id>
+            <largura>INTEGER NOT NULL</largura>
+            <altura>INTEGER NOT NULL</altura>
+            <tipo>VARCHAR(20) NOT NULL</tipo>
+            <galeria_id relacionamento="TGaleria" cardinalidade="1" nulo="true"></galeria_id>
         </TFoto>
         <TCategoriaGaleriaControl sub-modulo="categoriagaleria" arquivo="categoriagaleria.control.php"></TCategoriaGaleriaControl>
         <TCategoriaGaleria sub-modulo="categoriagaleria" arquivo="categoriagaleria.class.php">

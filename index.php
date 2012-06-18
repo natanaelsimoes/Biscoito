@@ -7,6 +7,8 @@ use Biscoito\Lib\Database as Database;
 use Biscoito\Lib\Objeto as Objeto;
 use Biscoito\Lib\Util;
 
+session_start();
+
 header('Content-Type: text/html; charset=iso-8859-1');
 
 require 'cms/lib/biscoito/biscoito.class.php';
