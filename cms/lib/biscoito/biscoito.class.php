@@ -6,6 +6,7 @@ use Biscoito\Lib\Util;
 
 require_once('cms/lib/util/texto.class.php');
 require_once('cms/lib/util/navegador.class.php');
+require_once('cms/lib/util/paginacao.class.php');
 require_once('cms/lib/util/vetor.class.php');
 
 define('PATHJQUERY', 'plugins/bootstrap/scripts/jquery-1.7.2.min.js');
@@ -305,8 +306,8 @@ class TBiscoito {
         return $this->subModulo;
     }
 
-    public function getVariaveisDaURL() {
-        return $this->variaveisDaURL;
+    public function getVariaveisDaURL($index = null) {
+        return (is_null($index)) ? $this->variaveisDaURL : $this->variaveisDaURL[$index];
     }
 
     /**
@@ -488,9 +489,11 @@ class TBiscoito {
         $metodosClasse = get_class_methods($classe);
 
         $vetor = new Util\TVetor(get_class_methods($classe));
+        
+        $possivelAcao = str_replace('_', '', $this->variaveisDaURL[1]);
 
-        if (count(@$vetor->Procurar($this->variaveisDaURL[1])) > 0)
-            $this->acao = $acao = $this->variaveisDaURL[1];
+        if (count(@$vetor->Procurar($possivelAcao)) > 0)
+            $this->acao = $acao = $possivelAcao;
 
         ob_start();
 

@@ -1935,7 +1935,7 @@ header h1 {display: inline;}
 
 /* Pagination
 -------------------------------------------------- */
-.pagination ul {
+/*.pagination ul {
    -webkit-border-radius: 0;
    -moz-border-radius: 0;
    border-radius: 0;
@@ -1954,7 +1954,7 @@ header h1 {display: inline;}
 }
 .pagination a:hover, .pagination .active a {
    background-color: #CCC;
-}
+}*/
 
 
 .pager a {

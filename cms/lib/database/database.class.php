@@ -74,7 +74,7 @@ class TDatabase {
      * @param mixed $obj Objeto sendo tratado
      * @return mixed Array com a coleção de dados retornados 
      */
-    public function Selecionar($comando, $obj = null, $pagina = 0, $quantidade = 0) {
+    public function Selecionar($comando, $obj = null, $pagina = 1, $quantidade = 0) {
         return $this->database->Selecionar($comando, $obj, $pagina, $quantidade);
     }
 
@@ -133,10 +133,12 @@ class TMySQL implements TIDatabase {
         } while (!$bSQLExecuted);
     }
 
-    public function Selecionar($comando, $obj = null, $pagina = null, $quantidade = null) {
+    public function Selecionar($comando, $obj = null, $pagina = 1, $quantidade = null) {
 
-        if (!empty($pagina))
-            $comando.= " LIMIT $pagina,$quantidade ";
+        $pagina--;
+        
+        if (!empty($quantidade))
+            $comando.= " LIMIT $pagina ,$quantidade ";
 
         $this->ExecutarComando($comando, $obj);
 

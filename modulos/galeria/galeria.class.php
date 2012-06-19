@@ -56,7 +56,7 @@ class TGaleria extends TObjeto {
         return $this->capa_id;
     }
 
-    public function getFotos($pagina, $quantidade) {
+    public function getFotos($pagina = 1, $quantidade = 21) {
         $fotos = new TFoto();
         return $fotos->ListarTodosOnde('galeria_id', '=', $this->getId(), $pagina, $quantidade);
     }

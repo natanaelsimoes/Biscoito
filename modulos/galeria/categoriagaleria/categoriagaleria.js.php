@@ -63,9 +63,9 @@
                     
                     RecarregarCategorias();
                     
-                    var bsUtilForm = new BootstrapUtilForm();  
+                    bsUtilForm = new BootstrapUtilForm();  
                 
-                    bsUtilForm.alert('Categoria salva com sucesso!', true);
+                    bsUtilForm.alert('Categoria salva com sucesso!', 'FrmGaleria');
                     
                 }
                 
@@ -85,7 +85,7 @@
         
                     RecarregarCategorias(); 
                     
-                    bsUtilForm.alert('Categoria excluída com sucesso!', true);
+                    bsUtilForm.alert('Categoria excluída com sucesso!', 'FrmGaleria');
                     
                 }, _Biscoito.FecharPopup, false);  
                                 

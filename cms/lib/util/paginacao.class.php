@@ -87,7 +87,7 @@ class TPaginacao {
      */
     function Paginacao() {
         $this->paginaAtual = 1;
-        $this->itensPorPagina = (!empty($_GET['quantidade'])) ? $_GET['quantidade'] : $this->quantidadePadrao;
+        $this->itensPorPagina = (!empty($_REQUEST['quantidade'])) ? $_REQUEST['quantidade'] : $this->quantidadePadrao;
     }
 
     /**
@@ -95,7 +95,7 @@ class TPaginacao {
      */
     function Paginar() {
 
-        if (isset($_GET['quantidade']) && $_GET['quantidade'] == 'Todos') {
+        if (isset($_REQUEST['quantidade']) && $_REQUEST['quantidade'] == 'Todos') {
             $this->numeroPaginas = ceil($this->totalItens / $this->quantidadePadrao);
             $this->itensPorPagina = $this->quantidadePadrao;
         } else {
@@ -106,7 +106,7 @@ class TPaginacao {
             $this->numeroPaginas = ceil($this->totalItens / $this->itensPorPagina);
         }
 
-        $this->paginaAtual = (isset($_GET['pagina'])) ? $_GET['pagina'] : 0; // must be numeric > 0
+        $this->paginaAtual = (isset($_REQUEST['pagina'])) ? $_REQUEST['pagina'] : 0; // must be numeric > 0
 
 
         if ($this->paginaAtual < 1 Or !is_numeric($this->paginaAtual))
@@ -116,24 +116,17 @@ class TPaginacao {
         $prev_pagina = $this->paginaAtual - 1;
         $next_pagina = $this->paginaAtual + 1;
 
-        if ($_GET) {
-            $args = explode("&", $_SERVER['QUERY_STRING']);
-            foreach ($args as $arg) {
-                $keyval = explode("=", $arg);
-                if ($keyval[0] != "pagina" And $keyval[0] != "quantidade")
-                    $this->queryString .= "&" . $arg;
-            }
-        }
-
-        if ($_POST) {
-            foreach ($_POST as $key => $val) {
-                if ($key != "pagina" And $key != "quantidade")
-                    $this->queryString .= "&$key=$val";
-            }
-        }
-
-        if ($this->numeroPaginas > 10) {
-            $this->retorno = ($this->paginaAtual != 1 And $this->totalItens >= 10) ? "<a class=\"Paginar\" href=\"$_SERVER[PHP_SELF]?pagina=$prev_pagina&quantidade=$this->itensPorPagina$this->queryString\">&laquo;</a> " : "";
+        $this->retorno = '<div class="pagination"><ul>';
+        
+        $disabledFirst = ($this->paginaAtual == 1) ? 'disabled' : '';
+        
+        $disabledLast = ($this->paginaAtual == $this->numeroPaginas) ? 'disabled' : '';
+        
+        $pagButton = '<li class="%s"><a href="#" data-page="%s">%s</a></li>';
+        
+        $this->retorno .= sprintf($pagButton, $disabledFirst, $prev_pagina, '<i class="icon-arrow-left-2"></i>');
+        
+        if ($this->numeroPaginas > 10) {            
 
             $this->start_range = $this->paginaAtual - floor($this->numPgExibidas / 2);
             $this->end_range = $this->paginaAtual + floor($this->numPgExibidas / 2);
@@ -153,26 +146,29 @@ class TPaginacao {
                     $this->retorno .= " ... ";
                 // loop through all paginas. if first, last, or in range, display
                 if ($i == 1 Or $i == $this->numeroPaginas Or in_array($i, $this->range)) {
-                    $this->retorno .= ( $i == $this->paginaAtual And (isset($_GET['pagina']) && $_GET['pagina'] != 'Todos')) ? "<a title=\"Vai para a página $i de $this->numeroPaginas\" class=\"current\" href=\"#\">$i</a> " : "<a class=\"Paginar\" title=\"Vai para a página $i de $this->numeroPaginas\" href=\"$_SERVER[PHP_SELF]?pagina=$i&quantidade=$this->itensPorPagina$this->queryString\">$i</a> ";
+                    $this->retorno .= ( $i == $this->paginaAtual And (isset($_REQUEST['pagina']) && $_REQUEST['pagina'] != 'Todos')) ? sprintf($pagButton, 'active', $i, $i) : sprintf($pagButton, '', $i, $i);
                 }
                 if ($this->range[$this->numPgExibidas - 1] < $this->numeroPaginas - 1 And $i == $this->range[$this->numPgExibidas - 1])
-                    $this->retorno .= " ... ";
-            }
-            $this->retorno .= ( ($this->paginaAtual != $this->numeroPaginas And $this->totalItens >= 10) And ((isset($_GET['pagina']) && $_GET['pagina'] != 'Todos') || (!isset($_GET['pagina']))) ) ? "<a class=\"Paginar\" href=\"$_SERVER[PHP_SELF]?pagina=$next_pagina&quantidade=$this->itensPorPagina$this->queryString\"> &raquo;</a>\n" : "";
-            //$this->retorno .= ( isset($_GET['pagina']) && $_GET['pagina'] == 'Todos') ? "<a class=\"current\" style=\"margin-left:10px\" href=\"#\">Todos</a> \n" : "<a class=\"Paginar\" style=\"margin-left:10px\" href=\"$_SERVER[PHP_SELF]?pagina=1&quantidade=Todos$this->queryString\">Todos</a> \n";
+                    $this->retorno .= sprintf($pagButton, 'disabled', '', ' ... ');
+            }            
+            
         }
         else {
             for ($i = 1; $i <= $this->numeroPaginas; $i++) {
-                $this->retorno .= ( $i == $this->paginaAtual) ? "<a class=\"current\" href=\"#\">$i</a> " : "<a class=\"Paginar\" href=\"$_SERVER[PHP_SELF]?pagina=$i&quantidade=$this->itensPorPagina$this->queryString\">$i</a> ";
+                $this->retorno .= ( $i == $this->paginaAtual) ? sprintf($pagButton, 'active', $i, $i) : sprintf($pagButton, '', $i, $i);
             }
-            //$this->retorno .= "<a class=\"Paginar\" href=\"$_SERVER[PHP_SELF]?pagina=1&quantidade=Todos$this->queryString\">Todos</a> \n";
+            
         }
         $this->baixo = ($this->paginaAtual - 1) * $this->itensPorPagina;
         if ($this->baixo<0) {
             $this->baixo=0;
         }
-        $this->alto = (isset($_GET['quantidade']) && $_GET['quantidade'] == 'Todos') ? $this->totalItens : ($this->paginaAtual * $this->itensPorPagina) - 1;
-        $this->limite = (isset($_GET['quantidade']) && $_GET['quantidade'] == 'Todos') ? "" : " LIMIT $this->baixo,$this->itensPorPagina";
+        
+        $this->retorno .= sprintf($pagButton, $disabledLast, $next_pagina, '<i class="icon-arrow-right-2"></i>');
+        
+        $this->retorno .= '</ul></div>';
+        $this->alto = (isset($_REQUEST['quantidade']) && $_REQUEST['quantidade'] == 'Todos') ? $this->totalItens : ($this->paginaAtual * $this->itensPorPagina) - 1;
+        $this->limite = (isset($_REQUEST['quantidade']) && $_REQUEST['quantidade'] == 'Todos') ? "" : " LIMIT $this->baixo,$this->itensPorPagina";
     }
 /**
  * Método responsável por processar a a paginação e retornar um array para o template contendo dados de páginação.
@@ -187,7 +183,7 @@ class TPaginacao {
  */
     function PaginarParaTemplate() {
 
-        if (isset($_GET['quantidade']) && $_GET['quantidade'] == 'Todos') {
+        if (isset($_REQUEST['quantidade']) && $_REQUEST['quantidade'] == 'Todos') {
 
             $this->numeroPaginas = ceil($this->totalItens / $this->quantidadePadrao);
             $this->itensPorPagina = $this->quantidadePadrao;
@@ -200,7 +196,7 @@ class TPaginacao {
             $this->numeroPaginas = ceil($this->totalItens / $this->itensPorPagina);
         }
 
-        $this->paginaAtual = (isset($_GET['pagina'])) ? $_GET['pagina'] : 0; // must be numeric > 0
+        $this->paginaAtual = (isset($_REQUEST['pagina'])) ? $_REQUEST['pagina'] : 0; // must be numeric > 0
 
 
         if ($this->paginaAtual < 1 Or !is_numeric($this->paginaAtual))
@@ -210,7 +206,7 @@ class TPaginacao {
         $prev_pagina = $this->paginaAtual - 1;
         $next_pagina = $this->paginaAtual + 1;
 
-        if ($_GET) {
+        if ($_REQUEST) {
             $args = explode("&", $_SERVER['QUERY_STRING']);
             foreach ($args as $arg) {
                 $keyval = explode("=", $arg);
@@ -249,14 +245,14 @@ class TPaginacao {
                     $paginacao['pontoAnterior'] = " ... ";
                 // loop through all paginas. if first, last, or in range, display
                 if ($i == 1 Or $i == $this->numeroPaginas Or in_array($i, $this->range)) {
-                    $paginaLink[$i]['linkPagina'] = ( $i == $this->paginaAtual And (isset($_GET['pagina']) && $_GET['pagina'] != 'Todos')) ? "#" : "$_SERVER[PHP_SELF]?pagina=$i&quantidade=$this->itensPorPagina$this->queryString";
+                    $paginaLink[$i]['linkPagina'] = ( $i == $this->paginaAtual And (isset($_REQUEST['pagina']) && $_REQUEST['pagina'] != 'Todos')) ? "#" : "$_SERVER[PHP_SELF]?pagina=$i&quantidade=$this->itensPorPagina$this->queryString";
                     $paginaLink[$i]['pagina'] = $i;
                 }
                 if ($this->range[$this->numPgExibidas - 1] < $this->numeroPaginas - 1 And $i == $this->range[$this->numPgExibidas - 1])
                     $paginacao['pontoProximo'] = " ... ";
             }
             $paginacao['paginaLink'] = $paginaLink;
-            $paginacao['linkProxima'] = ( ($this->paginaAtual != $this->numeroPaginas And $this->totalItens >= 10) And (isset($_GET['pagina']) && $_GET['pagina'] != 'Todos')) ? "$_SERVER[PHP_SELF]?pagina=$next_pagina&quantidade=$this->itensPorPagina$this->queryString" : "#";
+            $paginacao['linkProxima'] = ( ($this->paginaAtual != $this->numeroPaginas And $this->totalItens >= 10) And (isset($_REQUEST['pagina']) && $_REQUEST['pagina'] != 'Todos')) ? "$_SERVER[PHP_SELF]?pagina=$next_pagina&quantidade=$this->itensPorPagina$this->queryString" : "#";
             $paginacao['Todos'] = "$_SERVER[PHP_SELF]?pagina=1&quantidade=Todos$this->queryString";
         }
         else {
@@ -271,8 +267,8 @@ class TPaginacao {
         if ($this->baixo<0) {
             $this->baixo=0;
         }
-        $this->alto = (isset($_GET['quantidade']) && $_GET['quantidade'] == 'Todos') ? $this->totalItens : ($this->paginaAtual * $this->itensPorPagina) - 1;
-        $this->limite = (isset($_GET['quantidade']) && $_GET['quantidade'] == 'Todos') ? "" : " LIMIT $this->baixo,$this->itensPorPagina";
+        $this->alto = (isset($_REQUEST['quantidade']) && $_REQUEST['quantidade'] == 'Todos') ? $this->totalItens : ($this->paginaAtual * $this->itensPorPagina) - 1;
+        $this->limite = (isset($_REQUEST['quantidade']) && $_REQUEST['quantidade'] == 'Todos') ? "" : " LIMIT $this->baixo,$this->itensPorPagina";
 
         return $paginacao;
     }

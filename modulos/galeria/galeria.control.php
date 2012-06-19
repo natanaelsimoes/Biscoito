@@ -2,6 +2,8 @@
 
 namespace Biscoito\Modulos\Galeria;
 
+use Biscoito\Lib\Util;
+
 class TGaleriaControl {
 
     public function AdicionarFotos() {
@@ -51,11 +53,11 @@ class TGaleriaControl {
         $galeria->setCategoria_id($categoria->getId());
 
         $galeria->setFonte($_POST['fonte']);
-        
+
         $capa = new TFoto();
-        
-        $capa->CarregarSerial($_SESSION['GALERIA_FOTOS_CAPA']);                
-        
+
+        $capa->CarregarSerial($_SESSION['GALERIA_FOTOS_CAPA']);
+
         $galeria->setCapa_id($capa->getId());
 
         $galeria->Salvar();
@@ -72,23 +74,68 @@ class TGaleriaControl {
         }
     }
 
+    public function ExcluirGaleriaAction() {
+
+        $galeria = new TGaleria();
+
+        $galeria->CarregarSerial($_REQUEST['galeria']);
+
+        $galeria->DeletarRegistro();
+    }
+
     public function Gerenciar() {
 
         include('galeria.view.gerenciar.php');
     }
 
-    public function Editar() {
-        global $_Biscoito;
-        var_dump($_Biscoito->getVariaveisDaURL());
+    public function EditarGaleria() {
+        
+        global $_Biscoito;                
+        
+        $galerias = new TGaleria();
+        
+        $galeria = $galerias->ListarPorId($_Biscoito->getVariaveisDaURL(2));                
+        
+        $fotos = $galeria->getFotos();
+        
+        include('galeria.view.editar.php');
+    }
+    
+    public function CarregarFotos() {
+        
+        $paginacao = new Util\TPaginacao();
+
+        $pagina = $_POST['pagina'];
+
+        $galeria = new TGaleria();
+        
+        $galeria = $galerias->ListarPorId($_Biscoito->getVariaveisDaURL(2));                
+
+        $paginacao->itensPorPagina = 21;
+
+        $paginacao->totalItens = $foto->QuantidadeRegistrados('galeria_id', $galeria->getId());
+
+        $galerias = $galeria->ListarTodos($pagina, $paginacao->itensPorPagina);
+
+        $paginacao->Paginar();
+        
     }
 
     public function CarregarGalerias() {
+
+        $paginacao = new Util\TPaginacao();
 
         $pagina = $_POST['pagina'];
 
         $galeria = new TGaleria();
 
-        $galerias = $galeria->ListarTodos($pagina, 20);
+        $paginacao->itensPorPagina = 21;
+
+        $paginacao->totalItens = $galeria->QuantidadeRegistrados();
+
+        $galerias = $galeria->ListarTodos($pagina, $paginacao->itensPorPagina);
+
+        $paginacao->Paginar();
 
         include('galeria.view.listar.php');
     }

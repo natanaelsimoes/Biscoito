@@ -39,13 +39,25 @@
         
         var self = this;
         
-        var galeria = new TGaleriaJS();                 
+        var galeria = new TGaleriaJS();   
         
-        this.btnAdicionar_Click = function() {
-                        
-            _Biscoito.AbrirPopupDinamico('FrmGaleria', 'galeria/exibir_formulario_adicionar')
+        var paginaAtual = 0;
+        
+        this.btnExcluir_Click= function(button) {                        
             
-            $(galeria.DOMNome).focus();
+                var galeriaObj = $(button).attr('data-object');               
+                
+                var bsUtilForm = new BootstrapUtilForm();                
+                
+                bsUtilForm.confirm('Deseja realmente excluir a galeria selecionada?', function(){
+                    
+                    _Biscoito.ExecutarAcao('galeria/excluir_galeria_action', 'galeria=' + galeriaObj, true);    
+                    
+                    self.CarregarGalerias(paginaAtual);
+                    
+                    bsUtilForm.alert('Categoria excluída com sucesso!', true);
+                    
+                }, _Biscoito.FecharPopup, false);                                              
             
         }
         
@@ -97,9 +109,22 @@
         
             var dados = 'pagina='+pagina;
         
-            var galerias = _Biscoito.ExecutarAcao('galeria/carregar_galerias', dados, true, false);        
+            var galerias = _Biscoito.ExecutarAcao('galeria/carregar_galerias', dados, true, false);                                
         
             $('.galerias').html(galerias);
+            
+            paginaAtual = pagina;
+            
+            $('.pagination').addClass('pagination-centered');
+            
+            $('.pagination a').click(function(e){
+                
+                if(!strpos('active|disabled', $(this).parent().attr('class')))
+                    galeriaJSForm.CarregarGalerias($(this).attr('data-page'));
+               
+                e.preventDefault();
+               
+            });
         
         }
 

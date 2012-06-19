@@ -7,6 +7,12 @@ use Biscoito\Modulos\Galeria\CategoriaGaleria\TCategoriaGaleriaControl;
 include_once('galeria.js.php');
 ?>
 
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.FrmGaleriaForm #textNome').focus();
+    })
+</script>
+
 <div class="modal-header">      
 
     <h2>Enquanto enviamos suas fotos para o servidor, entre com os dados referentes à nova galeria!</h2>

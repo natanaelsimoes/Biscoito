@@ -9,6 +9,12 @@ include_once('galeria.css.padrao.php');
 include_once('galeria.js.php');
 ?>
 
+<script type="text/javascript">
+    $(document).ready(function(){ 
+        galeriaJSForm.CarregarGalerias(1)
+    });
+</script>
+
 <article class="subhead">    
 
     <header class="row page-header">        

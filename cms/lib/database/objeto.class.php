@@ -369,8 +369,23 @@ class TObjeto {
 
         $attr = $newObj;
     }
+    
+    public function QuantidadeRegistrados($whereCampo = null, $whereValor = null) {
+        
+        $table = TDatabaseUtil::getClasseNamespace(get_class($this));
+        
+        $query = "SELECT count(id) quantidade FROM $table";
+        
+        $bd = new TDatabase;
+        
+        $bd->AbrirConexao();                
+        
+        $quantidade = $bd->Selecionar($query);
+        
+        return $quantidade[0]->quantidade;
+    }
 
-    public function ListarTodos($pagina = null, $quantidade = null) {
+    public function ListarTodos($pagina = 1, $quantidade = null) {
 
         $fields = "";
 
@@ -392,7 +407,7 @@ class TObjeto {
         return $lista;
     }
 
-    public function ListarTodosOnde($campo, $sinal, $valor, $pagina = null, $quantidade = null) {
+    public function ListarTodosOnde($campo, $sinal, $valor, $pagina = 1, $quantidade = null) {
 
         $fields = "";
 
@@ -429,7 +444,9 @@ class TObjeto {
 
         $bd->AbrirConexao();
 
-        return $bd->Selecionar($query, $this);
+        $dados = $bd->Selecionar($query, $this);
+        
+        return $dados[0];
     }
 
     static public function MapearClasse($obj) {

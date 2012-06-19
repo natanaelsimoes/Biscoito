@@ -76,7 +76,7 @@
                 PopupAnterior = $('.modal.in').attr('id');                
                 
                 if(PopupAnterior != null) 
-                    self.FecharPopup(PopupAnterior);                                                                                                    
+                    self.FecharPopup(PopupAnterior, abrindoPopup);                                                                                                    
                
                 else $('body').append('<div class="modal-backdrop fade in"></div>');
                 
@@ -93,6 +93,8 @@
                 $(idPopup).modal({
                             
                     backdrop: false,
+                    
+                    keyboard: false,
                             
                     show: true                        
                             
@@ -222,11 +224,11 @@
          * @param string nomePopup: Nome da janela que sera fechada
          * @example _Biscoito.FecharPopup('FrmNoticia');
          */
-        this.FecharPopup = function(nomePopup) {
+        this.FecharPopup = function(nomePopup, estaAbrindoPopup) {
         
             var idPopup, PopupAnterior, idPopupAnterior;
             
-            abrindoPopup = false;
+            abrindoPopup = (estaAbrindoPopup != null) ? estaAbrindoPopup : false;
     
             nomePopup = (nomePopup == null) ? $('.modal.in').attr('id') : nomePopup;
             
@@ -246,9 +248,7 @@
         
         this.IrParaPopup = function(nomePopup) {                                                
             
-            abrindoPopup = true;
-            
-            self.FecharPopup();                 
+            self.FecharPopup(null, true);                 
             
             setTimeout(function(){
                 

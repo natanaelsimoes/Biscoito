@@ -1,37 +1,40 @@
 <style type="text/css">
     
     .galeria .album {
-        width: 210px;
-        border: 1px solid #ccc;
-        height: 210px;
-        float: left;
-        margin: 0px 5px 20px 5px; 
+        position:relative;        
+        margin-bottom: 20px;
     }
     
     .galeria .album_titulo {
-        text-align: center;
+        position: absolute;
+        top: 0px;        
+        background: rgba(0,0,0,0.3);
+        color: #fff;
+        width: 100%;        
+        height: 40px;        
+        display: block;        
     }
     
-    .galeria .album_capa {
-        display: block;
-        width: 210px;
-        height: 157px;
+    .galeria .album_capa {        
+        width: 100%;               
     }
     
-    .galeria .album_opcoes {
-        clear: both;
-        margin: 0; padding: 0;
+    .galeria .album_opcoes {                                
+        position: absolute;
+        width: 100%; 
+        bottom: 0px;
+        clear: both;        
     }
     .galeria .album_opcao {
+        position: relative;
+        z-index: 1;
         list-style: none;
     }
-    .galeria .album_opcao.esquerda {
-        float: left;
-        margin-left: 30px;
+    .galeria .album_opcao.esquerda {                       
+        left: 30px;        
     }
-    .galeria .album_opcao.direita {
-        float: right;
-        margin-right: 30px;
+    .galeria .album_opcao.direita {                
+        right: 30px;
     }
 
     .galeria .album_opcao a {
