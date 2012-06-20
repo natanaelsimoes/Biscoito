@@ -481,16 +481,16 @@ class TBiscoito {
     public function requisitarAcao($classe, $acao) {
 
         if (!class_exists($classe)) {
+            
             $classe = $this->getClasseControleModuloAvulso($this->variaveisDaURL[0]);
+            
             if (empty($classe))
                 throw new Exception('ERRRRRRO');
-        }
-
-        $metodosClasse = get_class_methods($classe);
+        }       
 
         $vetor = new Util\TVetor(get_class_methods($classe));
         
-        $possivelAcao = str_replace('_', '', $this->variaveisDaURL[1]);
+        $possivelAcao = @str_replace('_', '', $this->variaveisDaURL[1]);
 
         if (count(@$vetor->Procurar($possivelAcao)) > 0)
             $this->acao = $acao = $possivelAcao;
