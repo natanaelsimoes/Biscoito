@@ -127,6 +127,29 @@
             });
         
         }
+        
+        this.CarregarFotos = function(galeria, pagina) {
+        
+            var dados = 'pagina='+pagina;
+        
+            var fotos = _Biscoito.ExecutarAcao('galeria/gerenciar_fotos/'+galeria+'/', dados, true, false);                                
+        
+            $('.fotos').html(fotos);
+            
+            paginaAtual = pagina;
+            
+            $('.pagination').addClass('pagination-centered');
+            
+            $('.pagination a').click(function(e){
+                
+                if(!strpos('active|disabled', $(this).parent().attr('class')))
+                    galeriaJSForm.CarregarFotos(galeria, $(this).attr('data-page'));
+               
+                e.preventDefault();
+               
+            });
+        
+        }
 
     }
     
@@ -269,10 +292,8 @@
             
             inputDescricao = document.createElement('textarea');
             
-            $(inputDescricao).addClass('xlarge fotoDescricao')
-            .attr('type', 'text')
-            .attr('name', 'descricao')
-            
+            $(inputDescricao).addClass('xlarge fotoDescricao')            
+            .attr('name', 'descricao')            
                         
             quebraLinha = document.createElement('br');
             

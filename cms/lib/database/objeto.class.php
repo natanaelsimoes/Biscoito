@@ -370,11 +370,14 @@ class TObjeto {
         $attr = $newObj;
     }
     
-    public function QuantidadeRegistrados($whereCampo = null, $whereValor = null) {
+    public function QuantidadeRegistrados($whereCampo = null, $whereRelacao = null, $whereValor = null) {
         
         $table = TDatabaseUtil::getClasseNamespace(get_class($this));
         
         $query = "SELECT count(id) quantidade FROM $table";
+        
+        if (!is_null($whereValor))
+            $query.= " WHERE $whereCampo $whereRelacao $whereValor";
         
         $bd = new TDatabase;
         

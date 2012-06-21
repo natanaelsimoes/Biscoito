@@ -16,7 +16,9 @@
     }
     
     .galeria .album_capa {        
+        position: relative;
         width: 100%;               
+        margin-bottom: 10px;
     }
     
     .galeria .album_opcoes {                                
@@ -46,6 +48,8 @@
         text-shadow: 0 1px 0 #fff;
         margin: 2px 0;
     }  
+    
+    .fotoDescricao { display: block; width: 100%; }
     
     #dropbox { padding-top: 20px; }
     .fotoInfo { float: left; margin-left: 25px; }

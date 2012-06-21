@@ -20,7 +20,7 @@ if (!empty($galerias)) :
 
                     <p class="align-center">
 
-                        <a href="<?php echo $_Biscoito->montarLink('administrador', 'galeria', 'editargaleria', $galeria->getId()); ?>" class="btn">
+                        <a href="<?php echo $_Biscoito->montarLink('administrador', 'galeria', 'editarfotos', $galeria->getId()); ?>" class="btn">
                             <i class="icon-camera"></i>
                             Editar
                         </a>
@@ -43,5 +43,5 @@ if (!empty($galerias)) :
 <?php 
     echo $paginacao->MostrarPaginas();
 else: ?>
-    Não há galeria alguma cadastrada. Clique em <?php include('galeria.view.button.adicionar.php'); ?> para começar a usar!
+    Não há galeria alguma cadastrada. Clique em <?php include('galeria.view.ui.button.adicionar.php'); ?> para começar a usar!
 <?php endif; ?>

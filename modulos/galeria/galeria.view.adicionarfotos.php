@@ -2,7 +2,6 @@
 
 namespace Biscoito\Modulos\Galeria;
 
-use Biscoito\Modulos\Galeria\CategoriaGaleria\TCategoriaGaleriaControl;
 use Biscoito\Modulos\Administrador\TAdministradorControl;
 
 TAdministradorControl::CabecalhoModulo('Galeria', 'administrador/galeria');

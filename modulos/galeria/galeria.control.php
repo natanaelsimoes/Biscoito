@@ -88,7 +88,7 @@ class TGaleriaControl {
         include('galeria.view.gerenciar.php');
     }
 
-    public function EditarGaleria() {
+    public function EditarFotos() {
         
         global $_Biscoito;                
         
@@ -96,28 +96,32 @@ class TGaleriaControl {
         
         $galeria = $galerias->ListarPorId($_Biscoito->getVariaveisDaURL(2));                
         
-        $fotos = $galeria->getFotos();
-        
-        include('galeria.view.editar.php');
-    }
+        include('galeria.view.editarfotos.php');
+    }        
     
-    public function CarregarFotos() {
+    public function GerenciarFotos() {
+        
+        global $_Biscoito;
         
         $paginacao = new Util\TPaginacao();
 
         $pagina = $_POST['pagina'];
 
-        $galeria = new TGaleria();
+        $galerias = new TGaleria();
+        
+        $foto = new TFoto();
         
         $galeria = $galerias->ListarPorId($_Biscoito->getVariaveisDaURL(2));                
 
         $paginacao->itensPorPagina = 21;
 
-        $paginacao->totalItens = $foto->QuantidadeRegistrados('galeria_id', $galeria->getId());
+        $paginacao->totalItens = $foto->QuantidadeRegistrados('galeria_id', '=', $galeria->getId());                
 
-        $galerias = $galeria->ListarTodos($pagina, $paginacao->itensPorPagina);
+        $fotos = $foto->ListarTodosOnde('galeria_id', '=', $galeria->getId(), $pagina, $paginacao->itensPorPagina);
 
         $paginacao->Paginar();
+        
+        include('galeria.view.listarfotosadm.php');
         
     }
 
