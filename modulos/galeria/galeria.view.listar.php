@@ -14,25 +14,31 @@ if (!empty($galerias)) :
 
                 <h4 class="album_titulo"><?php echo $galeria->getNome(); ?></h4>
 
-                <div class="album_capa"><?php $_Biscoito->imagem($galeria->getCapa()->getCaminho(), $galeria->getNome()); ?></div>
+                <div class="album_capa">
+                    
+                    <?php $_Biscoito->imagem($galeria->getCapa()->getCaminho(), $galeria->getNome()); ?>
 
-                <div class="album_opcoes">
+                    <div class="album_opcoes">
 
-                    <p class="align-center">
+                        <p class="align-center">
 
-                        <a href="<?php echo $_Biscoito->montarLink('administrador', 'galeria', 'editarfotos', $galeria->getId()); ?>" class="btn">
-                            <i class="icon-camera"></i>
-                            Editar
-                        </a>
+                            <a class="btn btn-mini" href="<?php echo $_Biscoito->montarLink('administrador', 'galeria', 'editarfotos', $galeria->getId()); ?>">
+                                <i class="icon-camera"></i>
+                                Editar
+                            </a>
 
-                        <a href="#" class="btn" onclick="galeriaJSForm.btnExcluir_Click(this)" data-object='<?php echo $galeria; ?>'>
-                            <i class="icon-remove"></i>
-                            Excluir
-                        </a>
+                            <a href="#" class="btn btn-mini" onclick="galeriaJSForm.btnExcluir_Click(this)" data-object='<?php echo $galeria; ?>'>
+                                <i class="icon-remove"></i>
+                                Excluir
+                            </a>
 
-                    </p>
+                        </p>
 
-                </div>                                
+                    </div>      
+                    
+                </div>
+
+
 
             </div>               
 
@@ -40,8 +46,9 @@ if (!empty($galerias)) :
 
     </div>
 
-<?php 
+    <?php
     echo $paginacao->MostrarPaginas();
-else: ?>
+else:
+    ?>
     Não há galeria alguma cadastrada. Clique em <?php include('galeria.view.ui.button.adicionar.php'); ?> para começar a usar!
 <?php endif; ?>

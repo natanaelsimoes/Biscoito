@@ -18,7 +18,7 @@ if (!empty($fotos)) :
 
                         <p class="align-center">                       
 
-                            <a href="#" class="btn" onclick="galeriaJSForm.btnExcluirFoto_Click(this)" data-object='<?php echo $foto; ?>'>
+                            <a href="#" class="btn btn-mini" onclick="galeriaJSForm.btnExcluirFoto_Click(this)" data-object='<?php echo $foto; ?>'>
                                 <i class="icon-remove"></i>
                                 Excluir
                             </a>
@@ -31,7 +31,7 @@ if (!empty($fotos)) :
 
                 <textarea name="descricao" class="xlarge fotoDescricao"><?php echo $foto->getDescricao() ?></textarea>
 
-                <input type="checkbox" name="capa" class="fotoCapa"><span> Capa</span>
+                <input type="checkbox" name="capa" class="fotoCapa" <?php if($galeria->getCapa_id() == $foto->getId()) echo 'checked="checked"' ?>><span> Capa</span>
                 
                 <a class="btn btn-mini disabled" onclick="galeriaJSForm.btnSalvarFoto_Click(this)" data-object="<?php echo $foto ?>" href="#">salvar alterações</a>
 

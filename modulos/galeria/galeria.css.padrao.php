@@ -2,7 +2,7 @@
     
     .galeria .album {
         position:relative;        
-        margin-bottom: 20px;
+        margin-bottom: 20px;        
     }
     
     .galeria .album_titulo {
@@ -10,16 +10,21 @@
         top: 0px;        
         background: rgba(0,0,0,0.3);
         color: #fff;
-        width: 100%;        
+        width: 311px;        
         height: 40px;        
-        display: block;        
+        display: block;
+        z-index: 1;
     }
     
     .galeria .album_capa {        
-        position: relative;
-        width: 100%;               
+        position: relative;          
+        width: 320px;
         margin-bottom: 10px;
     }
+    
+    .galeria .album_capa img {
+        height: 240px;
+    }    
     
     .galeria .album_opcoes {                                
         position: absolute;
@@ -49,7 +54,7 @@
         margin: 2px 0;
     }  
     
-    .fotoDescricao { display: block; width: 100%; }
+    .fotoDescricao { display: block; width: 320px; }
     
     #dropbox { padding-top: 20px; }
     .fotoInfo { float: left; margin-left: 25px; }

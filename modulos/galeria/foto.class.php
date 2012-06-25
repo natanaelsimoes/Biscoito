@@ -41,7 +41,7 @@ class TFoto extends TObjeto {
         
         imagejpeg($this->imagem, $destino, 80);                                
         
-    }
+    }        
     
     public function getDescricao() {
         return $this->descricao;
@@ -65,6 +65,16 @@ class TFoto extends TObjeto {
     
     public function getGaleria_id() {
         return $this->galeria_id;
+    }
+    
+    public function isCapa() {
+        
+        $galeria = new TGaleria();
+        
+        $galeria = $galeria->ListarPorId($this->getGaleria_id());
+        
+        return ($galeria->getCapa_id() == $this->getId());
+        
     }
     
     public function setDescricao($descricao) {
