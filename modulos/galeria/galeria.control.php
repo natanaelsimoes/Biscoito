@@ -4,7 +4,7 @@ namespace Biscoito\Modulos\Galeria;
 
 use Biscoito\Lib\Util;
 
-class TGaleriaControl {
+class TGaleriaControl {        
 
     public function AdicionarFotos() {
 

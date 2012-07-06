@@ -32,6 +32,8 @@ class TObjeto {
      * @var bool 
      */
     private $FbCriadoOrm;
+    
+    protected $FiQuantidade;
 
     public function getId() {
         return $this->FiId;
@@ -81,6 +83,10 @@ class TObjeto {
         $this->__exists($attr);
         unset($this->$attr);
         return true;
+    }
+    
+    private function setFiQuantidade($value) {
+        $this->FiQuantidade = $value;
     }
 
     /**
@@ -374,7 +380,7 @@ class TObjeto {
         
         $table = TDatabaseUtil::getClasseNamespace(get_class($this));
         
-        $query = "SELECT count(id) quantidade FROM $table";
+        $query = "SELECT count(id) FiQuantidade FROM $table";
         
         if (!is_null($whereValor))
             $query.= " WHERE $whereCampo $whereRelacao $whereValor";
@@ -383,9 +389,9 @@ class TObjeto {
         
         $bd->AbrirConexao();                
         
-        $quantidade = $bd->Selecionar($query);
+        $quantidade = $bd->Selecionar($query, $this);
         
-        return $quantidade[0]->quantidade;
+        return $quantidade[0]->FiQuantidade;
     }
 
     public function ListarTodos($pagina = 1, $quantidade = null) {
@@ -399,7 +405,7 @@ class TObjeto {
 
         $fields = substr($fields, 0, -1);
 
-        $query = "SELECT $table.id FiId,$fields FROM $table";
+        $query = "SELECT $table.id FiId,$fields FROM $table ORDER BY $table.id DESC";
 
         $bd = new TDatabase;
 

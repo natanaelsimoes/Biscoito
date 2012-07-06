@@ -33,5 +33,7 @@
         <TCategoriaGaleria sub-modulo="categoriagaleria" arquivo="categoriagaleria.class.php">
             <nome>VARCHAR(200) NOT NULL</nome>
         </TCategoriaGaleria>
+        <TLogomarcaControl sub-modulo="logomarca" arquivo="logomarca.control.php" controle="true"></TLogomarcaControl>
+        <TLogomarca arquivo="logomarca.class.php"></TLogomarca>
     </classes>
 </modulo_config>

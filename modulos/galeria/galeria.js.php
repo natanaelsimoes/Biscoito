@@ -183,7 +183,7 @@
             
             logo = new Image();           
         
-            logo.src = 'http://localhost:8080/Biscoito/10.jpg';                   
+            logo.src = '<?php echo $GLOBALS['_Biscoito']->getSite(); ?>modulos/galeria/fotos/logo_template.png';
         
         }
         
@@ -268,7 +268,7 @@
                     
                         aImg.onload = function() {
                         
-                            canvastoscreen ( imagetocanvas( this, 800, 600) );
+                            canvastoscreen ( imagetocanvas( this, 1024, 768) );
                         
                         };
                 
@@ -348,7 +348,7 @@
        
             cx.drawImage(img, dimensions.x, dimensions.y, dimensions.w, dimensions.h);
         
-            cx.globalAlpha = 0.5;
+            cx.globalAlpha = 0.9;
         
             cx.drawImage(logo, dimensions.x, dimensions.y);
         

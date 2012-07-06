@@ -10,7 +10,7 @@
         top: 0px;        
         background: rgba(0,0,0,0.3);
         color: #fff;
-        width: 311px;        
+        width: 320px;        
         height: 40px;        
         display: block;
         z-index: 1;
@@ -58,5 +58,5 @@
     
     #dropbox { padding-top: 20px; }
     .fotoInfo { float: left; margin-left: 25px; }
-    .fotoGaleria { width: 260px; height: 150px; }
+    .fotoGaleria { width: 260px; height: 195px; }
 </style>

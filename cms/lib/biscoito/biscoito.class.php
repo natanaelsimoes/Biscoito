@@ -5,6 +5,7 @@ namespace Biscoito\Lib;
 use Biscoito\Lib\Util;
 
 require_once('cms/lib/util/texto.class.php');
+require_once('cms/lib/util/imagem.class.php');
 require_once('cms/lib/util/navegador.class.php');
 require_once('cms/lib/util/paginacao.class.php');
 require_once('cms/lib/util/vetor.class.php');
@@ -110,7 +111,7 @@ class TBiscoito {
 
             $this->namespace = "Biscoito\\Modulos\\{$this->modulo}";
 
-            $indiceSubModulo = ($this->gateway == 'administrador') ? 2 : 1;
+            $indiceSubModulo = ($this->gateway == 'administrador') ? 1 : 1;
 
             if (array_key_exists($indiceSubModulo, $this->variaveisDaURL) && $this->variaveisDaURL[$indiceSubModulo] != $this->acao)
                 $this->subModulo = $this->variaveisDaURL[$indiceSubModulo];

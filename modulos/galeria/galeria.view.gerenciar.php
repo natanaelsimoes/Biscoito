@@ -16,11 +16,17 @@ include_once('galeria.js.php');
 </script>
 
 <div class="row page-header">        
-    
+
     <div class="span6"><h2>Lista de galerias</h2></div>
-    
-    <div class="span6 align-right"><?php include('galeria.view.ui.button.adicionar.php'); ?></div>
-    
+
+    <div class="span6 align-right">
+
+        <button class="btn" onclick="_Biscoito.IrPara('administrador/galeria/logomarca/gerenciar')"><i class="icon-attachment"></i> Gerenciar Logomarcas</button> 
+
+        <?php include('galeria.view.ui.button.adicionar.php'); ?>
+
+    </div>
+
 </div>    
 
 <div>                

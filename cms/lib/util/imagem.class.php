@@ -5,19 +5,15 @@ namespace Biscoito\Lib\Util;
 class TImagem {
 
     private $imagem;
-    
     private $tipo;
-    
     private $tipoCompleto;
-    
     private $nomeArquivo;
-    
     private $nomeArquivoTemporario;
 
     function __construct($arquivo) {
-        
-        
-        
+
+
+
         $this->nomeArquivoTemporario = $arquivo['tmp_name'];
         $image_info = getimagesize($this->nomeArquivoTemporario);
         $this->nomeArquivo = $arquivo['name'];
@@ -30,7 +26,7 @@ class TImagem {
         else if ($this->tipo == IMAGETYPE_PNG)
             $this->imagem = imagecreatefrompng($this->nomeArquivoTemporario);
     }
-    
+
     function getNomeArquivoTemporario() {
         return $this->nomeArquivoTemporario;
     }
@@ -61,8 +57,11 @@ class TImagem {
             imagejpeg($this->imagem, $caminho, $compressao);
         elseif ($tipoImagem == IMAGETYPE_GIF)
             imagegif($this->imagem, $caminho);
-        elseif ($tipoImagem == IMAGETYPE_PNG)
+        elseif ($tipoImagem == IMAGETYPE_PNG) {
+            imagealphablending($this->imagem, true);
+            imagesavealpha($this->imagem, true);
             imagepng($this->imagem, $caminho);
+        }
         if ($permissao != null)
             chmod($caminho, $permissao);
     }

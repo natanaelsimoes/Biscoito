@@ -38,8 +38,6 @@ if (!empty($galerias)) :
                     
                 </div>
 
-
-
             </div>               
 
         <?php endforeach; ?>
