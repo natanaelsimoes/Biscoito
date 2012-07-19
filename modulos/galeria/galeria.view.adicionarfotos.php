@@ -13,7 +13,15 @@ include_once('galeria.css.padrao.php');
 
 <div class="modal-header">    
 
-    <h2>Adicione as fotos da sua nova galeria</h2>
+    <h2>
+
+        <?php if (empty($galeria)): ?>Adicione as fotos da sua nova galeria
+
+        <?php else : ?>Adicione mais fotos a: <?php echo $galeria->getNome(); ?>
+
+        <?php endif; ?>
+
+    </h2>
 
 </div>
 <br>
@@ -36,6 +44,10 @@ include_once('galeria.css.padrao.php');
 </div>
 
 <div class="modal-footer align-center">    
+    
+    <input type="hidden" id="adicionandoGaleria" value="<?php echo (!empty($galeria)) ? 'true' : 'false'; ?>">
+    
+    <input type="hidden" id="galeria_id" value="<?php if (!empty($galeria)) echo $galeria->getId(); ?>">
 
     <button id="btnEnviar" class="btn btn-primary hidden" onclick="galeriaJSAdicionarFotos.btnEnviarFotos_Click()"><i class="icon-upload-2"></i> Enviar Fotos</button>
 

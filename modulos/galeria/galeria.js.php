@@ -45,35 +45,51 @@
         
         this.btnExcluir_Click= function(button) {                        
             
-                var galeriaObj = $(button).attr('data-object');               
+            var galeriaObj = $(button).attr('data-object');               
                 
-                var bsUtilForm = new BootstrapUtilForm();                
+            var bsUtilForm = new BootstrapUtilForm();                
                 
-                bsUtilForm.confirm('Deseja realmente excluir a galeria selecionada?', function(){
+            bsUtilForm.confirm('Deseja realmente excluir a galeria selecionada?', function(){
                     
-                    _Biscoito.ExecutarAcao('galeria/excluir_galeria_action', 'galeria=' + galeriaObj, true);    
+                _Biscoito.ExecutarAcao('galeria/excluir_galeria_action', 'galeria=' + galeriaObj, true);    
                     
-                    self.CarregarGalerias(paginaAtual);
+                self.CarregarGalerias(paginaAtual);
                     
-                    bsUtilForm.alert('Categoria excluída com sucesso!', true);
+                bsUtilForm.alert('Categoria excluída com sucesso!', true);
                     
-                }, _Biscoito.FecharPopup, false);                                              
+            }, _Biscoito.FecharPopup, false);                                              
             
         }
         
         this.btnSalvar_Click = function() {                    
         
-            if(Validar(galeria)) {
+            adicionandoGaleria = $('#adicionandoGaleria').val();                        
+        
+            if(Validar(galeria) || adicionandoGaleria == 'false') {
                           
                 _Biscoito.ExecutarAcao('galeria/adicionar_galeria_action', $(galeria.getFormName()).serialize(), true); 
                 
                 bsUtilForm = new BootstrapUtilForm();
                 
-                bsUtilForm.alert('Galeria adicionada com sucesso!', function() {
-                    _Biscoito.IrPara('administrador/galeria');
-                });               
+                if (adicionandoGaleria == 'false') {
+                
+                    bsUtilForm.alert('Galeria adicionada com sucesso!', function() {
+                        _Biscoito.IrPara('administrador/galeria');
+                    });               
+                
+                }
+                
+                else {
+                    
+                    galeria_id = $('#galeria_id').val();
+                    
+                    bsUtilForm.alert('Novos fotos adicionadas com sucesso!', function() {
+                        _Biscoito.IrPara('administrador/galeria/editarfotos/'+galeria_id);
+                    });               
+                    
+                }
             
-            }                    
+            }                                            
         
         }
         
@@ -142,13 +158,88 @@
             
             $('.pagination a').click(function(e){
                 
-                if(!strpos('active|disabled', $(this).parent().attr('class')))
+                if(!strpos('active|disabled', $(this).parent().attr('class'))) {
+                    location.href = '#';
                     galeriaJSForm.CarregarFotos(galeria, $(this).attr('data-page'));
+                }
                
                 e.preventDefault();
                
             });
         
+        }
+        
+        this.fotoDescricao_KeyPress = function(obj){
+            
+            $(obj).parent().find('.btnSalvarAlteracoes').removeClass('disabled');
+            
+        }
+        
+        this.btnSalvarAlteracoes_Click = function(obj) {                        
+            
+            _Biscoito.ExecutarAcao('galeria/alterar_descricao_foto/', $(obj).parent().serialize());
+            
+            $(obj).parent().find('.btnSalvarAlteracoes').addClass('disabled');
+            
+            var bsUtil = new BootstrapUtilForm();
+        
+            bsUtil.alert('Descrição alterada com sucesso!', true);
+            
+        }
+        
+        this.fotoCapa_Click = function(obj) {
+            
+            if ($(obj).attr('checked') == 'checked') {
+                
+                var bsUtil = new BootstrapUtilForm();
+                
+                bsUtil.confirm('Deseja trocar a capa atual da galeria por esta selecionada?'
+                , function(){
+                
+                    $('.fotoCapa').removeAttr('checked');
+            
+                    $(obj).attr('checked','checked');
+                    
+                    galeria_id = $(obj).parent().find('.galeria_id').val();
+                    
+                    _Biscoito.ExecutarAcao(sprintf('galeria/alterar_capa/%i/',galeria_id), $(obj).parent().serialize());
+                    
+                    bsUtil.alert('Capa alterada com sucesso!', true);
+                
+                }, function() {
+                    
+                    $(obj).removeAttr('checked');
+                    
+                });                           
+            
+            }                        
+            
+        }
+        
+        this.btnExcluirFoto_Click = function(obj) {
+        
+            var bsUtil = new BootstrapUtilForm();
+            
+            var fotoForm;
+            
+            fotoForm = $(obj).parent().parent().parent().parent();
+                        
+            if (fotoForm.find('.fotoCapa').attr('checked') != 'checked') {                        
+      
+                bsUtil.confirm('Deseja realmente excluir esta foto da galeria?', function() {
+                    
+                    _Biscoito.ExecutarAcao('galeria/excluir_foto/', sprintf('objFoto=%s', $(obj).attr('data-object')));
+                        
+                    self.CarregarFotos(fotoForm.find('.galeria_id').val(),paginaAtual);
+                    
+                    bsUtil.alert('Foto excluída da galeria com sucesso!', true);
+                    
+                });
+            
+            }
+            
+            else bsUtil.alert('Não é possível excluir a foto que é capa da galeria.<br>Selecione outra foto como capa se quiser excluir esta.', true);
+            
         }
 
     }
@@ -224,9 +315,21 @@
         
         this.btnEnviarFotos_Click = function() {
             
-            if(capaSelecionada) {
+            adicionandoGaleria = $('#adicionandoGaleria').val();
+            
+            if(capaSelecionada || adicionandoGaleria == 'true') {
                             
-                _Biscoito.AbrirPopupDinamico('FrmGaleria', 'galeria/adicionar_galeria');
+                if (adicionandoGaleria == 'false') {
+                
+                    _Biscoito.AbrirPopupDinamico('FrmGaleria', 'galeria/adicionar_galeria');
+                
+                }
+                
+                else {
+                    
+                    _Biscoito.AbrirPopupDinamico('FrmGaleria', 'galeria/adicionar_mais_fotos', 'galeria_id='+$('#galeria_id').val());
+            
+                }
             
                 self.enviarImagens();
             
@@ -306,7 +409,20 @@
             
             labelCapa = document.createElement('span');
             
-            $(labelCapa).html(' Capa')                        
+            $(labelCapa).html(' Capa ');
+            
+            linkRemover = document.createElement('a');
+            
+            $(linkRemover)
+            .attr('href', '#')
+            .html('Remover')
+            .addClass('btn btn-mini');
+            
+            $(linkRemover).click(function(){
+                
+                galeriaJSAdicionarFotos.removerFoto(this);
+                
+            });
             
             $(formFoto).append(inputDescricao);
             
@@ -315,6 +431,8 @@
             $(formFoto).append(checkBoxCapa);
             
             $(formFoto).append(labelCapa);
+            
+            $(formFoto).append(linkRemover);
                                     
             $(divFotoInfo).append(canvas);                        
             
@@ -401,6 +519,8 @@
         }
 
         this.enviarImagens = function() {                     
+            
+            adicionandoGaleria = $('#adicionandoGaleria').val();
         
             self.canvasFotos = document.querySelectorAll(".fotoGaleria");        
         
@@ -410,7 +530,12 @@
                 
                 $('#FrmGaleria #btnSalvar').removeClass('hidden');
                 
-                $('#FrmGaleria .modal-header h2').html('Suas fotos foram enviadas!<br>Finalize o cadastro da nova galeria.')
+                if (adicionandoGaleria == 'false') {
+                    $('#FrmGaleria .modal-header h2').html('Suas fotos foram enviadas!<br>Finalize o cadastro da nova galeria.')
+                }
+                else {
+                    $('#FrmGaleria .modal-header h2').html('Suas fotos foram enviadas!<br>Clique em Salvar para finalizar.')
+                }
                 
                 return;
                 
@@ -457,6 +582,12 @@
             xhr.send(formData);                           
             
         }                
+        
+        this.removerFoto = function(obj) {
+            
+            $(obj).parent().parent().remove();
+            
+        }
             
     }
     

@@ -4,11 +4,68 @@ namespace Biscoito\Modulos\Galeria;
 
 use Biscoito\Lib\Util;
 
-class TGaleriaControl {        
+class TGaleriaControl {
+
+    public function ExcluirFoto() {
+
+        $foto = new TFoto();
+
+        $foto->CarregarSerial($_POST['objFoto']);
+
+        unlink($foto->getCaminho());
+
+        $foto->DeletarRegistro();
+    }
+
+    public function AlterarDescricaoFoto() {
+
+        $foto = new TFoto();
+
+        $foto->CarregarSerial($_POST['objFoto']);
+
+        $foto->setDescricao($_POST['descricao']);
+
+        $foto->Salvar();
+    }
+
+    public function AlterarCapa() {
+
+        $foto = new TFoto();
+
+        $foto->CarregarSerial($_POST['objFoto']);
+
+        $galeria = new TGaleria();
+
+        $galeria = $galeria->ListarPorId($_POST['galeria_id']);
+
+        $galeria->setCapa_id($foto->getId());
+
+        $galeria->Salvar();
+    }
+
+    public function AdicionarMaisFotos() {
+
+        $galeria = new TGaleria();
+
+        $galeria = $galeria->ListarPorId($_POST['galeria_id']);
+
+        include('galeria.view.adicionarmaisfotos.php');
+    }
 
     public function AdicionarFotos() {
 
+        global $_Biscoito;
+
         $_SESSION['GALERIA_FOTOS'] = array();
+
+        $galeria_id = @$_Biscoito->getVariaveisDaURL(2);
+
+        if (!empty($galeria_id)) {
+
+            $galeria = new TGaleria();
+
+            $galeria = $galeria->ListarPorId($galeria_id);
+        }
 
         include('galeria.view.adicionarfotos.php');
     }
@@ -44,23 +101,26 @@ class TGaleriaControl {
 
         $galeria = new TGaleria();
 
-        $categoria = new CategoriaGaleria\TCategoriaGaleria();
+        if ($_POST['adicionarNovasFotos'] != 'true') {
 
-        $categoria->CarregarSerial($_POST['categoriagaleria']);
+            $categoria = new CategoriaGaleria\TCategoriaGaleria();
 
-        $galeria->setNome($_POST['nome']);
+            $categoria->CarregarSerial($_POST['categoriagaleria']);
 
-        $galeria->setCategoria_id($categoria->getId());
+            $galeria->setNome($_POST['nome']);
 
-        $galeria->setFonte($_POST['fonte']);
+            $galeria->setCategoria_id($categoria->getId());
 
-        $capa = new TFoto();
+            $galeria->setFonte($_POST['fonte']);
 
-        $capa->CarregarSerial($_SESSION['GALERIA_FOTOS_CAPA']);
+            $this->SalvarCapaGaleria($galeria);
+        } else {
 
-        $galeria->setCapa_id($capa->getId());
+            $galeria = $galeria->ListarPorId($_POST['galeria_id']);
 
-        $galeria->Salvar();
+            if (isset($_SESSION['GALERIA_FOTOS_CAPA']))
+                $this->SalvarCapaGaleria($galeria);
+        }
 
         foreach ($_SESSION['GALERIA_FOTOS'] as $serial) {
 
@@ -74,11 +134,27 @@ class TGaleriaControl {
         }
     }
 
+    private function SalvarCapaGaleria(TGaleria &$galeria) {
+
+        $capa = new TFoto();
+
+        $capa->CarregarSerial($_SESSION['GALERIA_FOTOS_CAPA']);
+
+        unset($_SESSION['GALERIA_FOTOS_CAPA']);
+
+        $galeria->setCapa_id($capa->getId());
+
+        $galeria->Salvar();
+    }
+
     public function ExcluirGaleriaAction() {
 
         $galeria = new TGaleria();
 
         $galeria->CarregarSerial($_REQUEST['galeria']);
+
+        foreach ($galeria->getFotos(1, null) as $foto)
+            unlink($foto->getCaminho());
 
         $galeria->DeletarRegistro();
     }
@@ -89,40 +165,39 @@ class TGaleriaControl {
     }
 
     public function EditarFotos() {
-        
-        global $_Biscoito;                
-        
-        $galerias = new TGaleria();
-        
-        $galeria = $galerias->ListarPorId($_Biscoito->getVariaveisDaURL(2));                
-        
-        include('galeria.view.editarfotos.php');
-    }        
-    
-    public function GerenciarFotos() {
-        
+
         global $_Biscoito;
-        
+
+        $galerias = new TGaleria();
+
+        $galeria = $galerias->ListarPorId($_Biscoito->getVariaveisDaURL(2));
+
+        include('galeria.view.editarfotos.php');
+    }
+
+    public function GerenciarFotos() {
+
+        global $_Biscoito;
+
         $paginacao = new Util\TPaginacao();
 
         $pagina = $_POST['pagina'];
 
         $galerias = new TGaleria();
-        
+
         $foto = new TFoto();
-        
-        $galeria = $galerias->ListarPorId($_Biscoito->getVariaveisDaURL(2));                
 
-        $paginacao->itensPorPagina = 21;
+        $galeria = $galerias->ListarPorId($_Biscoito->getVariaveisDaURL(2));
 
-        $paginacao->totalItens = $foto->QuantidadeRegistrados('galeria_id', '=', $galeria->getId());                
+        $paginacao->itensPorPagina = 12;
+
+        $paginacao->totalItens = $foto->QuantidadeRegistrados('galeria_id', '=', $galeria->getId());
 
         $fotos = $foto->ListarTodosOnde('galeria_id', '=', $galeria->getId(), $pagina, $paginacao->itensPorPagina);
 
         $paginacao->Paginar();
-        
+
         include('galeria.view.listarfotosadm.php');
-        
     }
 
     public function CarregarGalerias() {
