@@ -22,8 +22,8 @@ use Biscoito\Modulos\Administrador\Menu;
         </div>
         <a id="user-info" class="pull-right" href="#">
             <div class="user-info-block">
-                <h3><?php echo TUsuarioControl::getPrimeiroNome(); ?></h3>
-                <h4><?php echo TUsuarioControl::getUltimoNome(); ?></h4>
+                <h3><?php echo TUsuarioControl::getNomeUsuario(); ?></h3>
+                <h4><?php echo TUsuarioControl::getSobrenomeUsuario(); ?></h4>
             </div>
             <div class="user-info-block">
                 <b class="icon-user"></b>

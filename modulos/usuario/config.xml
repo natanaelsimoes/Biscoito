@@ -6,15 +6,26 @@
     <versao></versao>
     <data_criacao></data_criacao>
     <namespace>Biscoito\Modulos\Usuario</namespace>
+    <index>
+        <controle>TUsuarioControl</controle>
+        <acao>Gerenciar</acao>
+    </index>
     <classes>
         <TUsuarioControl arquivo="usuario.control.php" controle="true"></TUsuarioControl>
         <TUsuario arquivo="usuario.model.php">
-            <primeiroNome>VARCHAR(100) NOT NULL</primeiroNome>
-            <ultimoNome>VARCHAR(100)</ultimoNome>
+            <nome>VARCHAR(50) NOT NULL</nome>
+            <nomeDoMeio nulo="true">VARCHAR(100)</nomeDoMeio>
+            <sobrenome>VARCHAR(50) NOT NULL</sobrenome>
             <usuario>VARCHAR(32) NOT NULL UNIQUE</usuario>
             <senha>VARCHAR(32) NOT NULL</senha>
             <ultimoLogin>TIMESTAMP</ultimoLogin>
-            <tipo>INTEGER NOT NULL</tipo>
+            <tipousuario_id relacionamento="TTipoUsuario" cardinalidade="1">INTEGER NOT NULL</tipousuario_id>
+            <status>CHAR(1) NOT NULL DEFAULT '1'</status>
         </TUsuario>
+        <TTipoUsuarioControl sub-modulo="tipousuario" arquivo="tipousuario.control.php" controle="true"></TTipoUsuarioControl>
+        <TTipoUsuario sub-modulo="tipousuario" arquivo="tipousuario.class.php">
+            <nome>VARCHAR(200) NOT NULL</nome>
+            <flag>VARCHAR(30) NOT NULL</flag>
+        </TTipoUsuario>
     </classes>    
 </modulo_config>

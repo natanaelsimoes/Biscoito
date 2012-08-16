@@ -366,7 +366,7 @@ class TBiscoito {
      */
     public function ordenarObjetos($arrayObjetos, $atributo, $ordem = SORT_ASC) {
 
-        $resolucaoFormat = 'return (strtolower($arrayObjetos[$j+1]->%s) <= strtolower($arrayObjetos[$j]->%s));';
+        $resolucaoFormat = 'return (strtolower($arrayObjetos[$j+1]->get%s()) <= strtolower($arrayObjetos[$j]->get%s()));';
 
         $resolucaoString = sprintf($resolucaoFormat, $atributo, $atributo);
 

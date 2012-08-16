@@ -4,29 +4,27 @@ namespace Biscoito\Modulos\Usuario;
 
 use Biscoito\Lib\Database\TObjeto;
 
-define('USUARIO_TIPO_COMUM', 0);
-define('USUARIO_TIPO_ADMINISTRADOR', 1);
-
 class TUsuario extends TObjeto {
 
-    private $primeiroNome;
-    private $ultimoNome;
+    private $nome;
+    private $nomeDoMeio;
+    private $sobrenome;
     private $usuario;
     private $senha;
     private $ultimoLogin;
-    
-    /**
-     * Tipo de Usuário: USUARIO_TIPO_COMUM ou USUARIO_TIPO_ADMINISTRADOR
-     * @var integer
-     */
-    private $tipo;
+    private $tipousuario_id;
+    private $status;
 
-    public function getPrimeiroNome() {
-        return $this->primeiroNome;
+    public function getNome() {
+        return $this->nome;
     }
-    
-    public function  getUltimoNome() {
-        return $this->ultimoNome;
+
+    public function getNomeDoMeio() {
+        return $this->nomeDoMeio;
+    }
+
+    public function getSobrenome() {
+        return $this->sobrenome;
     }
 
     public function getUsuario() {
@@ -40,23 +38,31 @@ class TUsuario extends TObjeto {
     public function getUltimoLogin() {
         return $this->ultimoLogin;
     }
-    
-    /**
-     * Retorna o tipo de usuário
-     * @return integer 0 - Comum | 1 - Administrador
-     */
+
     public function getTipo() {
-        return $this->tipo;
+        return $this->tipousuario_id;
     }
 
-    public function setPrimeiroNome($value) {
-        $this->primeiroNome = $value;
+    public function getStatus() {
+        return $this->status;
     }
-    
-    public function setUltimoNome($value) {
-        $this->ultimoNome = $value;
+
+    public function getStatusStr() {
+        return ($this->status) ? 'ATIVADO' : 'DESATIVADO';
     }
-    
+
+    public function setNome($value) {
+        $this->nome = $value;
+    }
+
+    public function setNomeDoMeio($value) {
+        $this->nomeDoMeio = $value;
+    }
+
+    public function setSobrenome($value) {
+        $this->sobrenome = $value;
+    }
+
     public function setSenha($value) {
         $this->senha = $value;
     }
@@ -68,13 +74,13 @@ class TUsuario extends TObjeto {
     public function setUltimoLogin($value) {
         $this->ultimoLogin = $value;
     }
-    
-    /**
-     * Atribui um tipo ao usuário
-     * @param integer $value USUARIO_TIPO_COMUM ou USUARIO_TIPO_ADMINISTRADOR
-     */
-    public function setTipo($value) {
-        $this->tipo = $value;
+
+    public function setTipoUsuario_Id($value) {
+        $this->tipousuario_id = $value;
+    }
+
+    public function setStatus($value) {
+        $this->status = $value;
     }
 
 }
