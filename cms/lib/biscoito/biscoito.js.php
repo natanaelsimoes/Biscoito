@@ -54,7 +54,7 @@
          * @return Namespace do modulo principal executado pelo Biscoito
          */
         this.getNamespace = function() {
-            return '<?php echo $_Biscoito->getNamespace(); ?>';
+            return '<?php echo str_replace('\\', '\\\\', $_Biscoito->getNamespace()); ?>';
         }
         
         /**
@@ -119,7 +119,7 @@
         
         
         /**
-         * Abre uma janela popup sobre o conteúdo exibido mantando o foco sobre si 
+         * Abre uma janela popup sobre o conteï¿½do exibido mantando o foco sobre si 
          * bloqueando o conteudo exibido antes de sua abertura
          * @param string nomePopup: Nome da janela que sera criada
          * @param integer larguraPopup: Largura em pixel da caixa popup
@@ -240,9 +240,9 @@
         
         this.FecharTodasPopups = function() {
             
-                $('.modal').remove();
+            $('.modal').remove();
                 
-                $('.modal-backdrop').remove();
+            $('.modal-backdrop').remove();
             
         }
         
@@ -305,6 +305,26 @@
                 return false;
                 
             }
+            
+        }
+        
+        this.Validar = function(restricoes, DOM, mensagem) {
+            
+            var bsUtilForm = new BootstrapUtilForm();
+            
+            bsUtilForm.mudarEstado(DOM, 'normal');
+            
+            if(restricoes) {                                
+            
+                bsUtilForm.mudarEstado(DOM, 'warning', mensagem);
+         
+                $(DOM).focus();
+            
+                return false;
+            
+            }
+            
+            return true;
             
         }
         

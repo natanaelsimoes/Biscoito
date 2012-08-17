@@ -2,16 +2,7 @@
 
 namespace Biscoito\Modulos\Usuario;
 
-class TUsuarioControl {
-    
-    public function __call($acao, $args) {
-
-        global $_Biscoito;
-
-        $URLVars = $_Biscoito->getVariaveisDaURL();
-
-        echo $_Biscoito->getVariaveisDaURL(0);
-    }
+class TUsuarioControl {       
     
     public function __construct() {
         
@@ -66,7 +57,7 @@ class TUsuarioControl {
             
         }
         
-        $_SESSION['BISCOITO_SESSAO_MSG'] = 'Usuário ou senha inválida. Tente novamente.';
+        $_SESSION['BISCOITO_SESSAO_MSG'] = 'UsuÃ¡rio ou senha invÃ¡lida. Tente novamente.';
         
         header('location:'.$_SERVER['HTTP_REFERER']);
         
@@ -108,6 +99,16 @@ class TUsuarioControl {
         $usuarios = $_Biscoito->ordenarObjetos($usuarios, 'status', SORT_DESC);
         
         include('usuario.view.table.gerenciar.php');
+    }
+    
+    public static function Adicionar() {
+        
+        $usuario = new TUsuario;
+        
+        $acao = 'Adicionar';
+        
+        include('usuario.view.edicao.php');
+        
     }
 
 }

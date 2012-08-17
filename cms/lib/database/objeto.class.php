@@ -192,13 +192,13 @@ class TObjeto {
     public function DeletarObjetoRelacionado(&$array, $obj) {
 
         if (!is_array($array))
-            die(__METHOD__ . '() foi executado mas o atributo n„o È um array.');
+            die(__METHOD__ . '() foi executado mas o atributo n√£o √© um array.');
 
         if (gettype($obj) == 'integer') {
             if (array_key_exists($obj, $array))
                 $array[$obj]->FiEstado = DELETED;
             else
-                die(__METHOD__ . '() foi executado mas o atributo n„o possui a chave ' . $obj);
+                die(__METHOD__ . '() foi executado mas o atributo n√£o possui a chave ' . $obj);
         }
         else {
             $newObj = clone($obj);
@@ -208,7 +208,7 @@ class TObjeto {
                 foreach ($keys as $key)
                     $array[$key]->FiEstado = DELETED;
             else
-                die(__METHOD__ . '() foi executado mas o objeto n„o foi encontrado no atributo.');
+                die(__METHOD__ . '() foi executado mas o objeto n√£o foi encontrado no atributo.');
         }
     }
 

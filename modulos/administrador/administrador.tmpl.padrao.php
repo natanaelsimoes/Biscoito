@@ -16,7 +16,7 @@ global $_Biscoito;
 <!--[if IE 8]>    <html class="no-js ie8 oldie" lang="pt-BR"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="pt-BR"> <!--<![endif]-->
     <head>
-        <meta charset="iso-8859-1">
+        <meta charset="utf-8">
         <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame -->
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />        
         <meta name="viewport" content="width=device-width">
@@ -138,7 +138,7 @@ global $_Biscoito;
 
         <footer>
             <hr />
-            <p><strong>Copyright &copy; 2012 Natanael Simões</strong></p>           
+            <p class="align-center"><strong>Copyright &copy; 2012 Natanael SimÃµes</strong></p>           
         </footer>              
 
         <?php $_Biscoito->usarBootstrap(); ?>                                      

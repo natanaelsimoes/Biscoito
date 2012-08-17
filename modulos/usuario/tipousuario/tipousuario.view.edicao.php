@@ -2,20 +2,21 @@
 
 namespace Biscoito\Modulos\Usuario\TipoUsuario;
 
+use Biscoito\Modulos\Usuario;
+use Biscoito\Modulos\Administrador\TAdministradorControl;
+
+TAdministradorControl::CabecalhoModulo('Usuários', 'administrador/usuario/tipousuario/gerenciar');
+
 include_once('tipousuario.js.php');
 ?>
 
-<div class="modal-header">
+<header class="row-fluid page-header"> 
+    <div class="span6"><h2><?php echo $acao; ?> Tipo de Usuário</h2></div>
+</header>    
 
-    <button type="button" class="close" onclick="_Biscoito.FecharPopup()">X</button>
+<div class="row-fluid">
 
-    <h3><?php echo $acao ?> Tipo de Usu�rio</h3>
-
-</div>
-
-<div class="modal-body">
-
-    <form name="FrmTipoUsuarioEdicao" id="FrmTipoUsuarioEdicao" class="FrmTipoUsuarioForm form-horizontal" onsubmit="return false;">
+    <form name="FrmEdicao" id="FrmEdicao" class="well form-horizontal" onsubmit="tipoUsuarioJSForm.btnSalvar_Click(); return false;">
 
         <fieldset>
 
@@ -29,22 +30,34 @@ include_once('tipousuario.js.php');
 
                 </div>
 
-            </div>        
+            </div>  
             
+            <div class="control-group">
+
+                <label class="control-label" for="textFlag">Flag:</label>
+
+                <div class="controls">
+
+                    <input type="text" name="flag" id="textFlag" class="input-xlarge" value="<?php echo $tipoUsuario->getFlag() ?>">
+
+                </div>
+
+            </div>
+
         </fieldset>
-        
-        <input type="hidden" name="idCategoriaGaleria" value="<?php echo $tipoUsuario->getId() ?>">
-        
-        <input type="hidden" name="objCategoriaGaleria" value='<?php echo $tipoUsuario ?>'>
-        
+
+        <input type="hidden" name="id" value="<?php echo $tipoUsuario->getId() ?>">
+
+        <input type="hidden" name="obj" value='<?php echo $tipoUsuario ?>'>
+
     </form>
-    
+
 </div>
 
-<div class="modal-footer">
+<div class="row align-right">
 
-    <button class="btn btn-danger" onclick="_Biscoito.FecharPopup()"><i class="icon-cancel-2"></i> Cancelar</button>
+    <button class="btn btn-danger" onclick="_Biscoito.IrPara('administrador/usuario/tipousuario/gerenciar')"><i class="icon-cancel-2"></i> Cancelar</button>
 
-    <button class="btn btn-success" onclick=""><i class="icon-checkmark-3"></i> Salvar</button>
-    
+    <button class="btn btn-success" onclick="tipoUsuarioJSForm.btnSalvar_Click();"><i class="icon-checkmark-3"></i> Salvar</button>
+
 </div>

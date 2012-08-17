@@ -28,9 +28,9 @@ class TDatabase {
     }
 
     /**
-     * Abre conexão com o banco de dados
-     * @param string $servidor Endereço do servidor
-     * @param string $usuario Nome de usuário
+     * Abre conexï¿½o com o banco de dados
+     * @param string $servidor Endereï¿½o do servidor
+     * @param string $usuario Nome de usuï¿½rio
      * @param string $senha Senha
      * @param string $base Nome da base de dados
      */
@@ -42,7 +42,7 @@ class TDatabase {
                 , $this->configuracoes->senha
                 , $this->configuracoes->base);
         if (!$this->conexaoAberta)
-            die('ERR-DB-GERAL#001: Falha ao abrir conexão com banco. Verifique as configurações.');
+            die('ERR-DB-GERAL#001: Falha ao abrir conexÃ£o com banco. Verifique as configuraÃ§Ãµes.');
     }
 
     /**
@@ -54,7 +54,7 @@ class TDatabase {
         if ($this->conexaoAberta)
             $this->database->ExecutarComando($comando, $obj);
         else
-            die('ERR-DB-GERAL#002: Tentativa de execução de comando com conexão fechada.');
+            die('ERR-DB-GERAL#002: Tentativa de execuÃ§Ã£o de comando com conexÃ£o fechada.');
     }
 
     /**
@@ -72,7 +72,7 @@ class TDatabase {
      * Executa um comando de selecao no banco de dados configurado
      * @param string $comando Comando SQL
      * @param mixed $obj Objeto sendo tratado
-     * @return mixed Array com a coleção de dados retornados 
+     * @return mixed Array com a coleï¿½ï¿½o de dados retornados 
      */
     public function Selecionar($comando, $obj = null, $pagina = 1, $quantidade = 0) {
         return $this->database->Selecionar($comando, $obj, $pagina, $quantidade);
@@ -128,7 +128,7 @@ class TMySQL implements TIDatabase {
             } catch (\PDOException $e) {
                 $this->util = new TDatabaseUtil;
                 if (!$this->util->TratarErro($e, $obj, $comando))
-                    throw new \Exception('Ocorreu um erro durante a execução do ORM verifique se as configurações das classes utilizadas estão corretas.');
+                    throw new \Exception('Ocorreu um erro durante a execuÃ§Ã£o do ORM verifique se as configuraÃ§Ãµes das classes utilizadas estÃ£o corretas.');
             }
         } while (!$bSQLExecuted);
     }

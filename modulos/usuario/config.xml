@@ -12,7 +12,7 @@
     </index>
     <classes>
         <TUsuarioControl arquivo="usuario.control.php" controle="true"></TUsuarioControl>
-        <TUsuario arquivo="usuario.model.php">
+        <TUsuario arquivo="usuario.class.php">
             <nome>VARCHAR(50) NOT NULL</nome>
             <nomeDoMeio nulo="true">VARCHAR(100)</nomeDoMeio>
             <sobrenome>VARCHAR(50) NOT NULL</sobrenome>

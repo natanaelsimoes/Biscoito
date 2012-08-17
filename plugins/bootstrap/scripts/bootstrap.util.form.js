@@ -12,7 +12,7 @@ function BootstrapUtilForm() {
         
         var content, modalheader, header, modalbody, message, modalfooter, simIcon, simButton, naoIcon, naoButton;
         
-        var titulo = 'Confirmação';
+        var titulo = 'ConfirmaÃ§Ã£o';
         
         fecharAoConfirmar = (fecharAoConfirmar == null) ? true : fecharAoConfirmar;
         
@@ -82,7 +82,7 @@ function BootstrapUtilForm() {
         
         $(naoButton).append(naoIcon);
         
-        $(naoButton).append(' Não');
+        $(naoButton).append(' NÃ£o');
         
         $(naoButton).click(function(){
             
@@ -192,7 +192,7 @@ function BootstrapUtilForm() {
                 
                 groupElemento.attr('class', 'control-group');        
                 
-                groupElemento.chidren('help-inline').destroy();
+                groupElemento.find('.help-inline').remove();
                 
                 break;
                 

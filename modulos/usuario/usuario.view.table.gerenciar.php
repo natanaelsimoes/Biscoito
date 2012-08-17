@@ -7,7 +7,7 @@ use Biscoito\Modulos\Usuario;
     <thead>
         <tr>
             <th>Nome</th>
-            <th>Nome de Usu·rio</th>
+            <th>Nome de Usu√°rio</th>
         </tr>
     </thead>
     <tbody>
@@ -18,14 +18,14 @@ use Biscoito\Modulos\Usuario;
                 <tr>
                     <td><?php echo sprintf('%s %s', $usuario->getNome(), $usuario->getSobrenome()); ?> <?php if (!$usuario->getStatus()) echo sprintf('(%s)',$usuario->getStatusStr()); ?></td>
                     <td><?php echo $usuario->getUsuario(); ?></td>
-                    <td><button class="btn pull-right">Editar</button></td>
+                    <td><button class="btn pull-right"><span class="icon icon-pencil"></span> Editar</button></td>
                 </tr>
                 <?php
             endforeach;
         else :
             ?>
             <tr>
-                <td>N„o h· usu·rios deste tipo.</td>
+                <td>N√£o h√° usu√°rios deste tipo.</td>
                 <td></td>
             </tr>
         <?php endif; ?>

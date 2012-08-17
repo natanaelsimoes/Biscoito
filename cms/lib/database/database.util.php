@@ -50,11 +50,11 @@ class TDatabaseUtil {
     }
 
     /**
-     * Retorna o parâmetro exibido na mensagem de erro do bando de dados.<br /><br />
-     * Ex: Erro SQL retorna a mensagem "Coluna 'nome' não existe"<br />
-     * Logo esta função retornará <i>nome</i>.
+     * Retorna o parï¿½metro exibido na mensagem de erro do bando de dados.<br /><br />
+     * Ex: Erro SQL retorna a mensagem "Coluna 'nome' nï¿½o existe"<br />
+     * Logo esta funï¿½ï¿½o retornarï¿½ <i>nome</i>.
      * @param string $mensagem Mensagem de erro do banco de dados
-     * @return string Parâmetro do erro
+     * @return string Parï¿½metro do erro
      */
     public static function getParametroErro($mensagem) {
         $mensagem = explode("'", $mensagem);
@@ -68,9 +68,9 @@ class TDatabaseUtil {
     }
 
     /**
-     * Retorna as relações que a classe tem com outras classes
+     * Retorna as relaï¿½ï¿½es que a classe tem com outras classes
      * @param string $classe Nome da classe
-     * @return mixed Array com as relações 
+     * @return mixed Array com as relaï¿½ï¿½es 
      */
     public static function getRelacionamentosClasse($classe) {
         $relacaoClasse = get_class_vars($classe);
@@ -136,14 +136,14 @@ class TDatabaseUtil {
     }
 
     /**
-     * Trata erros ocorridos durante a execução de SQL no banco de dados e cria as
-     * estruturas necessárias utilizando TORM para a execução com sucesso
+     * Trata erros ocorridos durante a execuï¿½ï¿½o de SQL no banco de dados e cria as
+     * estruturas necessï¿½rias utilizando TORM para a execuï¿½ï¿½o com sucesso
      * do comando SQL.
      * 
      * @uses TORM
      * 
-     * @param \PDOException $pdoE Exceção disparada pela conexão
-     * @return bool Retorno falso causado por erro na configuração da classe
+     * @param \PDOException $pdoE Exceï¿½ï¿½o disparada pela conexï¿½o
+     * @return bool Retorno falso causado por erro na configuraï¿½ï¿½o da classe
      */
     public function TratarErro($pdoE, $obj, $comando) {
         return $this->databaseUtil->TratarErro($pdoE, $obj, $comando);
@@ -246,7 +246,7 @@ class TMySQLUtil implements TIDatabaseUtil {
 
                 header("Content-Type: text/html; charset=ISO-8859-1", true);
 
-                echo 'Já existe um registro com estas informações. Por favor tente uma entrada diferente.';
+                echo 'JÃ¡ existe um registro com estas informaÃ§Ãµes. Por favor tente uma entrada diferente.';
 
                 exit;
 

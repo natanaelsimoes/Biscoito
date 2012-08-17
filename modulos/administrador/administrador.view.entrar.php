@@ -25,7 +25,7 @@ use Biscoito\Modulos\Administrador\Menu;
                     <fieldset class="glass black">
                         <p><?php echo $_SESSION['BISCOITO_SESSAO_MSG'] ?></p>
                         <p>
-                            <label>Usu·rio:</label>
+                            <label>Usu√°rio:</label>
                             <input type="text" name="usuario" id="usuario" />
                         </p>
                         <p>
