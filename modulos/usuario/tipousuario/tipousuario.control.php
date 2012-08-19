@@ -65,7 +65,7 @@ class TTipoUsuarioControl {
         
         include('tipousuario.view.edicao.php');
         
-    }
+    }        
     
     public static function Excluir($id) {
         
@@ -96,6 +96,24 @@ class TTipoUsuarioControl {
         $usuario = new \Biscoito\Modulos\Usuario\TUsuario();
         
         echo count($usuario->ListarTodosOnde('tipousuario_id','=',$_REQUEST['id']));
+        
+    }
+    
+    public static function ExibirSelecao($usuario_id = null, $id = null) {
+        
+        global $_Biscoito;
+        
+        $tiposUsuario = new TTipoUsuario();
+        
+        $tiposUsuario = $tiposUsuario->ListarTodos();
+        
+        $tiposUsuario = $_Biscoito->ordenarObjetos($tiposUsuario, 'nome', SORT_ASC);
+        
+        $usuarioLogado = unserialize($_SESSION['BISCOITO_SESSAO_USUARIO']);
+
+        $readonly = ($usuarioLogado->getId() == $usuario_id);             
+        
+        include('tipousuario.view.select.php');
         
     }
 

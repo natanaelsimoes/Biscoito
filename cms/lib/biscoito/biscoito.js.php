@@ -316,7 +316,7 @@
             
             if(restricoes) {                                
             
-                bsUtilForm.mudarEstado(DOM, 'warning', mensagem);
+                bsUtilForm.mudarEstado(DOM, 'error', mensagem);
          
                 $(DOM).focus();
             

@@ -39,7 +39,7 @@ class TUsuario extends TObjeto {
         return $this->ultimoLogin;
     }
 
-    public function getTipo() {
+    public function getTipoUsuario_Id() {
         return $this->tipousuario_id;
     }
 
@@ -49,6 +49,11 @@ class TUsuario extends TObjeto {
 
     public function getStatusStr() {
         return ($this->status) ? 'ATIVADO' : 'DESATIVADO';
+    }
+    
+    public function getFlag() {
+        $tipoUsuario = new TipoUsuario\TTipoUsuario;
+        return $tipoUsuario->ListarPorId($this->getTipoUsuario_Id())->getFlag();
     }
 
     public function setNome($value) {

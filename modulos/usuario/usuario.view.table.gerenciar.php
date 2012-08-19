@@ -18,7 +18,7 @@ use Biscoito\Modulos\Usuario;
                 <tr>
                     <td><?php echo sprintf('%s %s', $usuario->getNome(), $usuario->getSobrenome()); ?> <?php if (!$usuario->getStatus()) echo sprintf('(%s)',$usuario->getStatusStr()); ?></td>
                     <td><?php echo $usuario->getUsuario(); ?></td>
-                    <td><button class="btn pull-right"><span class="icon icon-pencil"></span> Editar</button></td>
+                    <td><button class="btn pull-right" onclick="_Biscoito.IrPara('administrador/usuario/editar/<?php echo $usuario->getId() ?>')"><span class="icon icon-pencil"></span> Editar</button></td>
                 </tr>
                 <?php
             endforeach;

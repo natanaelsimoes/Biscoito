@@ -27,9 +27,17 @@
         
         this.getUsuario = function() { return $(self.DOMUsuario).val() }
         
-        this.DOMSenha = '#textSenha';
+        this.DOMSenhaAtual = '#textSenhaAtual';
         
+        this.getSenhaAtual = function() { return $(self.DOMSenha).val() }
+        
+        this.DOMSenha = '#textSenha';
+    
         this.getSenha = function() { return $(self.DOMSenha).val() }
+        
+        this.DOMConfSenha = '#textConfSenha';
+    
+        this.getConfSenha = function() { return $(self.DOMConfSenha).val() }
 
     }        
     
@@ -37,9 +45,11 @@
         
         this.btnSalvar_Click = function() {                    
         
-            if(Validar(new TUsuario())) {                                                                
+            if(Validar(new TUsuario())) {   
                 
-                var msg = _Biscoito.ExecutarAcao('usuario/tipousuario/salvar', $('#FrmEdicao').serialize(), true);
+                $('#selectTipoUsuario_id').removeAttr('disabled');
+                
+                var msg = _Biscoito.ExecutarAcao('usuario/salvar', $('#FrmEdicao').serialize(), true);
                 
                 if (msg != '') alert(msg);
                 
@@ -47,66 +57,108 @@
                     
                     var bsUtilForm = new BootstrapUtilForm();  
                 
-                    bsUtilForm.alert('Categoria salva com sucesso!', function(){
-                        _Biscoito.IrPara('administrador/usuario/tipousuario/gerenciar');
+                    bsUtilForm.alert('Usuário salvo com sucesso!', function(){
+                        _Biscoito.IrPara('administrador/usuario/gerenciar');
                     });
                     
                 }
                 
             }
         
-        }                
+        }  
         
-        this.btnExcluir_Click = function(id, button) {
+        this.btnAlterarSenha_Click = function() {
         
-            var bsUtilForm = new BootstrapUtilForm();                
+            if(ValidarSenha(new TUsuario())) {
                 
-            usuariosDoTipo = _Biscoito.ExecutarAcao('usuario/tipousuario/getUsuariosDoTipo', 'ajax&id='+id, true, false);                        
-                        
-            if (usuariosDoTipo == 0) {               
+                var bsUtilForm = new BootstrapUtilForm();
                 
-                bsUtilForm.confirm('Deseja realmente excluir o tipo selecionado?', function(){
-                    
-                    _Biscoito.ExecutarAcao('usuario/tipousuario/excluir/'+id);                                        
-                    
-                    $(button).parent().parent().remove();
-                    
-                    bsUtilForm.alert('Categoria excluída com sucesso!', true);
-                    
+                var msg = _Biscoito.ExecutarAcao('usuario/alterar_senha', $('#FrmEdicaoSenha').serialize(), true);
+            
+                if (msg != '') bsUtilForm.alert(msg);
+            
+                else bsUtilForm.alert('Senha alterada com sucesso!', function() {
+                    _Biscoito.IrPara('administrador/usuario/gerenciar');
                 });
-    
+        
             }
             
-            else
+        }
+              
+        this.btnReativar_Click = function() {
+    
+            var bsUtilForm = new BootstrapUtilForm();
             
-            bsUtilForm.alert('Existem usuários cadastrados deste tipo. Enquanto houver algum usuário aqui será impossível excluir o tipo.');
+            bsUtilForm.confirm('Deseja realmente reativar este usuário?', function() {
             
+                _Biscoito.ExecutarAcao('usuario/reativar_usuario', $('#FrmEdicao').serialize(), false, false);
+            
+                bsUtilForm.alert('Usuário reativado com sucesso!', function(){
+                    _Biscoito.IrPara('administrador/usuario/gerenciar');
+                });
+            
+            }, function() { _Biscoito.FecharTodasPopups() }, false);
+    
+        }
+        
+        this.btnDesativar_Click = function() {
+    
+            var bsUtilForm = new BootstrapUtilForm();
+            
+            bsUtilForm.confirm('Deseja realmente desativar este usuário?', function() {
+            
+                _Biscoito.ExecutarAcao('usuario/desativar_usuario', $('#FrmEdicao').serialize(), false, false);
+            
+                bsUtilForm.alert('Usuário desativado com sucesso!', function(){
+                    _Biscoito.IrPara('administrador/usuario/gerenciar');
+                });
+            
+            }, function() { _Biscoito.FecharTodasPopups() }, false);
+    
+        }
+        
+        this.btnExcluir_Click = function() {
+    
+            var bsUtilForm = new BootstrapUtilForm();
+            
+            bsUtilForm.confirm('<div class="alert alert-error"><h4 class="alert-heading">ATENÇÃO</h4>Todas as coisas ligadas a este usuário serão apagadas!</div>Deseja realmente excluir este usuário?', function() {
+            
+                _Biscoito.ExecutarAcao('usuario/excluir', $('#FrmEdicao').serialize(), false, false);
+            
+                bsUtilForm.alert('Usuário excluído com sucesso!', function(){
+                    _Biscoito.IrPara('administrador/usuario/gerenciar');
+                });
+            
+            }, function() { _Biscoito.FecharTodasPopups() }, false);
+    
+        }
+    
+        var Validar = function(obj) {
+            
+            if (!_Biscoito.Validar((obj.getNome() == ''), obj.DOMNome, 'Insira um nome')) return false;
+        
+            if (!_Biscoito.Validar((obj.getSobrenome() == ''), obj.DOMSobrenome, 'Insira um sobrenome')) return false;
+        
+            if (!_Biscoito.Validar((obj.getUsuario() == ''), obj.DOMUsuario, 'Insira um nome de usuário')) return false;        
+            
+            return true;
+        
+        }
+    
+        var ValidarSenha = function(obj) {
+        
+            if(!_Biscoito.Validar((_Biscoito.ExecutarAcao('usuario/verificar_senha_atual', $('#FrmEdicaoSenha').serialize(), true, false) != 'true'), obj.DOMSenhaAtual, 'Senha atual não confere')) return false;
+        
+            if(!_Biscoito.Validar((obj.getSenha().trim() == ''), obj.DOMSenha, 'Insira uma senha')) return false;
+          
+            if(!_Biscoito.Validar((obj.getSenha().length < 6), obj.DOMSenha, 'Senha precisa de pelo menos 6 caracteres')) return false;
+            
+            if(!_Biscoito.Validar((obj.getSenha() != obj.getConfSenha()), obj.DOMConfSenha, 'Senha não confere')) return false;
+          
+            return true;               
+        
+        }
+    
     }
-    
-    var RecarregarCategorias = function() {
-    
-        var categorias = _Biscoito.ExecutarAcao('galeria/categoriagaleria/exibir_selecao_categorias', null, true);
-                
-        $('div.selectCategoriaGaleria').html(categorias);                            
-    
-    }
-    
-    var Validar = function(obj) {
-            
-        if (!_Biscoito.Validar((obj.getNome() == ''), obj.DOMNome, 'Insira um nome')) return false;
-        
-        if (!_Biscoito.Validar((obj.getSobrenome() == ''), obj.DOMSobrenome, 'Insira um sobrenome')) return false;
-        
-        if (!_Biscoito.Validar((obj.getUsuario() == ''), obj.DOMUsuario, 'Insira um nome de usuário')) return false;
-
-        if (!_Biscoito.Validar((obj.getSenha() == ''), obj.DOMSenha, 'Insira uma senha')) return false;
-        
-        if (!_Biscoito.Validar((obj.getSenha().length < 6), obj.DOMSenha, 'Senha de ter no mínimo 6 caracteres')) return false;
-            
-        return true;
-        
-    }
-    
-}
-usuarioJSForm = new TUsuarioJSForm();
+    usuarioJSForm = new TUsuarioJSForm();
 </script>
