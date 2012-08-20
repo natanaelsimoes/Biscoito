@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="utf-8"?>
 <modulo_config>
-    <nome>Usu�rios</nome>
+    <nome>Usuários</nome>
     <descricao></descricao>
     <autor></autor>
     <versao></versao>
@@ -27,5 +27,16 @@
             <nome>VARCHAR(200) NOT NULL</nome>
             <flag>VARCHAR(30) NOT NULL</flag>
         </TTipoUsuario>
-    </classes>    
+    </classes>
+    <sql>
+        <onTUsuarioCreate>
+            INSERT INTO tusuario (nome, sobrenome, usuario, senha, tipousuario_id) VALUES ('Administrador','Padrão','admin','21232f297a57a5a743894a0e4a801fc3', 2);
+        </onTUsuarioCreate>
+        <onTTipoUsuarioCreate>
+            ALTER TABLE ttipousuario ADD column nome VARCHAR(200) NOT NULL;
+            ALTER TABLE ttipousuario ADD column flag VARCHAR(30) NOT NULL;
+            INSERT INTO ttipousuario (nome,flag) VALUES ('Usuário','USUARIO');
+            INSERT INTO ttipousuario (nome,flag) VALUES ('Administrador', 'ADMINISTRADOR');            
+        </onTTipoUsuarioCreate>
+    </sql>
 </modulo_config>

@@ -2,7 +2,8 @@
 
 namespace Biscoito\Lib\Database;
 
-use \Biscoito\Lib\Objeto as Objeto;
+use Biscoito\Lib\Objeto as Objeto;
+use Biscoito\Lib\Util;
 
 interface TIDatabaseUtil {
 
@@ -116,7 +117,7 @@ class TDatabaseUtil {
     }
 
     public static function getConfiguracaoClasse($classe) {
-        
+
         global $_Biscoito;
 
         $filename = $refObj = null;
@@ -126,7 +127,7 @@ class TDatabaseUtil {
         $filenameFormat = '%s%s/config.xml';
 
         $filename = sprintf($filenameFormat, '', dirname($refObj->getFileName()));
-        
+
         $nomeModulo = ($_Biscoito->getModulo() == 'administrador') ? $_Biscoito->getModuloAuxiliar() : $_Biscoito->getModulo();
 
         if (!file_exists($filename))
@@ -153,7 +154,24 @@ class TDatabaseUtil {
 
 class TMySQLUtil implements TIDatabaseUtil {
 
-    private $conexao;
+    private $namespace;
+    private $tabela;
+    private $obj;
+
+    private function onCreateTable() {
+
+        $orm = TORM::singleton();
+
+        $configuracaoClasse = TDatabaseUtil::getConfiguracaoClasse($this->namespace);
+
+        $classe = TDatabaseUtil::getClasseTabela($this->tabela);
+
+        $onCreateEvent = "on{$classe}Create";
+
+        foreach (explode('\n', $configuracaoClasse->sql->$onCreateEvent) as $comando)
+            if (!empty($comando))
+                $orm->ExecutarComando($comando, $this->obj);
+    }
 
     /**
      *
@@ -163,27 +181,31 @@ class TMySQLUtil implements TIDatabaseUtil {
      */
     public function TratarErro($pdoE, $obj, $comando) {
 
-        $namespace = "";
-        $orm = null;
+        $orm = TORM::singleton();
+        
+        $this->obj = $obj;
 
-        $namespace = get_class($obj);
-        $orm = new TORM; 
+        $this->namespace = get_class($this->obj);                
 
         switch ($pdoE->getCode()) {
 
             case 1005: // TABELA UTILIZADA DURANTE UM COMANDO DE ADICAO DE CHAVE ESTRANGEIRA NAO EXISTE
 
-                $tabela = TDatabaseUtil::getTabelaComandoChaveEstrangeira($comando);
+                $this->tabela = TDatabaseUtil::getTabelaComandoChaveEstrangeira($comando);
 
-                $orm->CriarTabela($tabela, $obj);
+                $orm->CriarTabela($this->tabela, $this->obj);
+
+                $this->onCreateTable($this->tabela, $this->obj);
 
                 return true;
 
             case 1146: // TABELA NAO EXISTE
 
-                $tabela = TDatabaseUtil::getClasseNamespace($namespace);
+                $this->tabela = TDatabaseUtil::getClasseNamespace($this->namespace);
 
-                $orm->CriarTabela($tabela, $obj);
+                $orm->CriarTabela($this->tabela, $this->obj);
+
+                $this->onCreateTable($this->tabela, $this->obj);
 
                 return true;
 
@@ -195,15 +217,15 @@ class TMySQLUtil implements TIDatabaseUtil {
 
                 $configuracaoClasse = array();
 
-                $tabela = TDatabaseUtil::getClasseNamespace($namespace);
-                
-                #var_dump($tabela);
+                $this->tabela = TDatabaseUtil::getClasseNamespace($this->namespace);
 
-                $classe = TDatabaseUtil::getClasseTabela($tabela);
+                #var_dump($this->tabela);
+
+                $classe = TDatabaseUtil::getClasseTabela($this->tabela);
 
                 #var_dump($classe);
 
-                $configuracaoClasse = TDatabaseUtil::getConfiguracaoClasse($namespace);
+                $configuracaoClasse = TDatabaseUtil::getConfiguracaoClasse($this->namespace);
 
                 #var_dump($configuracaoClasse);
 
@@ -216,26 +238,25 @@ class TMySQLUtil implements TIDatabaseUtil {
 
                 #var_dump($campoInexistente); 
 
-                if ((strpos($campoInexistente, '_id') === false) && (in_array($campoInexistente, $atributosClasse))) 
-                    $orm->AdicionarCampo($tabela, $campoInexistente, $configuracaoClasse->classes->$classe->$campoInexistente, $obj);
-                
+                if ((strpos($campoInexistente, '_id') === false) && (in_array($campoInexistente, $atributosClasse)))
+                    $orm->AdicionarCampo($this->tabela, $campoInexistente, $configuracaoClasse->classes->$classe->$campoInexistente, $this->obj);
+
                 else if (in_array($campoInexistente, $atributosClasse)) {
 
                     $configuracaoCampoInexistente = $configuracaoClasse->classes->$classe->$campoInexistente;
-                    
-                    $nulo = ($configuracaoCampoInexistente['nulo'] == 'true') ? '' : 'NOT NULL';                    
-                    
-                    $orm->AdicionarCampo($tabela, $campoInexistente, "INTEGER $nulo", $obj);
 
-                    $tabelaEstrangeira = $GLOBALS['_Biscoito']->getClasseRelacionamento($tabela, $campoInexistente);
+                    $nulo = ($configuracaoCampoInexistente['nulo'] == 'true') ? '' : 'NOT NULL';
 
-                    $nomeChaveEstrangeira = sprintf('fk_%s_%s', $tabela, $tabelaEstrangeira);
+                    $orm->AdicionarCampo($this->tabela, $campoInexistente, "INTEGER $nulo", $this->obj);
 
-                    $orm->AdicionarChaveEstrangeira($nomeChaveEstrangeira, $tabela, $campoInexistente, $tabelaEstrangeira, 'id', $obj);
-                    
+                    $tabelaEstrangeira = $GLOBALS['_Biscoito']->getClasseRelacionamento($this->tabela, $campoInexistente);
+
+                    $nomeChaveEstrangeira = sprintf('fk_%s_%s', $this->tabela, $tabelaEstrangeira);
+
+                    $orm->AdicionarChaveEstrangeira($nomeChaveEstrangeira, $this->tabela, $campoInexistente, $tabelaEstrangeira, 'id', $this->obj);
                 } else if (substr($campoInexistente, 0, -3) == $defaultTable) {
-                    ORM::adicionarCampo($classe, $campoInexistente, 'INTEGER NOT NULL', $conexao);
-                    ORM::adicionarChaveEstrangeira('fk_' . $campoInexistente, SQLUtil::retornaTabelaComando($comando), $campoInexistente, $defaultTable, 'id', $conexao);
+                    $orm->AdicionarCampo($classe, $campoInexistente, 'INTEGER NOT NULL', $conexao);
+                    $orm->AdicionarChaveEstrangeira('fk_' . $campoInexistente, SQLUtil::retornaTabelaComando($comando), $campoInexistente, $defaultTable, 'id', $conexao);
                 }
                 else
                     return false;
@@ -250,7 +271,7 @@ class TMySQLUtil implements TIDatabaseUtil {
 
                 exit;
 
-            default: echo TDatabaseUtil::MontarMensagemErro($pdoE->getCode(), $pdoE->getMessage());
+            default: echo TDatabaseUtil::MontarMensagemErro($pdoE->getCode(), $pdoE->getMessage(), $comando);
 
                 exit;
         }
@@ -259,6 +280,17 @@ class TMySQLUtil implements TIDatabaseUtil {
 }
 
 class TORM {
+
+    private static $instance;
+
+    public static function singleton() {
+        if (!isset(self::$instance)) {
+            $c = __CLASS__;
+            self::$instance = new $c;
+        }
+
+        return self::$instance;
+    }
 
     // <editor-fold defaultstate="collapsed" desc="public static function adicionarCampo($tabela, $nomeCampo, $informacaoCampo, &$conexao)">
     /**

@@ -32,7 +32,6 @@ class TObjeto {
      * @var bool 
      */
     private $FbCriadoOrm;
-    
     protected $FiQuantidade;
 
     public function getId() {
@@ -84,7 +83,7 @@ class TObjeto {
         unset($this->$attr);
         return true;
     }
-    
+
     private function setFiQuantidade($value) {
         $this->FiQuantidade = $value;
     }
@@ -120,16 +119,14 @@ class TObjeto {
         return property_exists($obj, $attr);
     }
 
-    private function CarregarArray(Array $row) {
+    public function CarregarForm(Array $row) {
         foreach ($row as $attr => $value)
-            if (!ExistePropriedade($this, $attr))
-                throw new InvalidArgumentException('Atributo inexistente na classe \'' . __CLASS__ . '\': ' . $attr);
-            else
-                $this->$attr = $value;
+            if ($this->ExistePropriedade($this, $attr)) {
+                $setAttr = "set$attr";
+                $this->$setAttr($value);
+            }
 
-        $this->FobAntigo = clone($this);
-
-        $this->FiEstado = READED;
+        $this->FiEstado = UPDATED;
     }
 
     public function CarregarObjeto($obj) {
@@ -348,19 +345,19 @@ class TObjeto {
 
         $bd->AbrirConexao();
 
-        $bd->ExecutarComando($query, $this);                
-        
-        if (!$this->getId()) {            
-            
+        $bd->ExecutarComando($query, $this);
+
+        if (!$this->getId()) {
+
             $query = "SELECT max(id) id FROM $table";
-            
+
             $ultimoRegistro = $bd->Selecionar($query);
-            
+
             $this->FiId = $ultimoRegistro[0]->id;
         }
 
         foreach ($queuedQueries as $query)
-            $bd->ExecutarComando($query, $this);       
+            $bd->ExecutarComando($query, $this);
 
         $this->FobAntigo = clone($this);
 
@@ -375,22 +372,22 @@ class TObjeto {
 
         $attr = $newObj;
     }
-    
+
     public function QuantidadeRegistrados($whereCampo = null, $whereRelacao = null, $whereValor = null) {
-        
+
         $table = TDatabaseUtil::getClasseNamespace(get_class($this));
-        
+
         $query = "SELECT count(id) FiQuantidade FROM $table";
-        
+
         if (!is_null($whereValor))
             $query.= " WHERE $whereCampo $whereRelacao $whereValor";
-        
+
         $bd = new TDatabase;
-        
-        $bd->AbrirConexao();                
-        
+
+        $bd->AbrirConexao();
+
         $quantidade = $bd->Selecionar($query, $this);
-        
+
         return $quantidade[0]->FiQuantidade;
     }
 
@@ -454,7 +451,7 @@ class TObjeto {
         $bd->AbrirConexao();
 
         $dados = $bd->Selecionar($query, $this);
-        
+
         return $dados[0];
     }
 

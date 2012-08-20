@@ -82,10 +82,8 @@ class TTipoUsuarioControl {
         $tipoUsuario = new TTipoUsuario();
         
         $tipoUsuario->CarregarSerial($_REQUEST['obj']);
-        
-        $tipoUsuario->setNome($_REQUEST['nome']);
-        
-        $tipoUsuario->setFlag($_REQUEST['flag']);
+                
+        $tipoUsuario->CarregarForm($_REQUEST);
         
         $tipoUsuario->Salvar();
         
