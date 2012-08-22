@@ -140,10 +140,10 @@ class TBiscoito {
 
             if (strpos($_SERVER['SERVER_SIGNATURE'], 'Unix') !== false)
                 $this->soServidor = 'Linux';
-            
+
             else if (strpos($_SERVER['SERVER_SIGNATURE'], 'Win32') !== false)
                 $this->soServidor = 'Windows';
-            
+
             else
                 $this->soServidor = 'Mac';
         }
@@ -366,9 +366,9 @@ class TBiscoito {
      */
     public function ordenarObjetos($arrayObjetos, $atributo, $ordem = SORT_ASC) {
 
-        $resolucaoFormat = 'return (strtolower($arrayObjetos[$j+1]->get%s()) <= strtolower($arrayObjetos[$j]->get%s()));';
+        $resolucaoFormat = 'return (strtolower($arrayObjetos[$j+1]->get%s()) %s strtolower($arrayObjetos[$j]->get%s()));';
 
-        $resolucaoString = sprintf($resolucaoFormat, $atributo, $atributo);
+        $resolucaoString = sprintf($resolucaoFormat, $atributo, $ordem == SORT_ASC ? '<' : '>', $atributo);
 
         for ($i = 0, $quantidadeObjetos = count($arrayObjetos); $i < $quantidadeObjetos; $i++) {
 
@@ -385,9 +385,6 @@ class TBiscoito {
                 }
             }
         }
-
-        if ($ordem == SORT_DESC)
-            $arrayObjetos = array_reverse($arrayObjetos);
 
         return $arrayObjetos;
     }
@@ -482,15 +479,15 @@ class TBiscoito {
     public function requisitarAcao($classe, $acao) {
 
         if (!class_exists($classe)) {
-            
+
             $classe = $this->getClasseControleModuloAvulso($this->variaveisDaURL[0]);
-            
+
             if (empty($classe))
                 throw new Exception('ERRRRRRO');
-        }       
+        }
 
         $vetor = new Util\TVetor(get_class_methods($classe));
-        
+
         $possivelAcao = @str_replace('_', '', $this->variaveisDaURL[1]);
 
         if (count(@$vetor->Procurar($possivelAcao)) > 0)

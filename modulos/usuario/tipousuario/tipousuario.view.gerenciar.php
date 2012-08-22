@@ -4,27 +4,45 @@ use Biscoito\Modulos\Usuario;
 use Biscoito\Modulos\Usuario\TipoUsuario;
 use Biscoito\Modulos\Administrador\TAdministradorControl;
 
-TAdministradorControl::CabecalhoModulo('Usu·rios', 'administrador');
+TAdministradorControl::CabecalhoModulo('Usu√°rios', 'administrador/usuario');
+
+include_once('tipousuario.js.php');
+
 ?>
 
 <article class="subhead">    
 
-    <header class="row page-header">        
-        <div class="pull-right">
-            <button class="btn">Gerenciar Tipos de Usu·rio</button>
-            <button type="button" onclick="_Biscoito.IrPara('administrador/usuario/adicionar')" class="btn btn-primary">
+    <header class="row-fluid page-header">        
+        <div class="span6"><h2>Tipos de Usu√°rio</h2></div>
+        <div class="span6 align-right">            
+            <button type="button" onclick="_Biscoito.IrPara('administrador/usuario/tipousuario/adicionar')" class="btn btn-primary">
                 <i class="icon-plus"></i> 
-                Adicionar Usu·rio
+                Adicionar Tipo de Usu√°rio
             </button>
         </div>
     </header>    
 
-    <div class="row">                
+    <div class="row-fluid">                
 
-        <?php foreach (TipoUsuario\TTipoUsuarioControl::ListarTiposUsuario() as $tipoUsuario) : ?>
-            <h3><?php echo $tipoUsuario->getNome(); ?></h3>
-            <?php Usuario\TUsuarioControl::ExibirTabelaUsuariosPorTipo($tipoUsuario->getId()); ?>
-        <?php endforeach; ?>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th></th>                    
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach (TipoUsuario\TTipoUsuarioControl::ListarTiposUsuario() as $tipoUsuario) : ?>
+                    <tr>
+                        <td><?php echo $tipoUsuario->getNome(); ?></td>                
+                        <td class="align-right">                            
+                            <button class="btn" onclick="_Biscoito.IrPara('administrador/usuario/tipousuario/editar/<?php echo $tipoUsuario->getId() ?>')"><span class="icon icon-pencil"></span> Editar</button>                            
+                            <button class="btn" onclick="tipoUsuarioJSForm.btnExcluir_Click(<?php echo $tipoUsuario->getId() ?>,this)"><span class="icon icon-remove"></span> Excluir</button> 
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
 
         <div class="clear"></div>        
 

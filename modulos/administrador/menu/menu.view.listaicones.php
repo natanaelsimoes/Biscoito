@@ -12,7 +12,7 @@
             <a data-next="#section2" data-prior="#section1" href="#" class="next-section"></a>
             <?php endif; ?>
                 
-            <h2>módulos</h2>
+            <h2>mÃ³dulos</h2>
             
             <?php for ($i = 0, $section = 1, $maxMenuList = count($menuList), $menu = $menuList[0]; $i < $maxMenuList; $i++, @$menu = $menuList[$i]) : ?>    
             
@@ -24,7 +24,7 @@
                 <a data-next="#section<?php echo ($section + 1) ?>" data-prior="#section<?php echo $section ?>" href="#" class="next-section"></a>    
                 <?php endif; ?>
                 
-                <h2>módulos</h2>   
+                <h2>mï¿½dulos</h2>   
                 <?php endif; ?>    
                 
                     <a class="tile tilesquareimage bg-color-white" href="<?php echo $GLOBALS['_Biscoito']->montarLink('administrador', $menu->getDiretorio()); ?>">                        

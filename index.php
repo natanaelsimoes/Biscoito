@@ -9,8 +9,6 @@ use Biscoito\Lib\Util;
 
 session_start();
 
-header('Content-Type: text/html; charset=iso-8859-1');
-
 require 'cms/lib/biscoito/biscoito.class.php';
 require 'cms/lib/biscoito/biscoitoconfig.class.php';
 require 'cms/lib/biscoito/biscoitorouter.class.php';
@@ -20,7 +18,7 @@ require 'cms/lib/database/objeto.class.php';
 require 'cms/lib/util/autoload.function.php';
 
 /**
- * Instancia global do objeto de configuracao de toda a Framework
+ï¿½*ï¿½Instancia global do objeto de configuracao de toda a Framework
  * @global Biscoito\Lib\TBiscoitoConfig $_BiscoitoConfig
  */
 global $_BiscoitoConfig;
@@ -28,9 +26,9 @@ global $_BiscoitoConfig;
 $_BiscoitoConfig = new Lib\TBiscoitoConfig;
 
 /**
- * Instancia global do objeto principal de gerenciamento de toda a Framework
- * @global Biscoito\Lib\TBiscoito $_Biscoito 
- */
+ï¿½*ï¿½Instancia global do objeto principal de gerenciamento de toda a Framework
+ï¿½*ï¿½@globalï¿½Biscoito\Lib\TBiscoitoï¿½$_Biscoitoï¿½
+ï¿½*/
 global $_Biscoito;
 
 $_Biscoito = new Lib\TBiscoito;

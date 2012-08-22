@@ -7,7 +7,7 @@ use Biscoito\Modulos\Administrador\Menu;
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <title>Biscoito - Painel Administrativo</title>
         <?php $GLOBALS['_Biscoito']->usarJQuery(); ?>
         <?php include_once('administrador.css.entrar.php'); ?>
@@ -23,9 +23,9 @@ use Biscoito\Modulos\Administrador\Menu;
             <section>
                 <form id="FrmLogin" method="post" action="<?php echo $GLOBALS['_Biscoito']->getSite() . 'usuario/login/'; ?>">
                     <fieldset class="glass black">
-                        <p><?php echo $_SESSION['BISCOITO_SESSAO_MSG'] ?></p>
+                        <p><?php if(isset($_SESSION['BISCOITO_SESSAO_MSG'])) echo $_SESSION['BISCOITO_SESSAO_MSG'] ?></p>
                         <p>
-                            <label>Usuário:</label>
+                            <label>UsuÃ¡rio:</label>
                             <input type="text" name="usuario" id="usuario" />
                         </p>
                         <p>
