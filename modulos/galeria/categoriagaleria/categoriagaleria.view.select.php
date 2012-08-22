@@ -10,7 +10,7 @@ include_once('categoriagaleria.js.php');
 <select name="categoriagaleria" id="selectCategoriaGaleria" class="input-xlarge">
     <option value="">Selecione uma categoria...</option>
     <?php foreach ($categorias as $categoria) { ?>
-        <option value='<?php echo $categoria; ?>'><?php echo $categoria->getNome() ?></option>
+        <option <?php if ($categoria->getId() == $categoria_id) echo 'selected="selected"' ?> value='<?php echo $categoria; ?>'><?php echo $categoria->getNome() ?></option>
     <?php } ?>
 </select>
 <p class="help-block">

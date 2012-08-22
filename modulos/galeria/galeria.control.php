@@ -101,26 +101,38 @@ class TGaleriaControl {
 
         $galeria = new TGaleria();
 
-        if ($_POST['adicionarNovasFotos'] != 'true') {
+        if (@$_POST['adicionarNovasFotos'] != 'true') {
 
             $categoria = new CategoriaGaleria\TCategoriaGaleria();
 
             $categoria->CarregarSerial($_POST['categoriagaleria']);
 
+            $galeria = new TGaleria();
+
+            if ($_POST['galeria_id'] != '')
+                $galeria = $galeria->ListarPorId($_POST['galeria_id']);
+
             $galeria->setNome($_POST['nome']);
 
             $galeria->setCategoria_id($categoria->getId());
 
+            $galeria->setDescricao($_POST['descricao']);
+
+            $galeria->setLocal($_POST['local']);
+
             $galeria->setFonte($_POST['fonte']);
 
             $this->SalvarCapaGaleria($galeria);
+            
+            $galeria->Salvar();
         } else {
 
             $galeria = $galeria->ListarPorId($_POST['galeria_id']);
 
-            if (isset($_SESSION['GALERIA_FOTOS_CAPA']))
-                $this->SalvarCapaGaleria($galeria);
-        }
+            $this->SalvarCapaGaleria($galeria);
+            
+            $galeria->Salvar();
+        }        
 
         foreach ($_SESSION['GALERIA_FOTOS'] as $serial) {
 
@@ -136,15 +148,16 @@ class TGaleriaControl {
 
     private function SalvarCapaGaleria(TGaleria &$galeria) {
 
-        $capa = new TFoto();
+        if (isset($_SESSION['GALERIA_FOTOS_CAPA'])) {
 
-        $capa->CarregarSerial($_SESSION['GALERIA_FOTOS_CAPA']);
+            $capa = new TFoto();
 
-        unset($_SESSION['GALERIA_FOTOS_CAPA']);
+            $capa->CarregarSerial($_SESSION['GALERIA_FOTOS_CAPA']);
 
-        $galeria->setCapa_id($capa->getId());
+            unset($_SESSION['GALERIA_FOTOS_CAPA']);
 
-        $galeria->Salvar();
+            $galeria->setCapa_id($capa->getId());
+        }
     }
 
     public function ExcluirGaleriaAction() {
@@ -173,6 +186,17 @@ class TGaleriaControl {
         $galeria = $galerias->ListarPorId($_Biscoito->getVariaveisDaURL(2));
 
         include('galeria.view.editarfotos.php');
+    }
+
+    public function EditarGaleria() {
+
+        global $_Biscoito;
+
+        $galeria = new TGaleria();
+
+        $galeria = $galeria->ListarPorId($_Biscoito->getVariaveisDaURL(2));
+
+        include('galeria.view.editargaleria.php');
     }
 
     public function GerenciarFotos() {

@@ -18,11 +18,13 @@
     
     .galeria .album_capa {        
         position: relative;          
-        width: 320px;
+        max-width: 320px;
+        height: 240px;
         margin-bottom: 10px;
     }
     
     .galeria .album_capa img {
+        max-width: 320px;
         height: 240px;
     }    
     
@@ -58,5 +60,5 @@
     
     #dropbox { padding-top: 20px; }
     .fotoInfo { float: left; margin-left: 25px; }
-    .fotoGaleria { width: 260px; height: 195px; }
+    .fotoGaleria { max-width: 260px; height: 195px; }
 </style>

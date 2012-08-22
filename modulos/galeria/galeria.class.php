@@ -13,6 +13,7 @@ class TGaleria extends TObjeto {
     private $fonte;
     private $dataCriacao;
     private $publicado;
+    private $local;
     private $categoria_id;
     private $capa_id;
 
@@ -45,13 +46,17 @@ class TGaleria extends TObjeto {
         return $this->publicado;
     }
 
+    public function getLocal() {
+        return $this->local;
+    }
+
     public function getCapa() {
         $foto = new TFoto();
         if (!empty($this->capa_id))
             $foto = $foto->ListarPorId($this->capa_id);
         return $foto;
     }
-    
+
     public function getCapa_id() {
         return $this->capa_id;
     }
@@ -80,13 +85,17 @@ class TGaleria extends TObjeto {
     public function setFonte($fonte) {
         $this->fonte = $fonte;
     }
-    
+
     public function setDataCriacao($dataCriacao) {
         $this->dataCriacao = $dataCriacao;
     }
 
     public function setPublicado($publicado) {
         $this->publicado = $publicado;
+    }
+
+    public function setLocal($local) {
+        $this->local = $local;
     }
 
     public function setCapa_id($capa_id) {

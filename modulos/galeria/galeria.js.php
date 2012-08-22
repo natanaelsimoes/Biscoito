@@ -7,7 +7,7 @@
         
         this.getFormName = function() { return formName; }
         
-        this.DOMId = sprintf('%s %s', formName, ' #idGaleria');                
+        this.DOMId = sprintf('%s %s', formName, ' #galeria_id');                
         
         this.DOMNome = sprintf('%s %s', formName, '#textNome');
         
@@ -64,24 +64,25 @@
         this.btnSalvar_Click = function() {                    
         
             adicionandoGaleria = $('#adicionandoGaleria').val();                        
+            
+            _Biscoito.ExecutarAcao(sprintf('galeria/adicionar_galeria_action'), $(galeria.getFormName()).serialize(), true);
         
-            if(Validar(galeria) || adicionandoGaleria == 'false') {
-                          
-                _Biscoito.ExecutarAcao('galeria/adicionar_galeria_action', $(galeria.getFormName()).serialize(), true); 
+            if(Validar(galeria) || adicionandoGaleria == 'false') {                                                                       
                 
                 bsUtilForm = new BootstrapUtilForm();
                 
                 if (adicionandoGaleria == 'false') {
                 
-                    bsUtilForm.alert('Galeria adicionada com sucesso!', function() {
-                        _Biscoito.IrPara('administrador/galeria');
+                    bsUtilForm.alert('Galeria salva com sucesso!', function() {
+                        if(galeria.getId() == '') { _Biscoito.IrPara('administrador/galeria'); }                        
+                        else { _Biscoito.IrPara(sprintf('administrador/galeria/editarfotos/%s/page/%s',galeria.getId(),paginaAtual))}
                     });               
                 
                 }
                 
                 else {
                     
-                    galeria_id = $('#galeria_id').val();
+                    galeria_id = $('#galeria_id').val();                                
                     
                     bsUtilForm.alert('Novos fotos adicionadas com sucesso!', function() {
                         _Biscoito.IrPara('administrador/galeria/editarfotos/'+galeria_id);
@@ -90,6 +91,12 @@
                 }
             
             }                                            
+        
+        }
+        
+        this.btnEditar_Click = function(id) {
+        
+            _Biscoito.AbrirPopupDinamico('FrmGaleria', 'galeria/editar_galeria/'+id);
         
         }
         
@@ -253,6 +260,12 @@
         this.indexFotoCanvas;
         
         this.canvasFotos;       
+        
+        this.width = 1024;
+        
+        this.height = 768;
+        
+        this.fill = true;
 
         var create = function() {
         
@@ -274,7 +287,9 @@
             
             logo = new Image();           
         
-            logo.src = '<?php echo $GLOBALS['_Biscoito']->getSite(); ?>modulos/galeria/fotos/logo_template.png';
+            logo.src = '<?php echo $GLOBALS['_Biscoito']->getSite(); ?>modulos/galeria/fotos/logo_template.png';                        
+            
+            self.mudarCorPreenchimento();
         
         }
         
@@ -311,6 +326,26 @@
         
             self.manipularImagens(files);
         
+        }
+        
+        this.mudarCorPreenchimento = function() {
+            
+            fillValue = $('#cmbFotoFill').val();
+            
+            self.fill = (fillValue != '');            
+            
+            if (self.fill) {
+            
+                fotoFill = document.getElementById('fotoFill');
+            
+                contextFotoFill = fotoFill.getContext('2d');
+            
+                contextFotoFill.fillStyle = fillValue;
+            
+                contextFotoFill.fillRect(0,0,self.width,self.height);
+            
+            }
+            
         }
         
         this.btnEnviarFotos_Click = function() {
@@ -448,27 +483,34 @@
         
             c.classList.add('fotoGaleria');                
         
-            cx = c.getContext( '2d' )
+            cx = c.getContext('2d');                                                                        
         
             c.width = thumbwidth;
         
             c.height = thumbheight;
         
-            var dimensions = resize( img.width, img.height, thumbwidth, thumbheight );
+            var dimensions = resize( img.width, img.height, thumbwidth, thumbheight );                                           
+            
+            if(!self.fill) {
+                
+                c.width = dimensions.w;
+                
+                c.height = dimensions.h;
+                
+                cx.drawImage(img, 0, 0, dimensions.w, dimensions.h);
+                
+            }
+            else {
+             
+                cx.drawImage(document.getElementById('fotoFill'), 0,0,thumbwidth,thumbheight);
        
-            c.width = dimensions.w;
+                cx.drawImage(img, dimensions.x, dimensions.y, dimensions.w, dimensions.h);
+            
+            }
         
-            c.height = dimensions.h;
+            cx.globalAlpha = 0.9;                        
         
-            dimensions.x = 0;
-        
-            dimensions.y = 0;               
-       
-            cx.drawImage(img, dimensions.x, dimensions.y, dimensions.w, dimensions.h);
-        
-            cx.globalAlpha = 0.9;
-        
-            cx.drawImage(logo, dimensions.x, dimensions.y);
+            cx.drawImage(logo, 0, 0);
         
             return c;
         

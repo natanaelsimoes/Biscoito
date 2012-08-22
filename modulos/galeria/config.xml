@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <modulo_config>
     <nome>Galeria</nome>
-    <descricao></descricao>
-    <autor></autor>
-    <versao></versao>
-    <data_criacao></data_criacao>
+    <descricao>Módulo padrão do Biscoito para gerenciamento de galerias de imagens.</descricao>
+    <autor>Natanael Simões</autor>
+    <versao>1.0</versao>
+    <data_criacao>15/06/2012</data_criacao>
     <namespace>Biscoito\Modulos\Galeria</namespace>
     <index>
         <controle>TGaleriaControl</controle>
@@ -18,6 +18,7 @@
             <fonte>VARCHAR(200)</fonte>
             <dataCriacao>TIMESTAMP NOT NULL DEFAULT now()</dataCriacao>
             <publicado>CHAR(1) NOT NULL DEFAULT 'S'</publicado>
+            <local>VARCHAR(150)</local>
             <categoria_id relacionamento="TCategoriaGaleria" cardinalidade="1"></categoria_id>
             <capa_id relacionamento="TFoto" cardinalidade="1" nulo="true"></capa_id>
         </TGaleria>
@@ -36,4 +37,20 @@
         <TLogomarcaControl sub-modulo="logomarca" arquivo="logomarca.control.php" controle="true"></TLogomarcaControl>
         <TLogomarca arquivo="logomarca.class.php"></TLogomarca>
     </classes>
+    <configuracoes>
+        <opcao tipo="secao">
+            <nome>Redimensionamento</nome>
+            <info>Toda imagens enviado pela galeria será redimensionada para a seguinte configuração</info>
+            <opcao>
+                <nome>Largura (px)</nome>
+                <info>Valor em pixels da largura da imagem a ser gerada</info>
+                <valor>1024</valor>
+            </opcao>
+            <opcao>
+                <nome>Altura (px)</nome>
+                <info>Valor em pixels da altura da imagem a ser gerada</info>
+                <valor>768</valor>
+            </opcao>
+        </opcao>
+    </configuracoes>
 </modulo_config>
