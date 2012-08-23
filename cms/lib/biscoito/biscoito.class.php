@@ -308,7 +308,7 @@ class TBiscoito {
     }
 
     public function getVariaveisDaURL($index = null) {
-        return (is_null($index)) ? $this->variaveisDaURL : $this->variaveisDaURL[$index];
+        return (is_null($index)) ? $this->variaveisDaURL : (array_key_exists($index, $this->variaveisDaURL)) ? $this->variaveisDaURL[$index] : null;
     }
 
     /**
