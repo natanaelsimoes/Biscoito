@@ -29,6 +29,8 @@
                 
                     <a class="tile tilesquareimage bg-color-white" href="<?php echo $GLOBALS['_Biscoito']->montarLink('administrador', $menu->getDiretorio()); ?>">                        
                         
+                        <div class="bottom-left tile-label"><?php echo $menu->getNome(); ?></div>
+                        
                         <?php echo $menu->getIcone(); ?>
                         
                     </a>
