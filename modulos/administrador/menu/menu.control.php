@@ -41,7 +41,7 @@ class TMenuControl {
 
         $xmlConfiguracaoModulo = simplexml_load_file("modulos/$modulo/config.xml");
 
-        $strNomeModulo = utf8_decode(strval($xmlConfiguracaoModulo->nome));
+        $strNomeModulo = strval($xmlConfiguracaoModulo->nome);
 
         $strIconeModulo = file_get_contents("modulos/$modulo/icone.svg");
 
