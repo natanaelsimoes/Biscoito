@@ -77,7 +77,7 @@ class TUsuarioControl {
 
         $usuario = new TUsuario();
 
-        $usuarios = $usuario->ListarTodosOnde('usuario', '=', "'$strUsuario'");
+        $usuarios = $usuario->ListarTodosOnde("usuario = '$strUsuario'");
 
         if (count($usuarios) == 1) {
 
@@ -122,7 +122,7 @@ class TUsuarioControl {
 
         $usuarios = new TUsuario;
 
-        $usuarios = $usuarios->ListarTodosOnde('tipousuario_id', '=', $tipo);
+        $usuarios = $usuarios->ListarTodosOnde("tipousuario_id = $tipo");
 
         $usuarios = $_Biscoito->ordenarObjetos($usuarios, 'nome', SORT_ASC);
 

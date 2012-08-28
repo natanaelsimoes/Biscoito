@@ -217,7 +217,7 @@ class TGaleriaControl {
 
         $paginacao->totalItens = $foto->QuantidadeRegistrados('galeria_id', '=', $galeria->getId());
 
-        $fotos = $foto->ListarTodosOnde('galeria_id', '=', $galeria->getId(), $pagina, $paginacao->itensPorPagina);
+        $fotos = $foto->ListarTodosOnde("galeria_id = {$galeria->getId()}", $pagina, $paginacao->itensPorPagina);
 
         $paginacao->Paginar();
 

@@ -413,7 +413,7 @@ class TObjeto {
         return $lista;
     }
 
-    public function ListarTodosOnde($campo, $sinal, $valor, $pagina = 1, $quantidade = null) {
+    public function ListarTodosOnde($filtroOnde, $pagina = 1, $quantidade = null) {
 
         $fields = "";
 
@@ -424,7 +424,7 @@ class TObjeto {
 
         $fields = substr($fields, 0, -1);
 
-        $query = " SELECT $table.id FiId,$fields FROM $table WHERE $campo $sinal $valor ";
+        $query = " SELECT $table.id FiId,$fields FROM $table WHERE $filtroOnde ";
 
         $bd = new TDatabase;
 
@@ -453,6 +453,46 @@ class TObjeto {
         $dados = $bd->Selecionar($query, $this);
 
         return $dados[0];
+    }
+    
+    public function ListarTodosOrdenadoPor($filtroOrdem, $pagina = 1, $quantidade = null) {
+
+        $fields = "";
+
+        $table = TDatabaseUtil::getClasseNamespace(get_class($this));
+
+        foreach (array_keys($this->MapearClasse($this)) as $col)
+            $fields.= "$col,";
+
+        $fields = substr($fields, 0, -1);
+
+        $query = " SELECT $table.id FiId,$fields FROM $table ORDER BY $filtroOrdem ";
+
+        $bd = new TDatabase;
+
+        $bd->AbrirConexao();
+
+        return $bd->Selecionar($query, $this, $pagina, $quantidade);
+    }
+    
+    public function ListarTodosOndeOrdenadorPor($filtroOnde, $filtroOrdem, $pagina = 1, $quantidade = null) {
+
+        $fields = "";
+
+        $table = TDatabaseUtil::getClasseNamespace(get_class($this));
+
+        foreach (array_keys($this->MapearClasse($this)) as $col)
+            $fields.= "$col,";
+
+        $fields = substr($fields, 0, -1);
+
+        $query = " SELECT $table.id FiId,$fields FROM $table WHERE $filtroOnde ORDER BY $filtroOrdem ";
+
+        $bd = new TDatabase;
+
+        $bd->AbrirConexao();
+
+        return $bd->Selecionar($query, $this, $pagina, $quantidade);
     }
 
     static public function MapearClasse($obj) {

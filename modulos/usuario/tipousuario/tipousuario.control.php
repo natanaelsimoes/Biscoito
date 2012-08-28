@@ -93,7 +93,7 @@ class TTipoUsuarioControl {
         
         $usuario = new \Biscoito\Modulos\Usuario\TUsuario();
         
-        echo count($usuario->ListarTodosOnde('tipousuario_id','=',$_REQUEST['id']));
+        echo count($usuario->ListarTodosOnde("tipousuario_id = {$_REQUEST['id']}"));
         
     }
     
