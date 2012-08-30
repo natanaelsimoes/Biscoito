@@ -328,6 +328,18 @@
             
         }
         
+        this.AbrirAguarde = function(msg) {
+            
+            self.AbrirPopupEstatico('aguarde-box', '<h1 class="align-center">Aguarde<h1><h3 class="align-center">...</h3><h3 class="align-center">'+msg+'</h3>');
+            
+        }
+        
+        this.FecharAguarde = function() {
+            
+            self.FecharPopup('aguarde-box');
+            
+        }
+        
     }
     
     var _Biscoito = new TBiscoitoJS();     
