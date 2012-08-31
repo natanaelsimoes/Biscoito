@@ -7,5 +7,5 @@
         </li>
     <?php endforeach; ?>    
     <li class="divider"></li>
-    <li><a href="#" onclick="_Biscoito.IrPara('administrador')"><i class="icon-home"></i> Início</a></li>
+    <li><a href="#" onclick="_Biscoito.IrPara('administrador')"><i class="icon-home"></i> InÃ­cio</a></li>
 </ul>

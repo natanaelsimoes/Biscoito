@@ -43,7 +43,7 @@ class TMenuControl {
 
         $strNomeModulo = strval($xmlConfiguracaoModulo->nome);
 
-        $strIconeModulo = file_get_contents("modulos/$modulo/icone.svg");
+        $strIconeModulo = @file_get_contents("modulos/$modulo/icone.svg");
 
         return new TMenu($strNomeModulo, $modulo, $strIconeModulo);
     }

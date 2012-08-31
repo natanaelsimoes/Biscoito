@@ -18,7 +18,7 @@ require 'cms/lib/database/objeto.class.php';
 require 'cms/lib/util/autoload.function.php';
 
 /**
-�*�Instancia global do objeto de configuracao de toda a Framework
+ * Instancia global do objeto de configuracao de toda a Framework
  * @global Biscoito\Lib\TBiscoitoConfig $_BiscoitoConfig
  */
 global $_BiscoitoConfig;
@@ -26,9 +26,9 @@ global $_BiscoitoConfig;
 $_BiscoitoConfig = new Lib\TBiscoitoConfig;
 
 /**
-�*�Instancia global do objeto principal de gerenciamento de toda a Framework
-�*�@global�Biscoito\Lib\TBiscoito�$_Biscoito�
-�*/
+ * Instancia global do objeto principal de gerenciamento de toda a Framework
+ * @global Biscoito\Lib\TBiscoito $_Biscoito;
+ */
 global $_Biscoito;
 
 $_Biscoito = new Lib\TBiscoito;

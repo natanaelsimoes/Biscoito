@@ -24,13 +24,11 @@
                 <a data-next="#section<?php echo ($section + 1) ?>" data-prior="#section<?php echo $section ?>" href="#" class="next-section"></a>    
                 <?php endif; ?>
                 
-                <h2>m�dulos</h2>   
+                <h2>módulos</h2>   
                 <?php endif; ?>    
                 
-                    <a class="tile tilesquareimage bg-color-white" href="<?php echo $GLOBALS['_Biscoito']->montarLink('administrador', $menu->getDiretorio()); ?>">                        
-                        
+                    <a class="tile tilesquareimage" href="<?php echo $GLOBALS['_Biscoito']->montarLink('administrador', $menu->getDiretorio()); ?>">                        
                         <div class="bottom-left tile-label"><?php echo $menu->getNome(); ?></div>
-                        
                         <?php echo $menu->getIcone(); ?>
                         
                     </a>
