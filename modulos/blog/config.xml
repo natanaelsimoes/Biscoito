@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<modulo_config>
+    <descricao>Blog</descricao>
+    <autor>Natanael Simões</autor>
+    <versao>1.0</versao>
+    <data_criacao>22/10/2012</data_criacao>
+    <namespace>Biscoito\Modulos\Blog</namespace>
+    <classes>
+        <TPostagemControl arquivo="postagem.control.php" controle="true"></TPostagemControl>
+        <TPostagem arquivo="postagem.class.php">
+            <Titulo>VARCHAR(300) NOT NULL</Titulo>            
+            <DataCriacao>TIMESTAMP NOT NULL DEFAULT 'now'</DataCriacao>
+            <DataAtualizacao nulo="true">TIMESTAMP DEFAULT 'now'</DataAtualizacao>
+            <DataPublicacao>TIMESTAMP NOT NULL DEFAULT 'now'</DataPublicacao>
+            <Categoria relacionamento="TCategoria" cardinalidade="1">INTEGER NOT NULL</Categoria>            
+            <Resumo nulo="true">VARCHAR(500)</Resumo>
+            <PalavrasChave nulo="true">VARCHAR(1000)</PalavrasChave>
+            <Texto>TEXT NOT NULL</Texto>            
+            <Publicado>CHAR(1) NOT NULL DEFAULT 'S'</Publicado>
+        </TPostagem>
+        <TCategoriaPostagemControl arquivo="categoriapostagem.control.php" controle="true"></TCategoriaPostagemControl>
+        <TCategoriaPostagem arquivo="categoriapostagem.class.php">
+            <Nome>VARCHAR(300) NOT NULL</Nome>
+            <Descricao>VARCHAR(1000) NOT NULL</Descricao>
+            <CategoriaPai nulo="true" relacionamento="TCategoriaPostagem" cardinalidade="1">INTEGER</CategoriaPai>
+        </TCategoriaPostagem>
+    </classes>
+</modulo_config>
