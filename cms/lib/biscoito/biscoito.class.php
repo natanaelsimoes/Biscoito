@@ -9,6 +9,7 @@ require_once('cms/lib/util/imagem.class.php');
 require_once('cms/lib/util/navegador.class.php');
 require_once('cms/lib/util/paginacao.class.php');
 require_once('cms/lib/util/vetor.class.php');
+require_once('cms/lib/util/html.class.php');
 
 define('PATHJQUERY', 'plugins/bootstrap/scripts/jquery-1.7.2.min.js');
 define('PATHJQUERYUI', 'cms/js/jquery-ui-1.8.20.custom.min.js');
