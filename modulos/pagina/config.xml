@@ -14,8 +14,7 @@
     <TPaginaControl arquivo="pagina.control.php" controle="true"></TPaginaControl>
     <TPagina arquivo="pagina.class.php">
       <Nome>VARCHAR(100) NOT NULL</Nome>
-      <Conteudo>TEXT</Conteudo>
-      <Pagina_id nulo="">INTEGER</Pagina_id>
+      <Conteudo>TEXT</Conteudo>      
     </TPagina>
   </classes>
   <sql>

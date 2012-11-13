@@ -226,9 +226,7 @@ class TGaleriaControl {
 
     public function CarregarGalerias() {
 
-        $paginacao = new Util\TPaginacao();
-
-        $pagina = $_POST['pagina'];
+        $paginacao = new Util\TPaginacao();       
 
         $galeria = new TGaleria();
 
@@ -236,7 +234,7 @@ class TGaleriaControl {
 
         $paginacao->totalItens = $galeria->QuantidadeRegistrados();
 
-        $galerias = $galeria->ListarTodos($pagina, $paginacao->itensPorPagina);
+        $galerias = $galeria->ListarTodos($_POST['pagina'], $paginacao->itensPorPagina);
 
         $paginacao->Paginar();
 

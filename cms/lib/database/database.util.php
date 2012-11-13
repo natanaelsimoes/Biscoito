@@ -231,8 +231,9 @@ class TMySQLUtil implements TIDatabaseUtil {
         $orm->CriarTabela($this->tabela, $this->obj);
         $this->onCreateTable($this->tabela, $this->obj);
         return true;
-      case 1146: // TABELA NAO EXISTE
-        $this->tabela = TDatabaseUtil::getClasseNamespace($this->namespace);
+      case 1146: // TABELA NAO EXISTE                
+        //$this->tabela = TDatabaseUtil::getClasseNamespace($this->namespace);
+        $this->tabela = TDatabaseUtil::getParametroErro($pdoE->getMessage());
         $orm->CriarTabela($this->tabela, $this->obj);
         $this->onCreateTable($this->tabela, $this->obj);
         return true;

@@ -11,9 +11,6 @@ class TImagem {
     private $nomeArquivoTemporario;
 
     function __construct($arquivo) {
-
-
-
         $this->nomeArquivoTemporario = $arquivo['tmp_name'];
         $image_info = getimagesize($this->nomeArquivoTemporario);
         $this->nomeArquivo = $arquivo['name'];
@@ -77,7 +74,6 @@ class TImagem {
     }
 
     function RedimensionarParaAltura($height) {
-
         $ratio = $height / $this->getHeight();
         $width = $this->getWidth() * $ratio;
         $this->resize($width, $height);

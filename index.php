@@ -23,7 +23,7 @@ require 'cms/lib/util/autoload.function.php';
  */
 global $_BiscoitoConfig;
 
-$_BiscoitoConfig = new Lib\TBiscoitoConfig;
+$_BiscoitoConfig = Lib\TBiscoitoConfig::singleton();
 
 /**
  * Instancia global do objeto principal de gerenciamento de toda a Framework
@@ -31,7 +31,7 @@ $_BiscoitoConfig = new Lib\TBiscoitoConfig;
  */
 global $_Biscoito;
 
-$_Biscoito = new Lib\TBiscoito;
+$_Biscoito = Lib\TBiscoito::singleton();
 
 $classeGateway = $_Biscoito->getClasseGateway();
 

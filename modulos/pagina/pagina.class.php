@@ -26,16 +26,6 @@ class TPagina extends TObjeto {
     $this->Conteudo = $value;
   }
 
-  private $Pagina_id;
-
-  public function getPagina_id() {
-    return $this->Pagina_id;
-  }
-
-  public function setPagina_id($value) {
-    $this->Pagina_id = $value;
-  }
-
 }
 
 ?>

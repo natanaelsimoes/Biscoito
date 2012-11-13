@@ -26,6 +26,17 @@ define('ADM_MODULOS', 'menu');
  */
 class TBiscoito {
 
+  private static $instance;
+
+  public static function singleton() {
+    if (!isset(self::$instance)) {
+      $c = __CLASS__;
+      self::$instance = new $c;
+    }
+
+    return self::$instance;
+  }
+
   /**
    * Namespace ao qual o modulo/auxiliar pertence
    * @var string
@@ -262,7 +273,7 @@ class TBiscoito {
    */
   public function getModulo($namespace = null) {
     if (is_null($namespace))
-      return $this->modulo;    
+      return $this->modulo;
     else {
       $arrPartesNamespace = array();
       $arrPartesNamespace = explode('\\', $namespace);
