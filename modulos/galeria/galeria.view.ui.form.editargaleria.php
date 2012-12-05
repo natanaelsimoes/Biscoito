@@ -6,6 +6,8 @@ use Biscoito\Modulos\Galeria\CategoriaGaleria\TCategoriaGaleriaControl;
 
 if (empty($galeria))
     $galeria = new TGaleria();
+
+include_once('galeria.js.php');
 ?>
 
 <script type="text/javascript">
@@ -22,7 +24,7 @@ if (empty($galeria))
 
             <div class="control-group">
 
-                <label class="control-label" for="textNome">Nome da Galeria:*</label>
+                <label class="control-label" for="textNome">Nome da Galeria:</label>
 
                 <div class="controls">
 
@@ -35,35 +37,11 @@ if (empty($galeria))
 
             <div class="control-group">
 
-                <label class="control-label" for="selectCategoriaGaleria">Categoria:*</label>
+                <label class="control-label" for="selectCategoriaGaleria">Categoria:</label>
 
                 <div class="controls selectCategoriaGaleria">
 
                     <?php TCategoriaGaleriaControl::ExibirSelecaoCategorias($galeria->getCategoria_Id()) ?>
-
-                </div>
-
-            </div>
-
-            <div class="control-group">
-
-                <label class="control-label" for="textDescricao">Descrição:</label>
-
-                <div class="controls">
-
-                    <textarea name="descricao" id="textDescricao"><?php echo $galeria->getDescricao(); ?></textarea>                    
-
-                </div>
-
-            </div>
-
-            <div class="control-group">
-
-                <label class="control-label" for="textLocal">Local:</label>
-
-                <div class="controls">
-
-                    <input type="text" class="input-xlarge" name="local" id="textLocal" value="<?php echo $galeria->getLocal(); ?>">   
 
                 </div>
 
@@ -81,7 +59,6 @@ if (empty($galeria))
 
             </div>
 
-            <?php if (empty($galeria)) : ?>
             <div class="control-group">
 
                 <label class="control-label">Progresso:</label>
@@ -97,24 +74,17 @@ if (empty($galeria))
                 </div>
 
             </div>            
-            <?php endif; ?>
 
         </fieldset>
-        
-        <input type="hidden" name="galeria_id" id="galeria_id" value="<?php echo $galeria->getId(); ?>">
 
     </form>
 
 </div>
 
 <div class="modal-footer align-center">       
-    
-    <input type="hidden" id="adicionandoGaleria" value="false">
 
-    <?php if (empty($galeria)) : ?>
     <a href="#" id="btnEnviando" class="btn disabled">Aguarde, enviando fotos...</a>
-    <?php endif; ?>
 
-    <a href="#" id="btnSalvar" class="btn btn-success <?php if (empty($galeria)) echo 'hidden' ?>" onclick="galeriaJSForm.btnSalvar_Click()"><i class="icon-checkmark-3"></i> Salvar</a>
+    <a href="#" id="btnSalvar" class="btn btn-success hidden" onclick="galeriaJSForm.btnSalvar_Click()"><i class="icon-checkmark-3"></i> Salvar</a>
 
 </div>

@@ -1,11 +1,14 @@
 <?php
 
 use Biscoito\Modulos\Usuario;
+
+global $_UsuarioLogado;
 ?>
 
-<table class="table table-striped">           
+<table class="table table-striped">
     <thead>
         <tr>
+            <?php if($_UsuarioLogado->getFlag() == 'ADMINISTRADOR' && $usuarios[0]->getFlag() != 'ADMINISTRADOR') : ?><th>Loja</th><?php endif; ?>
             <th>Nome</th>
             <th>Nome de Usuário</th>
         </tr>
@@ -16,6 +19,7 @@ use Biscoito\Modulos\Usuario;
             foreach ($usuarios as $usuario):
                 ?>
                 <tr>
+                    <?php if($_UsuarioLogado->getFlag() == 'ADMINISTRADOR' && $usuario->getFlag() != 'ADMINISTRADOR') : ?><td><?php echo $usuario->getLoja()->getNomeFantasia(); ?></td><?php endif; ?>
                     <td><?php echo sprintf('%s %s', $usuario->getNome(), $usuario->getSobrenome()); ?> <?php if (!$usuario->getStatus()) echo sprintf('(%s)',$usuario->getStatusStr()); ?></td>
                     <td><?php echo $usuario->getUsuario(); ?></td>
                     <td><button class="btn pull-right" onclick="_Biscoito.IrPara('administrador/usuario/editar/<?php echo $usuario->getId() ?>')"><span class="icon icon-pencil"></span> Editar</button></td>

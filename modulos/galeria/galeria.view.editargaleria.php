@@ -9,4 +9,4 @@ namespace Biscoito\Modulos\Galeria;
 
 </div>
 
-<?php include('galeria.view.ui.form.editargaleria.php') ?>
+<?php include('galeria.view.form.editargaleria.php') ?>

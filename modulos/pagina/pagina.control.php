@@ -4,6 +4,12 @@ namespace Biscoito\Modulos\Pagina;
 
 class TpaginaControl {
 
+  public function __call($acao, $args) {
+    global $_Biscoito;
+    $pagina = TpaginaControl::Listar($_Biscoito->getVariaveisDaURL(1));
+    include('pagina.view.padrao.php');
+  }
+
   public static function Gerenciar() {
     $paginas = new TPagina;
     $paginas = $paginas->ListarTodos();
@@ -11,30 +17,13 @@ class TpaginaControl {
   }
 
   public static function Salvar() {
-
-    $usuario = new TUsuario;
-
-    $usuario->CarregarSerial($_REQUEST['obj']);
-
-    $usuario->setNome($_REQUEST['nome']);
-
-    $usuario->setNomeDoMeio($_REQUEST['nomeMeio']);
-
-    $usuario->setSobrenome($_REQUEST['sobrenome']);
-
-    $usuario->setTipoUsuario_Id($_REQUEST['tipousuario_id']);
-
-    $usuario->setUsuario($_REQUEST['usuario']);
-
-    if (isset($_REQUEST['novaSenha']))
-      $usuario->setSenha(md5($_REQUEST['novaSenha']));
-
-    $usuario->Salvar();
-
-    $usuarioLogado = unserialize($_SESSION['BISCOITO_SESSAO_USUARIO']);
-
-    if ($usuarioLogado->getId() == $usuario->getId())
-      $_SESSION['BISCOITO_SESSAO_USUARIO'] = serialize($usuario);
+    $paginas = new TPagina;
+    $paginas->CarregarSerial($_REQUEST['obj']);
+    $paginas->setNome($_REQUEST['Nome']);
+    $paginas->setApelido($_REQUEST['Apelido']);
+    $paginas->setDescricao($_REQUEST['Descricao']);
+    $paginas->setConteudo($_REQUEST['Conteudo']);
+    $paginas->Salvar();
   }
 
   public static function Adicionar() {
@@ -44,27 +33,24 @@ class TpaginaControl {
   }
 
   public static function Editar() {
-
     global $_Biscoito;
-
-    $usuario = new TUsuario;
-
-    $usuario = $usuario->ListarPorId($_Biscoito->getVariaveisDaURL(2));
-
+    $pagina = new TPagina;
+    $pagina = $pagina->ListarPorId($_Biscoito->getVariaveisDaURL(2));
     $acao = 'Editar';
-
-    include('usuario.view.edicao.php');
+    include('pagina.view.edicao.php');
   }
 
   public static function Excluir() {
-
-    $usuario = new TUsuario;
-
-    $usuario->CarregarSerial($_REQUEST['obj']);
-
-    $usuario->DeletarRegistro();
+    $pagina = new TPagina;
+    $pagina->CarregarSerial($_REQUEST['obj']);
+    $pagina->DeletarRegistro();
   }
 
+  public static function Listar($apelido) {
+    $pagina = new TPagina;
+    $pagina = $pagina->ListarTodosOnde("TPagina.apelido = '$apelido'");
+    return $pagina[0];
+  }
 }
 
 ?>

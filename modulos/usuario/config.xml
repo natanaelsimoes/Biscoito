@@ -10,6 +10,10 @@
         <controle>TUsuarioControl</controle>
         <acao>Gerenciar</acao>
     </index>
+    <acesso>
+        ADMINISTRADOR
+        LOCAL
+    </acesso>
     <classes>
         <TUsuarioControl arquivo="usuario.control.php" controle="true"></TUsuarioControl>
         <TUsuario arquivo="usuario.class.php">
@@ -20,6 +24,7 @@
             <senha>VARCHAR(32) NOT NULL</senha>
             <ultimoLogin>TIMESTAMP</ultimoLogin>
             <tipousuario_id relacionamento="TTipoUsuario" cardinalidade="1">INTEGER NOT NULL</tipousuario_id>
+            <loja_id relacionamento="TLoja" cardinalidade="1" nulo="true">INTEGER</loja_id>
             <status>CHAR(1) NOT NULL DEFAULT '1'</status>
         </TUsuario>
         <TTipoUsuarioControl sub-modulo="tipousuario" arquivo="tipousuario.control.php" controle="true"></TTipoUsuarioControl>
@@ -29,14 +34,16 @@
         </TTipoUsuario>
     </classes>
     <sql>
-        <onTUsuarioCreate>
+        <ontusuariocreate>
             INSERT INTO tusuario (nome, sobrenome, usuario, senha, tipousuario_id) VALUES ('Administrador','Padrão','admin','21232f297a57a5a743894a0e4a801fc3', 2);
-        </onTUsuarioCreate>
-        <onTTipoUsuarioCreate>
+        </ontusuariocreate>
+        <onttipousuariocreate>
             ALTER TABLE ttipousuario ADD column nome VARCHAR(200) NOT NULL;
             ALTER TABLE ttipousuario ADD column flag VARCHAR(30) NOT NULL;
-            INSERT INTO ttipousuario (nome,flag) VALUES ('Usuário','USUARIO');
-            INSERT INTO ttipousuario (nome,flag) VALUES ('Administrador', 'ADMINISTRADOR');            
-        </onTTipoUsuarioCreate>
+            INSERT INTO ttipousuario (nome,flag) VALUES ('Cliente','USUARIO');
+            INSERT INTO ttipousuario (nome,flag) VALUES ('Administrador', 'ADMINISTRADOR');
+            INSERT INTO ttipousuario (nome,flag) VALUES ('Adm. Local', 'LOCAL');
+            INSERT INTO ttipousuario (nome,flag) VALUES ('Adm. Caixa', 'CAIXA');
+        </onttipousuariocreate>
     </sql>
 </modulo_config>

@@ -3,6 +3,7 @@
 namespace Biscoito\Modulos\Usuario;
 
 use Biscoito\Lib\Database\TObjeto;
+use Biscoito\Modulos\Loja;
 
 class TUsuario extends TObjeto {
 
@@ -13,6 +14,7 @@ class TUsuario extends TObjeto {
     private $senha;
     private $ultimoLogin;
     private $tipousuario_id;
+    private $loja_id;
     private $status;
 
     public function getNome() {
@@ -25,6 +27,10 @@ class TUsuario extends TObjeto {
 
     public function getSobrenome() {
         return $this->sobrenome;
+    }
+
+    public function getNomeCompleto() {
+        return trim(sprintf('%s %s %s', $this->nome, $this->nomeDoMeio, $this->sobrenome));
     }
 
     public function getUsuario() {
@@ -43,6 +49,20 @@ class TUsuario extends TObjeto {
         return $this->tipousuario_id;
     }
 
+    public function getLoja_Id() {
+        return $this->loja_id;
+    }
+
+    public function getLoja() {
+
+        $loja = new Loja\TLoja;
+
+        if (!empty($this->loja_id))
+            $loja = $loja->ListarPorId($this->loja_id);
+
+        return $loja;
+    }
+
     public function getStatus() {
         return $this->status;
     }
@@ -50,7 +70,7 @@ class TUsuario extends TObjeto {
     public function getStatusStr() {
         return ($this->status) ? 'ATIVADO' : 'DESATIVADO';
     }
-    
+
     public function getFlag() {
         $tipoUsuario = new TipoUsuario\TTipoUsuario;
         return $tipoUsuario->ListarPorId($this->getTipoUsuario_Id())->getFlag();
@@ -84,8 +104,19 @@ class TUsuario extends TObjeto {
         $this->tipousuario_id = $value;
     }
 
+    public function setLoja_Id($value) {
+        $this->loja_id = $value;
+    }
+
     public function setStatus($value) {
         $this->status = $value;
+    }
+
+    public function getTipoUsuario() {
+
+        $tipoUsuario = new TipoUsuario\TTipoUsuario;
+
+        return $tipoUsuario->ListarPorId($this->getTipoUsuario_Id());
     }
 
 }

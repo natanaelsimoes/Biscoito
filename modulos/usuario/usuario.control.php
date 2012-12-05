@@ -2,6 +2,8 @@
 
 namespace Biscoito\Modulos\Usuario;
 
+use Biscoito\Modulos\Administrador;
+
 class TUsuarioControl {
 
     public function __construct() {
@@ -11,6 +13,10 @@ class TUsuarioControl {
     }
 
     public static function Gerenciar() {
+
+        Administrador\TAdministradorControl::VerificarAdministradorLogado();
+
+        Administrador\TAdministradorControl::VerificarNivelAcesso('ADMINISTRADOR','LOCAL');
 
         include('usuario.view.gerenciar.php');
     }
@@ -30,6 +36,8 @@ class TUsuarioControl {
         $usuario->setTipoUsuario_Id($_REQUEST['tipousuario_id']);
 
         $usuario->setUsuario($_REQUEST['usuario']);
+
+        $usuario->setLoja_Id($_REQUEST['loja_id']);
 
         if (isset($_REQUEST['novaSenha']))
             $usuario->setSenha(md5($_REQUEST['novaSenha']));
@@ -57,27 +65,31 @@ class TUsuarioControl {
 
         $usuario = unserialize($_SESSION['BISCOITO_SESSAO_USUARIO']);
 
-        return $usuario->getNome();
+        if (is_object($usuario))
+            return $usuario->getNome();
     }
 
     public static function getSobrenomeUsuario() {
 
         $usuario = unserialize($_SESSION['BISCOITO_SESSAO_USUARIO']);
 
-        return $usuario->getSobrenome();
+        if (is_object($usuario))
+            return $usuario->getSobrenome();
     }
 
     public function Login() {
 
-        $strUsuario = $_POST['usuario'];
+        $strUsuario = $_REQUEST['usuario'];
 
-        $strSenha = $_POST['senha'];
+        $strSenha = $_REQUEST['senha'];
 
         $usuarios = array();
 
         $usuario = new TUsuario();
 
         $usuarios = $usuario->ListarTodosOnde("usuario = '$strUsuario'");
+
+        $_SESSION['BISCOITO_SESSAO_MSG'] = 'Usuário ou senha inválida. Tente novamente.';
 
         if (count($usuarios) == 1) {
 
@@ -89,24 +101,20 @@ class TUsuarioControl {
             }
         }
 
-        $_SESSION['BISCOITO_SESSAO_MSG'] = 'Usuário ou senha inválida. Tente novamente.';
-
         header('location:' . $_SERVER['HTTP_REFERER']);
     }
 
     public function Logout() {
-
+        global $_Biscoito;
         unset($_SESSION['BISCOITO_SESSAO_USUARIO']);
-
         unset($_SESSION['BISCOITO_SESSAO_MSG']);
-
-        header('location:' . $_SERVER['HTTP_REFERER']);
+        header('location:' . $_Biscoito->getSite());
     }
 
     public function AdministradorLogado() {
         if ($this->UsuarioLogado()) {
             $usuario = unserialize($_SESSION['BISCOITO_SESSAO_USUARIO']);
-            return ($usuario->getFlag() == 'ADMINISTRADOR');
+            return ($usuario->getStatus());
         }
         else
             return false;
@@ -120,9 +128,13 @@ class TUsuarioControl {
 
         global $_Biscoito;
 
+        global $_UsuarioLogado;
+
         $usuarios = new TUsuario;
 
-        $usuarios = $usuarios->ListarTodosOnde("tipousuario_id = $tipo");
+        $usuarios = ($_UsuarioLogado->getFlag() == 'ADMINISTRADOR') ? $usuarios->ListarTodosOnde("tipousuario_id = $tipo") : $usuarios->ListarTodosOnde("loja_id = {$_UsuarioLogado->getLoja_id()} AND tipousuario_id = $tipo");
+
+        $usuarios = $_Biscoito->ordenarObjetos($usuarios, 'loja');
 
         $usuarios = $_Biscoito->ordenarObjetos($usuarios, 'nome', SORT_ASC);
 
@@ -133,6 +145,8 @@ class TUsuarioControl {
 
     public static function Adicionar() {
 
+        Administrador\TAdministradorControl::VerificarAdministradorLogado();
+
         $usuario = new TUsuario;
 
         $acao = 'Adicionar';
@@ -141,6 +155,8 @@ class TUsuarioControl {
     }
 
     public static function Editar() {
+
+        Administrador\TAdministradorControl::VerificarAdministradorLogado();
 
         global $_Biscoito;
 
@@ -191,6 +207,23 @@ class TUsuarioControl {
         $usuario->CarregarSerial($_REQUEST['obj']);
 
         $usuario->DeletarRegistro();
+    }
+
+    public static function VerificarUsuario() {
+
+        $usuario = new TUsuario;
+
+        if (count($usuario->ListarTodosOnde("usuario = '{$_REQUEST['usuario']}'")) > 0)
+            echo '1';
+    }
+
+    public static function AlterarTipo() {
+
+        $_SESSION['TIPO_INDEX'] = $_REQUEST['tipo'];
+    }
+
+    public static function ResetarTipo() {
+        unset($_SESSION['TIPO_INDEX']);
     }
 
 }

@@ -10,16 +10,20 @@
     <controle>TPaginaControl</controle>
     <acao>Gerenciar</acao>
   </index>
+  <acesso>ADMINISTRADOR</acesso>
   <classes>
     <TPaginaControl arquivo="pagina.control.php" controle="true"></TPaginaControl>
     <TPagina arquivo="pagina.class.php">
       <Nome>VARCHAR(100) NOT NULL</Nome>
-      <Conteudo>TEXT</Conteudo>      
+      <Apelido>VARCHAR(100) NOT NULL</Apelido>
+      <Descricao>TEXT</Descricao>
+      <Conteudo>TEXT</Conteudo>
+      <Pagina_id relacionamento="TPagina" cardinalidade="1" nulo="true">INTEGER</Pagina_id>
     </TPagina>
   </classes>
   <sql>
-    <onTPaginaCreate>
+    <ontpaginacreate>
       INSERT INTO TPagina (Nome,Conteudo) VALUES ('Página de Teste', 'Esta é uma página de teste');
-    </onTPaginaCreate>
+    </ontpaginacreate>
   </sql>
 </modulo_config>

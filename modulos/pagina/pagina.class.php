@@ -16,6 +16,26 @@ class TPagina extends TObjeto {
     $this->Nome = $value;
   }
 
+  private $Apelido;
+
+  public function getApelido() {
+    return $this->Apelido;
+  }
+
+  public function setApelido($value) {
+    $this->Apelido = $value;
+  }
+
+  private $Descricao;
+
+  public function getDescricao() {
+    return $this->Descricao;
+  }
+
+  public function setDescricao($value) {
+    $this->Descricao = $value;
+  }
+
   private $Conteudo;
 
   public function getConteudo() {
@@ -24,6 +44,16 @@ class TPagina extends TObjeto {
 
   public function setConteudo($value) {
     $this->Conteudo = $value;
+  }
+
+  private $Pagina_id;
+
+  public function getPagina_id() {
+    return $this->Pagina_id;
+  }
+
+  public function setPagina_id($value) {
+    $this->Pagina_id = $value;
   }
 
 }

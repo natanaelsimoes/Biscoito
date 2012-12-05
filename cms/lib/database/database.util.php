@@ -207,7 +207,7 @@ class TMySQLUtil implements TIDatabaseUtil {
 
     $classe = TDatabaseUtil::getClasseTabela($this->tabela);
 
-    $onCreateEvent = "on{$classe}Create";
+    $onCreateEvent = strtolower("on{$classe}create");
 
     foreach (explode('\n', $configuracaoClasse->sql->$onCreateEvent) as $comando)
       if (!empty($comando))
@@ -231,7 +231,7 @@ class TMySQLUtil implements TIDatabaseUtil {
         $orm->CriarTabela($this->tabela, $this->obj);
         $this->onCreateTable($this->tabela, $this->obj);
         return true;
-      case 1146: // TABELA NAO EXISTE                
+      case 1146: // TABELA NAO EXISTE
         //$this->tabela = TDatabaseUtil::getClasseNamespace($this->namespace);
         $this->tabela = TDatabaseUtil::getParametroErro($pdoE->getMessage());
         $orm->CriarTabela($this->tabela, $this->obj);

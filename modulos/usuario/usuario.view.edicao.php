@@ -4,8 +4,11 @@ namespace Biscoito\Modulos\Usuario\TipoUsuario;
 
 use Biscoito\Modulos\Usuario;
 use Biscoito\Modulos\Administrador\TAdministradorControl;
+use Biscoito\Modulos\Loja;
 
 TAdministradorControl::CabecalhoModulo('Usuários', 'administrador/usuario/gerenciar');
+
+$usuarioLogado = unserialize($_SESSION['BISCOITO_SESSAO_USUARIO']);
 
 include_once('usuario.js.php');
 ?>
@@ -66,6 +69,23 @@ include_once('usuario.js.php');
                     <div class="controls">
 
                         <?php TTipoUsuarioControl::ExibirSelecao($usuario->getId(), $usuario->getTipoUsuario_Id()); ?>
+
+                    </div>
+
+                </div>
+
+                <div class="control-group hidden" id="controlLoja_id">
+
+                    <label class="control-label" for="textNomeMeio">Loja:</label>
+
+                    <div class="controls">
+
+                        <?php
+                        if ($usuarioLogado->getFlag() == 'ADMINISTRADOR')
+                            Loja\TLojaControl::ExibirSelecao($usuario->getLoja_Id());
+                        else
+                            Loja\TLojaControl::ExibirSelecao($usuarioLogado->getLoja_Id());
+                        ?>
 
                     </div>
 

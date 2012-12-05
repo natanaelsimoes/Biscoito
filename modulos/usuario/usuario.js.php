@@ -42,12 +42,66 @@
     }        
     
     function TUsuarioJSForm() {
+                
+        $(document).ready(function() {
+            
+            $('#selectTipoUsuario_id').change(function() {
+                usuarioJSForm.selectTipoUsuario_Change(this);
+            });
+
+            <?php if($GLOBALS['_UsuarioLogado']->getFlag() == 'ADMINISTRADOR') : ?>            
+            
+            if($('#selectLoja_id').val() > 0) {
+                $('#selectTipoUsuario_id').attr('disabled','disabled').change();
+                $('#selectLoja_id').attr('disabled','disabled');
+            }
+            
+            var acao = '<?php echo $GLOBALS['_Biscoito']->getVariaveisDaURL(1); ?>';
+            
+            var idLoja = '<?php echo $GLOBALS['_Biscoito']->getVariaveisDaURL(2); ?>';
+           
+            if (acao == 'adicionar' && idLoja > 0) {
+                
+                $('#selectTipoUsuario_id')
+                .val($('#selectTipoUsuario_id').children('option[flag="LOCAL"]').val())
+                .attr('disabled','disabled')
+                .change();
+               
+                $('#selectLoja_id')
+                .val(idLoja)
+                .attr('disabled','disabled');                                
+               
+            }
+            
+            <?php endif; ?>
+            
+        });                        
+        
+        this.selectTipoUsuario_Change = function(select) {
+            
+            if ($(select).children('option[selected="selected"]').attr('flag') != 'ADMINISTRADOR') {
+                
+                $('#controlLoja_id').removeClass('hidden');                                                            
+            
+            }
+            
+            else {
+                
+                $('#controlLoja_id').addClass('hidden');
+                
+                $('#selectLoja_id').val('');
+                
+            }
+            
+        }
         
         this.btnSalvar_Click = function() {                    
         
             if(Validar(new TUsuario())) {   
                 
                 $('#selectTipoUsuario_id').removeAttr('disabled');
+                
+                $('#selectLoja_id').removeAttr('disabled');
                 
                 var msg = _Biscoito.ExecutarAcao('usuario/salvar', $('#FrmEdicao').serialize(), true);
                 

@@ -48,7 +48,7 @@ class TCategoriaGaleriaControl {
         
     }
     
-    public static function ExibirSelecaoCategorias($categoria_id) {
+    public static function ExibirSelecaoCategorias() {
         
         $categoria = new TCategoriaGaleria;
         

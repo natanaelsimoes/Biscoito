@@ -7,88 +7,99 @@ use Biscoito\Lib\Util\TImagem;
 
 class TFoto extends TObjeto {
 
-  private $descricao;
-  private $caminho;
-  private $largura;
-  private $altura;
-  private $tipo;
-  private $galeria_id;
-  protected $imagem;
+    private $descricao;
 
-  public function Carregar($arquivo) {
+    private $caminho;
 
-    $this->imagem = $arquivo;
+    private $largura;
 
-    $this->largura = imagesx($this->imagem);
+    private $altura;
 
-    $this->altura = imagesy($this->imagem);
+    private $tipo;
 
-    $this->tipo = 'image/jpeg';
-  }
+    private $galeria_id;
 
-  public function Upload($caminho = null) {
-    $caminho = (is_null($caminho)) ? 'modulos/galeria/fotos' : $caminho;
-    $destino = sprintf('%s/%s.%s', $caminho, uniqid('img_'), 'jpg');
-    $this->caminho = $destino;
-    imagejpeg($this->imagem, $destino, 80);
-  }
+    protected $imagem;
 
-  public function getDescricao() {
-    return $this->descricao;
-  }
+    public function Carregar($arquivo) {
 
-  public function getCaminho() {
-    return $this->caminho;
-  }
+        $this->imagem = $arquivo;
 
-  public function getLargura() {
-    return $this->largura;
-  }
+        $this->largura = imagesx($this->imagem);
 
-  public function getAltura() {
-    return $this->altura;
-  }
+        $this->altura = imagesy($this->imagem);
 
-  public function getTipo() {
-    return $this->tipo;
-  }
+        $this->tipo = 'image/jpeg';
 
-  public function getGaleria_id() {
-    return $this->galeria_id;
-  }
+    }
 
-  public function isCapa() {
+    public function Upload($caminho = null) {
 
-    $galeria = new TGaleria();
+        $destino = sprintf((is_null($caminho)) ? 'modulos/galeria/fotos/%s.%s' : "$caminho/%s.%s", uniqid('img_'), 'jpg');
 
-    $galeria = $galeria->ListarPorId($this->getGaleria_id());
+        $this->caminho = $destino;
 
-    return ($galeria->getCapa_id() == $this->getId());
-  }
+        imagejpeg($this->imagem, $destino, 80);
 
-  public function setDescricao($descricao) {
-    $this->descricao = $descricao;
-  }
+    }
 
-  public function setCaminho($caminho) {
-    $this->caminho = $caminho;
-  }
+    public function getDescricao() {
+        return $this->descricao;
+    }
 
-  public function setLargura($largura) {
-    $this->largura = $largura;
-  }
+    public function getCaminho() {
+        return $this->caminho;
+    }
 
-  public function setAltura($altura) {
-    $this->altura = $altura;
-  }
+    public function getLargura() {
+        return $this->largura;
+    }
 
-  public function setTipo($tipo) {
-    $this->tipo = $tipo;
-  }
+    public function getAltura() {
+        return $this->altura;
+    }
 
-  public function setGaleria_id($galeria_id) {
-    $this->galeria_id = $galeria_id;
-  }
+    public function getTipo() {
+        return $this->tipo;
+    }
+
+    public function getGaleria_id() {
+        return $this->galeria_id;
+    }
+
+    public function isCapa() {
+
+        $galeria = new TGaleria();
+
+        $galeria = $galeria->ListarPorId($this->getGaleria_id());
+
+        return ($galeria->getCapa_id() == $this->getId());
+
+    }
+
+    public function setDescricao($descricao) {
+        $this->descricao = $descricao;
+    }
+
+    public function setCaminho($caminho) {
+        $this->caminho = $caminho;
+    }
+
+    public function setLargura($largura) {
+        $this->largura = $largura;
+    }
+
+    public function setAltura($altura) {
+        $this->altura = $altura;
+    }
+
+    public function setTipo($tipo) {
+        $this->tipo = $tipo;
+    }
+
+    public function setGaleria_id($galeria_id) {
+        $this->galeria_id = $galeria_id;
+    }
 
 }
 

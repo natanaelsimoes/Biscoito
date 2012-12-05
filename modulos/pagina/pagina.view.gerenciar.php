@@ -17,7 +17,34 @@ TAdministradorControl::CabecalhoModulo('Páginas', 'administrador');
 
 <div class="row-fluid">
 
-
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php
+      if (!empty($paginas)) :
+        foreach ($paginas as $pagina): ?>
+          <tr>
+            <td><?php echo $pagina->getNome(); ?></td>
+            <td class="align-right">
+              <button class="btn" onclick="_Biscoito.IrPara('administrador/pagina/editar/<?php echo $pagina->getId() ?>')"><span class="icon icon-pencil"></span> Editar</button>
+            </td>
+          </tr>
+          <?php
+        endforeach;
+      else :
+        ?>
+        <tr>
+          <td>Não há páginas cadastradas.</td>
+          <td></td>
+        </tr>
+      <?php endif; ?>
+    </tbody>
+  </table>
 
   <div class="clear"></div>
 
