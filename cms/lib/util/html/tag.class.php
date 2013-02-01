@@ -15,6 +15,8 @@ class TTag {
    * @var mixed
    */
   private $Atributos;
+  
+  private $MostrarLabel;
 
   /**
    * Conteudo presente dentro desta tag. Podem ser outras tags e/ou texto     
@@ -30,6 +32,7 @@ class TTag {
     $this->Atributos = array();
     $this->HTML = '';
     $this->Nome = $nome;
+    $this->MostrarLabel = true;
   }
 
   /**
@@ -43,6 +46,14 @@ class TTag {
 
   public function setNome($value) {
     $this->Nome = $value;
+  }
+  
+  public function setMostrarLabel($value) {
+    $this->MostrarLabel = $value;
+  }
+  
+  public function getMostrarLabel() {
+    return $this->MostrarLabel;
   }
 
   /**
@@ -74,7 +85,8 @@ class TTag {
    * @return string Valor do atributo
    */
   public function getAtributo($atributo) {
-    return $this->Atributos[$atributo];
+    if (array_key_exists($atributo, $this->Atributos))
+      return $this->Atributos[$atributo];
   }
 
   /**

@@ -89,7 +89,7 @@ class TForm extends TTag {
     $this->setAtributo('method', $this->Metodo);
   }
 
-  public function AdicionarCampo(TTag $tag, $requerido = false) {    print_r($tag);
+  public function AdicionarCampo(TTag $tag, $requerido = false) {
     $controlGroup = new TTag('div');
     $controlGroup->setAtributo('class', 'control-group');
     $controlLabel = new TTag('label');
@@ -99,7 +99,8 @@ class TForm extends TTag {
     $controls = new TTag('div');
     $controls->setAtributo('classe', 'controls');
     $controls->Anexar($tag);
-    $controlGroup->Anexar($controlLabel);
+    if ($tag->getMostrarLabel())
+      $controlGroup->Anexar($controlLabel);
     $controlGroup->Anexar($controls);
     $this->HTML[0]->Anexar($controlGroup);
   }
