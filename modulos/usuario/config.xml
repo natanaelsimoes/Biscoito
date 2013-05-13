@@ -11,39 +11,33 @@
         <acao>Gerenciar</acao>
     </index>
     <acesso>
-        ADMINISTRADOR
-        LOCAL
+        ADMINISTRADOR        
     </acesso>
     <classes>
         <TUsuarioControl arquivo="usuario.control.php" controle="true"></TUsuarioControl>
         <TUsuario arquivo="usuario.class.php">
-            <nome>VARCHAR(50) NOT NULL</nome>
-            <nomeDoMeio nulo="true">VARCHAR(100)</nomeDoMeio>
-            <sobrenome>VARCHAR(50) NOT NULL</sobrenome>
-            <usuario>VARCHAR(32) NOT NULL UNIQUE</usuario>
-            <senha>VARCHAR(32) NOT NULL</senha>
-            <ultimoLogin>TIMESTAMP</ultimoLogin>
-            <tipousuario_id relacionamento="TTipoUsuario" cardinalidade="1">INTEGER NOT NULL</tipousuario_id>
-            <loja_id relacionamento="TLoja" cardinalidade="1" nulo="true">INTEGER</loja_id>
-            <status>CHAR(1) NOT NULL DEFAULT '1'</status>
+            <Nome>VARCHAR(50) NOT NULL</Nome>
+            <NomeDoMeio nulo="true">VARCHAR(100)</NomeDoMeio>
+            <Sobrenome>VARCHAR(50) NOT NULL</Sobrenome>
+            <Usuario>VARCHAR(32) NOT NULL UNIQUE</Usuario>
+            <Senha>VARCHAR(32) NOT NULL</Senha>
+            <UltimoLogin>TIMESTAMP</UltimoLogin>
+            <TipoUsuario_Id relacionamento="Biscoito\Modulos\Usuario\TipoUsuario\TTipoUsuario" cardinalidade="1"></TipoUsuario_Id>
+            <Status>CHAR(1) NOT NULL DEFAULT '1'</Status>
         </TUsuario>
-        <TTipoUsuarioControl sub-modulo="tipousuario" arquivo="tipousuario.control.php" controle="true"></TTipoUsuarioControl>
-        <TTipoUsuario sub-modulo="tipousuario" arquivo="tipousuario.class.php">
-            <nome>VARCHAR(200) NOT NULL</nome>
-            <flag>VARCHAR(30) NOT NULL</flag>
+        <TTipoUsuarioControl sub-modulo="TipoUsuario" arquivo="tipousuario.control.php" controle="true"></TTipoUsuarioControl>
+        <TTipoUsuario sub-modulo="TipoUsuario" arquivo="tipousuario.class.php">
+            <Nome>VARCHAR(200) NOT NULL</Nome>
+            <Flag>VARCHAR(30) NOT NULL</Flag>
         </TTipoUsuario>
     </classes>
     <sql>
         <ontusuariocreate>
-            INSERT INTO tusuario (nome, sobrenome, usuario, senha, tipousuario_id) VALUES ('Administrador','Padrão','admin','21232f297a57a5a743894a0e4a801fc3', 2);
+            INSERT INTO tusuario (Nome, Sobrenome, Usuario, Senha, TipoUsuario_Id) VALUES ('Administrador','Padrão','admin','21232f297a57a5a743894a0e4a801fc3', 1);
         </ontusuariocreate>
-        <onttipousuariocreate>
-            ALTER TABLE ttipousuario ADD column nome VARCHAR(200) NOT NULL;
-            ALTER TABLE ttipousuario ADD column flag VARCHAR(30) NOT NULL;
-            INSERT INTO ttipousuario (nome,flag) VALUES ('Cliente','USUARIO');
-            INSERT INTO ttipousuario (nome,flag) VALUES ('Administrador', 'ADMINISTRADOR');
-            INSERT INTO ttipousuario (nome,flag) VALUES ('Adm. Local', 'LOCAL');
-            INSERT INTO ttipousuario (nome,flag) VALUES ('Adm. Caixa', 'CAIXA');
+        <onttipousuariocreate>                    
+            INSERT INTO ttipousuario (Nome,Flag) VALUES ('Administradores','ADMINISTRADOR');
+            INSERT INTO ttipousuario (Nome,Flag) VALUES ('Usuários','USUARIO');            
         </onttipousuariocreate>
     </sql>
 </modulo_config>

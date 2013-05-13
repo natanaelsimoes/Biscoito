@@ -48,5 +48,5 @@ if (!empty($galerias)) :
     echo $paginacao->MostrarPaginas();
 else:
     ?>
-    Não há galeria alguma cadastrada. Clique em <?php include('galeria.view.ui.button.adicionar.php'); ?> para começar a usar!
+    NÃ£o hÃ¡ galeria alguma cadastrada. Clique em <?php include('galeria.view.ui.button.adicionar.php'); ?> para comeÃ§ar a usar!
 <?php endif; ?>

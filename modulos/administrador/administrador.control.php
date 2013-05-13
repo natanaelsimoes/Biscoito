@@ -7,55 +7,49 @@ use Biscoito\Modulos\Usuario;
 
 class TAdministradorControl extends Lib\TBiscoitoRouter {
 
-    private $usuarioControl;
+  private $usuarioControl;
 
-    public function __construct() {
-        $this->usuarioControl = new Usuario\TUsuarioControl();
+  public function __construct() {
+    $this->usuarioControl = new Usuario\TUsuarioControl();
+  }
+
+  public static function VerificarAdministradorLogado() {
+    if (!Usuario\TUsuarioControl::AdministradorLogado()) {
+      TAdministradorControl::ExibirLogin();
+      exit;
+    }
+  }
+
+  public static function ExibirLogin() {
+    include('administrador.view.entrar.php');
+    unset($_SESSION['BISCOITO_SESSAO_MSG']);
+  }
+
+  public function ExibirPagina($view = null, $ajax = false) {
+
+    $this->VerificarAdministradorLogado();
+
+    if (is_null($view)) {
+
+      ob_start();
+
+      include('administrador.view.principal.php');
+
+      $view = ob_get_contents();
+
+      ob_end_clean();
     }
 
-    private function VerificarAdministradorLogado() {
+    if ($ajax)
+      echo $view;
+    else
+      include('administrador.tmpl.padrao.php');
+  }
 
-        if (!$this->usuarioControl->AdministradorLogado()) {
+  public static function CabecalhoModulo($nomeModulo, $voltarPara) {
 
-            $this->ExibirLogin();
-
-            exit;
-        }
-    }
-
-    public function ExibirLogin() {
-
-        include('administrador.view.entrar.php');
-
-        unset($_SESSION['BISCOITO_SESSAO_MSG']);
-    }
-
-    public function ExibirPagina($view = null, $ajax = false) {
-
-        $this->VerificarAdministradorLogado();
-
-        if (is_null($view)) {
-
-            ob_start();
-
-            include('administrador.view.principal.php');
-
-            $view = ob_get_contents();
-
-            ob_end_clean();
-        }
-
-        if ($ajax)
-            echo $view;
-
-        else
-            include('administrador.tmpl.padrao.php');
-    }
-
-    public static function CabecalhoModulo($nomeModulo, $voltarPara) {
-
-        include('administrador.view.cabecalho.php');
-    }
+    include('administrador.view.cabecalho.php');
+  }
 
 }
 

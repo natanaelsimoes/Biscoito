@@ -7,12 +7,12 @@ use Biscoito\Lib\Util;
 class TMenuControl {
 
     public static function ListarNomes() {
-        
+
         $menuList = TMenuControl::CarregarMenus();
 
         include('menu.view.listanomes.php');
     }
-    
+
     public static function ListarIcones() {
 
         $menuList = TMenuControl::CarregarMenus();
@@ -21,31 +21,26 @@ class TMenuControl {
     }
 
     private static function CarregarMenus() {
-
         $menuList = array();
-
+        $menuListRet = array();
         $hDiretorio = opendir('modulos');
-
         while ($hModulo = readdir($hDiretorio))
             if (!in_array($hModulo, array('.', '..', 'administrador', 'index', '_modulo_padrao')))
-                array_push($menuList, TMenuControl::CarregarMenu($hModulo));
-
+                if ($menuOpcao = TMenuControl::CarregarMenu($hModulo)) {
+                    array_push($menuList, $menuOpcao);
+                    array_push($menuListRet, $hModulo);
+                }        
+        array_multisort($menuListRet, $menuList);
         return $menuList;
     }
 
     private static function CarregarMenu($modulo) {
-
         global $_Biscoito;
-
         $strNomeModulo = $strOpcaoModulo = "";
-
         $xmlConfiguracaoModulo = simplexml_load_file("modulos/$modulo/config.xml");
-
         $strNomeModulo = strval($xmlConfiguracaoModulo->nome);
-
         $strIconeModulo = @file_get_contents("modulos/$modulo/icone.svg");
-
-        return new TMenu($strNomeModulo, $modulo, $strIconeModulo);
+        return (TMenuControl::VerificarNivelAcesso($xmlConfiguracaoModulo->acesso)) ? new TMenu($strNomeModulo, $modulo, $strIconeModulo) : false;
     }
 
     public static function montarLinkOpcao($nomeModulo, TMenuOpcao $opcao) {
@@ -80,6 +75,17 @@ class TMenuControl {
                     sprintf($urlFormat, $_Biscoito->getSite(), $opcao->getURL(), '');
 
         echo sprintf($opcaoFormat, $icone, $url, $popup, $opcao->getNome());
+    }
+
+    private static function VerificarNivelAcesso($acesso) {
+        global $_UsuarioLogado;
+        $acesso = trim($acesso);
+        $acesso = str_replace("\n", '|', $acesso);
+        $acesso = str_replace(" ", '', $acesso);
+        if (empty($acesso))
+            return true;
+        $acesso = explode("|", $acesso);
+        return (in_array($_UsuarioLogado->getTipoUsuario()->getFlag(), $acesso));
     }
 
 }

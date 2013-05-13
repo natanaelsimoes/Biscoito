@@ -6,225 +6,176 @@ use Biscoito\Modulos\Administrador;
 
 class TUsuarioControl {
 
-    public function __construct() {
+  public function __construct() {
 
-        if (!isset($_SESSION['BISCOITO_SESSAO_MSG']))
-            $_SESSION['BISCOITO_SESSAO_MSG'] = '';
-    }
+    if (!isset($_SESSION['BISCOITO_SESSAO_MSG']))
+      $_SESSION['BISCOITO_SESSAO_MSG'] = '';
+  }
 
-    public static function Gerenciar() {
+  public static function Gerenciar() {
+    TUsuarioControl::VerificarNivelAcesso('ADMINISTRADOR');
+    include('usuario.view.gerenciar.php');
+  }
 
-        Administrador\TAdministradorControl::VerificarAdministradorLogado();
+  public static function Salvar() {
+    global $_UsuarioLogado;
+    $usuario = new TUsuario;
+    $usuario->CarregarSerial($_REQUEST['obj']);
+    $usuario->setNome($_REQUEST['nome']);
+    $usuario->setNomeDoMeio($_REQUEST['nomeMeio']);
+    $usuario->setSobrenome($_REQUEST['sobrenome']);
+    $usuario->setTipoUsuario_Id($_REQUEST['tipousuario_id']);
+    $usuario->setUsuario($_REQUEST['usuario']);
+    if (isset($_REQUEST['novaSenha']))
+      $usuario->setSenha(md5($_REQUEST['novaSenha']));
+    $usuario->Salvar();
+    if ($_UsuarioLogado->getId() == $usuario->getId())
+      $_SESSION['BISCOITO_SESSAO_USUARIO'] = serialize($usuario);
+  }
 
-        Administrador\TAdministradorControl::VerificarNivelAcesso('ADMINISTRADOR','LOCAL');
+  public static function AlterarSenha() {
 
-        include('usuario.view.gerenciar.php');
-    }
+    $usuario = new TUsuario;
 
-    public static function Salvar() {
+    $usuario->CarregarSerial($_REQUEST['obj']);
 
-        $usuario = new TUsuario;
+    $usuario->setSenha(md5($_REQUEST['senha']));
 
-        $usuario->CarregarSerial($_REQUEST['obj']);
+    $usuario->Salvar();
+  }
 
-        $usuario->setNome($_REQUEST['nome']);
+  public static function getNomeUsuario() {
 
-        $usuario->setNomeDoMeio($_REQUEST['nomeMeio']);
+    $usuario = unserialize($_SESSION['BISCOITO_SESSAO_USUARIO']);
 
-        $usuario->setSobrenome($_REQUEST['sobrenome']);
+    if (is_object($usuario))
+      return $usuario->getNome();
+  }
 
-        $usuario->setTipoUsuario_Id($_REQUEST['tipousuario_id']);
+  public static function getSobrenomeUsuario() {
 
-        $usuario->setUsuario($_REQUEST['usuario']);
+    $usuario = unserialize($_SESSION['BISCOITO_SESSAO_USUARIO']);
 
-        $usuario->setLoja_Id($_REQUEST['loja_id']);
+    if (is_object($usuario))
+      return $usuario->getSobrenome();
+  }
 
-        if (isset($_REQUEST['novaSenha']))
-            $usuario->setSenha(md5($_REQUEST['novaSenha']));
-
-        $usuario->Salvar();
-
-        $usuarioLogado = unserialize($_SESSION['BISCOITO_SESSAO_USUARIO']);
-
-        if ($usuarioLogado->getId() == $usuario->getId())
-            $_SESSION['BISCOITO_SESSAO_USUARIO'] = serialize($usuario);
-    }
-
-    public static function AlterarSenha() {
-
-        $usuario = new TUsuario;
-
-        $usuario->CarregarSerial($_REQUEST['obj']);
-
-        $usuario->setSenha(md5($_REQUEST['senha']));
-
-        $usuario->Salvar();
-    }
-
-    public static function getNomeUsuario() {
-
-        $usuario = unserialize($_SESSION['BISCOITO_SESSAO_USUARIO']);
-
-        if (is_object($usuario))
-            return $usuario->getNome();
-    }
-
-    public static function getSobrenomeUsuario() {
-
-        $usuario = unserialize($_SESSION['BISCOITO_SESSAO_USUARIO']);
-
-        if (is_object($usuario))
-            return $usuario->getSobrenome();
-    }
-
-    public function Login() {
-
-        $strUsuario = $_REQUEST['usuario'];
-
-        $strSenha = $_REQUEST['senha'];
-
-        $usuarios = array();
-
-        $usuario = new TUsuario();
-
-        $usuarios = $usuario->ListarTodosOnde("usuario = '$strUsuario'");
-
-        $_SESSION['BISCOITO_SESSAO_MSG'] = 'Usuário ou senha inválida. Tente novamente.';
-
-        if (count($usuarios) == 1) {
-
-            if ($usuarios[0]->getSenha() == md5($strSenha) && $usuarios[0]->getStatus()) {
-
-                $_SESSION['BISCOITO_SESSAO_USUARIO'] = serialize($usuarios[0]);
-
-                $_SESSION['BISCOITO_SESSAO_MSG'] = 'Sucesso!';
-            }
-        }
-
-        header('location:' . $_SERVER['HTTP_REFERER']);
-    }
-
-    public function Logout() {
-        global $_Biscoito;
-        unset($_SESSION['BISCOITO_SESSAO_USUARIO']);
-        unset($_SESSION['BISCOITO_SESSAO_MSG']);
-        header('location:' . $_Biscoito->getSite());
-    }
-
-    public function AdministradorLogado() {
-        if ($this->UsuarioLogado()) {
-            $usuario = unserialize($_SESSION['BISCOITO_SESSAO_USUARIO']);
-            return ($usuario->getStatus());
+  public function Login() {
+    $usuario = new TUsuario();
+    $usuario = $usuario->ListarTodosOnde("usuario = '{$_REQUEST['usuario']}'");
+    $_SESSION['BISCOITO_SESSAO_MSG'] = 'Usuário ou senha inválida. Tente novamente.';
+    if (count($usuario) == 1)
+      if ($usuario[0]->getSenha() == md5($_REQUEST['senha']))
+        if ($usuario[0]->getStatus()) {
+          $_SESSION['BISCOITO_SESSAO_USUARIO'] = serialize($usuario[0]);
+          $_SESSION['BISCOITO_SESSAO_MSG'] = 'Sucesso!';
         }
         else
-            return false;
+          $_SESSION['BISCOITO_SESSAO_MSG'] = 'Usuário desativado. Contate o administrador.';
+    header('location:' . $_SERVER['HTTP_REFERER']);
+  }
+
+  public function Logout() {
+    global $_Biscoito;
+    unset($_SESSION['BISCOITO_SESSAO_USUARIO']);
+    unset($_SESSION['BISCOITO_SESSAO_MSG']);
+    header('location:' . $_Biscoito->getSite());
+  }
+
+  public static function AdministradorLogado() {
+    if (TUsuarioControl::UsuarioLogado()) {
+      global $_UsuarioLogado;
+      return ($_UsuarioLogado->getStatus());
     }
+    else
+      return false;
+  }
 
-    public function UsuarioLogado() {
-        return isset($_SESSION['BISCOITO_SESSAO_USUARIO']);
-    }
+  public static function UsuarioLogado() {
+    return isset($_SESSION['BISCOITO_SESSAO_USUARIO']);
+  }
 
-    public static function ExibirTabelaUsuariosPorTipo($tipo) {
+  public static function VerificarNivelAcesso($acesso, $_ = null) {
+    global $_Biscoito;
+    global $_UsuarioLogado;
+    $acessos = func_get_args();
+    if (!in_array($_UsuarioLogado->getTipoUsuario()->getFlag(), $acessos))
+      header('location: ' . $_Biscoito->getSite() . 'administrador/');
+  }
 
-        global $_Biscoito;
+  public static function ExibirTabelaUsuariosPorTipo($tipo) {
+    global $_Biscoito;
+    global $_UsuarioLogado;
+    $usuarios = new TUsuario;
+    $usuarios = $usuarios->ListarTodosOnde("TipoUsuario_Id = $tipo");
+    $usuarios = $_Biscoito->ordenarObjetos($usuarios, 'Nome', SORT_ASC);
+    $usuarios = $_Biscoito->ordenarObjetos($usuarios, 'Status', SORT_DESC);
+    include('usuario.view.ui.table.gerenciar.php');
+  }
 
-        global $_UsuarioLogado;
+  public static function Adicionar() {
+    TUsuarioControl::VerificarNivelAcesso('ADMINISTRADOR');
+    $usuario = new TUsuario;
+    $acao = 'Adicionar';
+    include('usuario.view.edicao.php');
+  }
 
-        $usuarios = new TUsuario;
+  public static function Editar() {
+    global $_Biscoito;
+    global $_UsuarioLogado;
+    $usuario = new TUsuario;
+    $usuario = $usuario->ListarPorId($_Biscoito->getVariaveisDaURL(2));
+    if ($_UsuarioLogado->getId() != $usuario->getId())
+      TUsuarioControl::VerificarNivelAcesso('ADMINISTRADOR');
+    $acao = 'Editar';
+    include('usuario.view.edicao.php');
+  }
 
-        $usuarios = ($_UsuarioLogado->getFlag() == 'ADMINISTRADOR') ? $usuarios->ListarTodosOnde("tipousuario_id = $tipo") : $usuarios->ListarTodosOnde("loja_id = {$_UsuarioLogado->getLoja_id()} AND tipousuario_id = $tipo");
+  public static function VerificarSenhaAtual() {
 
-        $usuarios = $_Biscoito->ordenarObjetos($usuarios, 'loja');
+    $usuario = new TUsuario;
 
-        $usuarios = $_Biscoito->ordenarObjetos($usuarios, 'nome', SORT_ASC);
+    $usuario->CarregarSerial($_REQUEST['obj']);
 
-        $usuarios = $_Biscoito->ordenarObjetos($usuarios, 'status', SORT_DESC);
+    echo ($usuario->getSenha() == md5($_REQUEST['senhaAtual'])) ? 'true' : 'false';
+  }
 
-        include('usuario.view.table.gerenciar.php');
-    }
+  public static function ReativarUsuario() {
+    $usuario = new TUsuario;
+    $usuario->CarregarSerial($_REQUEST['obj']);
+    $usuario->setStatus('1');
+    $usuario->Salvar();
+  }
 
-    public static function Adicionar() {
+  public static function DesativarUsuario() {
+    $usuario = new TUsuario;
+    $usuario->CarregarSerial($_REQUEST['obj']);
+    $usuario->setStatus('0');
+    $usuario->Salvar();
+  }
 
-        Administrador\TAdministradorControl::VerificarAdministradorLogado();
+  public static function Excluir() {
+    $usuario = new TUsuario;
+    $usuario->CarregarSerial($_REQUEST['obj']);
+    $usuario->DeletarRegistro();
+  }
 
-        $usuario = new TUsuario;
+  public static function VerificarUsuario() {
 
-        $acao = 'Adicionar';
+    $usuario = new TUsuario;
 
-        include('usuario.view.edicao.php');
-    }
+    if (count($usuario->ListarTodosOnde("usuario = '{$_REQUEST['usuario']}'")) > 0)
+      echo '1';
+  }
 
-    public static function Editar() {
+  public static function AlterarTipo() {
 
-        Administrador\TAdministradorControl::VerificarAdministradorLogado();
+    $_SESSION['TIPO_INDEX'] = $_REQUEST['tipo'];
+  }
 
-        global $_Biscoito;
-
-        $usuario = new TUsuario;
-
-        $usuario = $usuario->ListarPorId($_Biscoito->getVariaveisDaURL(2));
-
-        $acao = 'Editar';
-
-        include('usuario.view.edicao.php');
-    }
-
-    public static function VerificarSenhaAtual() {
-
-        $usuario = new TUsuario;
-
-        $usuario->CarregarSerial($_REQUEST['obj']);
-
-        echo ($usuario->getSenha() == md5($_REQUEST['senhaAtual'])) ? 'true' : 'false';
-    }
-
-    public static function ReativarUsuario() {
-
-        $usuario = new TUsuario;
-
-        $usuario->CarregarSerial($_REQUEST['obj']);
-
-        $usuario->setStatus('1');
-
-        $usuario->Salvar();
-    }
-
-    public static function DesativarUsuario() {
-
-        $usuario = new TUsuario;
-
-        $usuario->CarregarSerial($_REQUEST['obj']);
-
-        $usuario->setStatus('0');
-
-        $usuario->Salvar();
-    }
-
-    public static function Excluir() {
-
-        $usuario = new TUsuario;
-
-        $usuario->CarregarSerial($_REQUEST['obj']);
-
-        $usuario->DeletarRegistro();
-    }
-
-    public static function VerificarUsuario() {
-
-        $usuario = new TUsuario;
-
-        if (count($usuario->ListarTodosOnde("usuario = '{$_REQUEST['usuario']}'")) > 0)
-            echo '1';
-    }
-
-    public static function AlterarTipo() {
-
-        $_SESSION['TIPO_INDEX'] = $_REQUEST['tipo'];
-    }
-
-    public static function ResetarTipo() {
-        unset($_SESSION['TIPO_INDEX']);
-    }
+  public static function ResetarTipo() {
+    unset($_SESSION['TIPO_INDEX']);
+  }
 
 }
 

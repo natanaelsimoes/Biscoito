@@ -26,7 +26,7 @@
      * @example MontarURLAcao('noticia/listar');
      */
     this.MontarURLAcao = function(moduloAcao, template) {
-      return sprintf('%s%s/%s', self.getSite(),moduloAcao,(template)?'':'?ajax');
+      return sprintf('%s%s/%s', self.getSite(), moduloAcao, (template) ? '' : '?ajax');
     }
 
     /**
@@ -75,10 +75,11 @@
 
         PopupAnterior = $('.modal.in').attr('id');
 
-        if(PopupAnterior != null)
+        if (PopupAnterior != null)
           self.FecharPopup(PopupAnterior, abrindoPopup);
 
-        else $('body').append('<div class="modal-backdrop fade in"></div>');
+        else
+          $('body').append('<div class="modal-backdrop fade in"></div>');
 
         divPopup = sprintf('<div class="modal fade hide" id="%s"><div class="hide idPopupAnterior">%s</div></div>', nomePopup, PopupAnterior);
 
@@ -91,23 +92,20 @@
         $(idPopup).append(conteudo);
 
         $(idPopup).modal({
-
           backdrop: false,
-
           keyboard: false,
-
           show: true
 
         });
 
-        $(idPopup).on('hidden', function () {
+        $(idPopup).on('hidden', function() {
 
           VoltarPopup($(this).attr('id'));
 
         });
 
       }
-      catch(erro) {
+      catch (erro) {
 
         biscoitoJSErros.TratarErro(erro);
 
@@ -133,20 +131,16 @@
 
       try {
 
-        if(moduloAcao == null) throw 2;
+        if (moduloAcao == null)
+          throw 2;
 
         tipoEncapsulamento = (tipoEncapsulamento == null) ? 'POST' : tipoEncapsulamento;
 
         $.ajax({
-
           async: false,
-
           type: tipoEncapsulamento,
-
           url: self.MontarURLAcao(moduloAcao, false),
-
           data: dados,
-
           success: function(retorno) {
 
             self.AbrirPopupEstatico(nomePopup, retorno);
@@ -156,7 +150,7 @@
         });
 
       }
-      catch(erro) {
+      catch (erro) {
 
         biscoitoJSErros.TratarErro(erro);
 
@@ -182,7 +176,8 @@
 
       try {
 
-        if(moduloAcao == null) throw 1;
+        if (moduloAcao == null)
+          throw 1;
 
         retornar = (retornar == null) ? false : retornar;
 
@@ -191,25 +186,21 @@
         tipoEncapsulamento = (tipoEncapsulamento == null) ? 'POST' : tipoEncapsulamento;
 
         $.ajax({
-
           async: assincrono,
-
           type: tipoEncapsulamento,
-
           url: self.MontarURLAcao(moduloAcao, false),
-
           data: dados,
-
           success: function(retornoExecucao) {
             retorno = retornoExecucao
           }
 
         });
 
-        if (retornar) return retorno;
+        if (retornar)
+          return retorno;
 
       }
-      catch(erro) {
+      catch (erro) {
 
         biscoitoJSErros.TratarErro(erro);
 
@@ -250,7 +241,7 @@
 
       self.FecharPopup(null, true);
 
-      setTimeout(function(){
+      setTimeout(function() {
 
         abrindoPopup = false
 
@@ -258,7 +249,7 @@
 
         $(idPopup).modal('show');
 
-      },700);
+      }, 700);
 
     }
 
@@ -274,13 +265,14 @@
 
         idPopupAnterior = sprintf('#%s', PopupAnterior);
 
-        if(PopupAnterior != 'undefined')
+        if (PopupAnterior != 'undefined')
           $(idPopupAnterior).modal('show');
 
-        else if($('.modal.in').attr('id') == null)
+        else if ($('.modal.in').attr('id') == null)
           $('.modal-backdrop').remove();
 
-      }else abrindoPopup = false;
+      } else
+        abrindoPopup = false;
 
     }
 
@@ -293,12 +285,13 @@
 
       try {
 
-        if(moduloAcao == null) throw 3;
+        if (moduloAcao == null)
+          throw 3;
 
         location.href = self.MontarURLAcao(moduloAcao, true);
 
       }
-      catch(erro) {
+      catch (erro) {
 
         biscoitoJSErros.TratarErro(erro);
 
@@ -314,7 +307,7 @@
 
       bsUtilForm.mudarEstado(DOM, 'normal');
 
-      if(restricoes) {
+      if (restricoes) {
 
         bsUtilForm.mudarEstado(DOM, 'error', mensagem);
 
@@ -330,7 +323,7 @@
 
     this.AbrirAguarde = function(msg) {
 
-      self.AbrirPopupEstatico('aguarde-box', '<h1 class="align-center">Aguarde<h1><h3 class="align-center">...</h3><h3 class="align-center">'+msg+'</h3>');
+      self.AbrirPopupEstatico('aguarde-box', '<h1 class="align-center">Aguarde<h1><h3 class="align-center">...</h3><h3 class="align-center">' + msg + '</h3>');
 
     }
 
@@ -343,20 +336,20 @@
     this.MASCARA_CEP = function(id) {
       $(id).bind('keyup', function(e) {
         var v = $(this).val()
-        v=v.replace(/D/g,"")
-        v=v.replace(/^(\d{5})(\d)/,"$1-$2")
+        v = v.replace(/D/g, "")
+        v = v.replace(/^(\d{5})(\d)/, "$1-$2")
         $(this).val(v)
       });
     }
 
-    this.MASCARA_CNPJ= function(id) {
+    this.MASCARA_CNPJ = function(id) {
       $(id).bind('keyup', function(e) {
         var v = $(this).val()
-        v=v.replace(/\D/g,"")
-        v=v.replace(/^(\d{2})(\d)/,"$1.$2")
-        v=v.replace(/^(\d{2})\.(\d{3})(\d)/,"$1.$2.$3")
-        v=v.replace(/\.(\d{3})(\d)/,".$1/$2")
-        v=v.replace(/(\d{4})(\d)/,"$1-$2")
+        v = v.replace(/\D/g, "")
+        v = v.replace(/^(\d{2})(\d)/, "$1.$2")
+        v = v.replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3")
+        v = v.replace(/\.(\d{3})(\d)/, ".$1/$2")
+        v = v.replace(/(\d{4})(\d)/, "$1-$2")
         $(this).val(v)
       });
     }
@@ -364,10 +357,10 @@
     this.MASCARA_CPF = function(id) {
       $(id).bind('keyup', function(e) {
         var v = $(this).val()
-        v=v.replace(/\D/g,"")
-        v=v.replace(/(\d{3})(\d)/,"$1.$2")
-        v=v.replace(/(\d{3})(\d)/,"$1.$2")
-        v=v.replace(/(\d{3})(\d{1,2})$/,"$1-$2")
+        v = v.replace(/\D/g, "")
+        v = v.replace(/(\d{3})(\d)/, "$1.$2")
+        v = v.replace(/(\d{3})(\d)/, "$1.$2")
+        v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2")
         $(this).val(v)
       });
     }
@@ -375,9 +368,9 @@
     this.MASCARA_Data = function(id) {
       $(id).bind('keyup', function(e) {
         var v = $(this).val()
-        v=v.replace(/\D/g,"")
-        v=v.replace(/(\d{2})(\d)/,"$1/$2")
-        v=v.replace(/(\d{2})(\d)/,"$1/$2")
+        v = v.replace(/\D/g, "")
+        v = v.replace(/(\d{2})(\d)/, "$1/$2")
+        v = v.replace(/(\d{2})(\d)/, "$1/$2")
         $(this).val(v)
       });
     }
@@ -385,14 +378,14 @@
     this.MASCARA_Hora = function(id) {
       $(id).bind('keyup', function(e) {
         var v = $(this).val()
-        v=v.replace(/\D/g,"")
-        v=v.replace(/(\d{2})(\d)/,"$1:$2")
+        v = v.replace(/\D/g, "")
+        v = v.replace(/(\d{2})(\d)/, "$1:$2")
         $(this).val(v)
       });
     }
 
     this.MASCARA_Moeda = function(id) {
-      $(id).bind('keypress', function(e){
+      $(id).bind('keypress', function(e) {
         var objTextBox = this;
         var SeparadorMilesimo = '.';
         var SeparadorDecimal = ',';
@@ -400,21 +393,27 @@
         var strCheck = '0123456789';
         var key, aux = aux2 = '';
         var whichCode = (window.Event) ? e.which : e.keyCode;
-        if (whichCode == 13) return true;
+        if (whichCode == 13)
+          return true;
         key = String.fromCharCode(whichCode); // Valor para o código da Chave
         //if (strCheck.indexOf(key) == -1) return false; // Chave inválida
         len = objTextBox.value.length;
-        for(i = 0; i < len; i++)
-          if ((objTextBox.value.charAt(i) != '0') && (objTextBox.value.charAt(i) != SeparadorDecimal)) break;
+        for (i = 0; i < len; i++)
+          if ((objTextBox.value.charAt(i) != '0') && (objTextBox.value.charAt(i) != SeparadorDecimal))
+            break;
         aux = '';
-        for(; i < len; i++)
-          if (strCheck.indexOf(objTextBox.value.charAt(i))!=-1) aux += objTextBox.value.charAt(i);
+        for (; i < len; i++)
+          if (strCheck.indexOf(objTextBox.value.charAt(i)) != -1)
+            aux += objTextBox.value.charAt(i);
         if (strCheck.indexOf(key) != -1) // inclui aqui
           aux += key;
         len = aux.length;
-        if (len == 0) objTextBox.value = '';
-        if (len == 1) objTextBox.value = '0'+ SeparadorDecimal + '0' + aux;
-        if (len == 2) objTextBox.value = '0'+ SeparadorDecimal + aux;
+        if (len == 0)
+          objTextBox.value = '';
+        if (len == 1)
+          objTextBox.value = '0' + SeparadorDecimal + '0' + aux;
+        if (len == 2)
+          objTextBox.value = '0' + SeparadorDecimal + aux;
         if (len > 2) {
           aux2 = '';
           for (j = 0, i = len - 3; i >= 0; i--) {
@@ -439,9 +438,9 @@
     this.MASCARA_Telefone = function(id) {
       $(id).bind('keyup', function(e) {
         var v = $(this).val()
-        v=v.replace(/\D/g,"")
-        v=v.replace(/^(\d\d)(\d)/g,"($1) $2")
-        v=v.replace(/(\d{4})(\d)/,"$1-$2")
+        v = v.replace(/\D/g, "")
+        v = v.replace(/^(\d\d)(\d)/g, "($1) $2")
+        v = v.replace(/(\d{4})(\d)/, "$1-$2")
         $(this).val(v)
       });
     }
@@ -449,21 +448,35 @@
     this.MASCARA_URL = function(id) {
       $(id).bind('keyup', function(e) {
         var v = $(this).val()
-        v=v.replace(/^http:\/\/?/,"")
-        dominio=v
-        caminho=''
-        if(v.indexOf('/')>-1)
-          dominio=v.split("/")[0]
-        caminho=v.replace(/[^\/]*/,'')
-        dominio=dominio.replace(/[^\w\.\+-:@]/g,'')
-        caminho=caminho.replace(/[^\w\d\+-@:\?&=%\(\)\.]/g,'')
-        caminho=caminho.replace(/([\?&])=/,"$1")
-        if(caminho!="")dominio=dominio.replace(/\.+$/,'')
-        v="http://"+dominio+caminho
+        v = v.replace(/^http:\/\/?/, "")
+        dominio = v
+        caminho = ''
+        if (v.indexOf('/') > -1)
+          dominio = v.split("/")[0]
+        caminho = v.replace(/[^\/]*/, '')
+        dominio = dominio.replace(/[^\w\.\+-:@]/g, '')
+        caminho = caminho.replace(/[^\w\d\+-@:\?&=%\(\)\.]/g, '')
+        caminho = caminho.replace(/([\?&])=/, "$1")
+        if (caminho != "")
+          dominio = dominio.replace(/\.+$/, '')
+        v = "http://" + dominio + caminho
         $(this).val(v)
       });
     }
 
+  }
+
+  function TBiscoitoJSErros() {
+    this.TratarErro = function(erro) {
+      switch (erro) {
+        case 1:
+          alert('ERR-JS-001: Erro na parametrização de TBiscoitoJS.ExecutarAcao');
+          break;
+        case 2:
+          alert('ERR-JS-002: Erro na parametrização de TBiscoitoJS.AbrirPopup');
+          break;
+      }
+    }
   }
 
   var _Biscoito = new TBiscoitoJS();

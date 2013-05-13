@@ -25,7 +25,7 @@ include_once('galeria.css.padrao.php');
 
 </div>
 <br />
-
+<div class="loading"><p style="text-align: center"><?php $_Biscoito->imagem('modulos/index/images/loading.gif', 'Carregando...') ?></p></div>
 <div class="fotos">
     <!-- Carregar fotos -->
 </div>

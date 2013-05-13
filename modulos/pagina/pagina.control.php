@@ -10,9 +10,8 @@ class TpaginaControl {
     include('pagina.view.padrao.php');
   }
 
-  public static function Gerenciar() {
-    $paginas = new TPagina;
-    $paginas = $paginas->ListarTodos();
+  public static function Gerenciar() {    
+    $paginas = TPagina::ListarTodos();
     include('pagina.view.gerenciar.php');
   }
 

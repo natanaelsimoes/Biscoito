@@ -41,7 +41,7 @@ if (!empty($fotos)) :
 
                     <input type="hidden" name="galeria_id" class="galeria_id" value="<?php echo $galeria->getId(); ?>">
 
-                    <a class="btn btn-mini btnSalvarAlteracoes disabled" onclick="galeriaJSForm.btnSalvarAlteracoes_Click(this)" data-object="<?php echo $foto ?>" href="#">salvar alterações</a>
+                    <a class="btn btn-mini btnSalvarAlteracoes disabled" onclick="galeriaJSForm.btnSalvarAlteracoes_Click(this)" data-object="<?php echo $foto ?>" href="#">salvar alteraÃ§Ãµes</a>
 
                 </form>
 

@@ -2,13 +2,14 @@
 
 namespace Biscoito\Modulos\Administrador\View;
 
-use Biscoito\Modulos\Administrador\Menu;
+/* @var Biscoito\Lib\TBiscoito $_Biscoito */
+global $_Biscoito;
 ?>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <title>Biscoito - Painel Administrativo</title>
+        <title>Painel Administrativo</title>
         <?php $GLOBALS['_Biscoito']->usarJQuery(); ?>
         <?php include_once('administrador.css.entrar.php'); ?>
         <script type="text/javascript">
@@ -19,9 +20,9 @@ use Biscoito\Modulos\Administrador\Menu;
     </head>
     <body>
         <div id="corpo">
-            <header>Biscoito - Painel Administrativo</header>
+            <header>Painel Administrativo</header>
             <section>
-                <form id="FrmLogin" method="post" action="<?php echo $GLOBALS['_Biscoito']->getSite() . 'usuario/login/'; ?>">
+                <form id="FrmLogin" method="post" action="<?php echo $_Biscoito->getSite() . 'usuario/login/'; ?>">
                     <fieldset class="glass black">
                         <p><?php if(isset($_SESSION['BISCOITO_SESSAO_MSG'])) echo $_SESSION['BISCOITO_SESSAO_MSG'] ?></p>
                         <p>

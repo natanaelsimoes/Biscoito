@@ -391,7 +391,7 @@ class TObjeto {
     return $quantidade[0]->FiQuantidade;
   }
 
-  public function ListarTodos($pagina = 1, $quantidade = null) {
+  public function ListarTodos($pagina = 1, $quantidade = null) {      
     $table = TDatabaseUtil::getClasseNamespace(get_class($this));
     return $this->ListarTodosOrdenadoPor("$table.id DESC", $pagina, $quantidade);
   }
@@ -434,10 +434,11 @@ class TObjeto {
     $xmlConfig = $_Biscoito->getConfiguracaoXML($_Biscoito->getModulo(get_class($this)));
     foreach ($xmlConfig->classes->$table as $class)
       foreach (get_object_vars($class) as $attr => $value) {
-        $foreignTable = $foreignTableAlias = $class->{$attr}['relacionamento'];
-        if (isset($foreignTable)) {
+        $foreignNamespace = explode('\\', $class->{$attr}['relacionamento']);
+        $foreignTable = $foreignTableAlias = array_pop($foreignNamespace);
+        if (!empty($foreignTable)) {
           if ($foreignTable == $table)
-            $foreignTableAlias.= ++$tableEquals;
+            $foreignTableAlias.=++$tableEquals;
           $joins .= sprintf('%s JOIN %s %s ON %s.id = %s.%s ', ($class->{$attr}['nulo'] == 'true') ? 'LEFT' : '', $foreignTable, $foreignTableAlias, $foreignTableAlias, $table, $attr);
         }
       }

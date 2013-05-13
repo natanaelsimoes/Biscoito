@@ -10,7 +10,7 @@
         <controle>TGaleriaControl</controle>
         <acao>Gerenciar</acao>
     </index>
-    <acesso>HIDDEN</acesso>
+    <acesso>ADMINISTRADOR</acesso>
     <classes>
         <TGaleriaControl arquivo="galeria.control.php" controle="true"></TGaleriaControl>
         <TGaleria arquivo="galeria.class.php">

@@ -146,10 +146,11 @@ class TDatabase {
    */
   public function Selecionar($comando, $obj = null, $pagina = 1, $quantidade = 0) {
     $pagina--;
+    $inicio = $pagina*$quantidade;
     if (!empty($quantidade))
       switch (strtoupper($this->configuracoes->driver)) {
         case 'MYSQL':
-          $comando.= " LIMIT $pagina ,$quantidade ";
+          $comando.= " LIMIT $inicio ,$quantidade ";
           break;
         case 'FIREBIRD':
           $skip = $quantidade * $pagina;

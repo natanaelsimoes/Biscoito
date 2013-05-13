@@ -4,16 +4,16 @@ namespace Biscoito\Lib;
 
 use Biscoito\Lib\Util;
 
-require_once('cms/lib/util/texto.class.php');
-require_once('cms/lib/util/imagem.class.php');
-require_once('cms/lib/util/navegador.class.php');
-require_once('cms/lib/util/paginacao.class.php');
-require_once('cms/lib/util/vetor.class.php');
-require_once('cms/lib/util/html.class.php');
+require_once('lib/util/texto.class.php');
+require_once('lib/util/imagem.class.php');
+require_once('lib/util/navegador.class.php');
+require_once('lib/util/paginacao.class.php');
+require_once('lib/util/vetor.class.php');
+require_once('lib/util/html.class.php');
 
-define('PATHJQUERY', 'plugins/bootstrap/scripts/jquery-1.7.2.min.js');
-define('PATHJQUERYUI', 'cms/js/jquery-ui-1.8.20.custom.min.js');
-define('PATHJQUERYUICSS', 'cms/css/jqueryui/smoothness/jquery-ui-1.8.20.custom.css');
+define('PATHJQUERY', 'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js');
+define('PATHJQUERYUI', 'plugins/jqueryui/js/jquery-ui-1.8.20.custom.min.js');
+define('PATHJQUERYUICSS', 'plugins/jqueryui/css/smoothness/jquery-ui-1.8.20.custom.css');
 define('ADM_MODULOS', 'menu');
 
 /**
@@ -85,9 +85,11 @@ class TBiscoito {
 
     global $_BiscoitoConfig;
 
+    $this->VerificarDominio();
+
     $countURLVars = 0;
 
-    $arrOffset = (strpos($_SERVER['HTTP_HOST'], '.') !== false) ? 1 : 2;
+    $arrOffset = substr_count($this->getSite(), '/') - 2;
 
     $requestURI = $_SERVER['REQUEST_URI'];
 
@@ -109,7 +111,6 @@ class TBiscoito {
 
         $countURLVars--;
       }
-
       else
         $this->variaveisDaURL = $arrURLVars;
 
@@ -117,7 +118,6 @@ class TBiscoito {
 
       if ($countURLVars == 1 || $this->modulo == 'administrador')
         $this->acao = strval($xmlModuloConfig->index->acao);
-
       else
         $this->acao = str_replace('_', '', end($arrURLVars));
 
@@ -155,7 +155,6 @@ class TBiscoito {
 
       else if (strpos($_SERVER['SERVER_SIGNATURE'], 'Win32') !== false)
         $this->soServidor = 'Windows';
-
       else
         $this->soServidor = 'Mac';
     }
@@ -326,7 +325,7 @@ class TBiscoito {
   }
 
   public function getVariaveisDaURL($index = null) {
-    return (is_null($index)) ? $this->variaveisDaURL : (array_key_exists($index, $this->variaveisDaURL)) ? $this->variaveisDaURL[$index] : null;
+    return (is_null($index)) ? $this->variaveisDaURL : (@array_key_exists($index, $this->variaveisDaURL)) ? $this->variaveisDaURL[$index] : null;
   }
 
   /**
@@ -408,7 +407,7 @@ class TBiscoito {
   }
 
   public function usarBootstrap() {
-    $this->usarEstilo('plugins/bootstrap/css/bootstrap.css');
+    $this->usarEstilo('plugins/bootstrap/css/bootstrap.min.css');
     $this->usarEstilo('plugins/bootstrap/css/bootstrap-responsive.css');
     echo "<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>";
     $this->usarEstilo('plugins/bootstrap/css/metro-ui.css');
@@ -431,21 +430,11 @@ class TBiscoito {
   }
 
   public function usarBootstrap2() {
+    $this->usarScript('plugins/bootstrap/scripts/jquery-1.7.2.min.js');
     $this->usarEstilo('plugins/bootstrap/css/bootstrap.css');
     $this->usarEstilo('plugins/bootstrap/css/bootstrap-responsive.css');
-    $this->usarScript('plugins/bootstrap/js/bootstrap-transition.js');
-    $this->usarScript('plugins/bootstrap/js/bootstrap-alert.js');
-    $this->usarScript('plugins/bootstrap/js/bootstrap-modal.js');
-    $this->usarScript('plugins/bootstrap/js/bootstrap-dropdown.js');
-    $this->usarScript('plugins/bootstrap/js/bootstrap-scrollspy.js');
-    $this->usarScript('plugins/bootstrap/js/bootstrap-tab.js');
-    $this->usarScript('plugins/bootstrap/js/bootstrap-tooltip.js');
-    $this->usarScript('plugins/bootstrap/js/bootstrap-popover.js');
-    $this->usarScript('plugins/bootstrap/js/bootstrap-button.js');
-    $this->usarScript('plugins/bootstrap/js/bootstrap-collapse.js');
-    $this->usarScript('plugins/bootstrap/js/bootstrap-carousel.js');
-    $this->usarScript('plugins/bootstrap/js/bootstrap-typeahead.js');
-    $this->usarScript('plugins/bootstrap/js/bootstrap.util.form.js');
+    $this->usarScript('plugins/bootstrap/scripts/bootstrap.min.js');
+    $this->usarScript('plugins/bootstrap/scripts/bootstrap.util.form.js');
     echo '<!--[if lt IE 9]>
                 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
               <![endif]--> ';
@@ -456,7 +445,6 @@ class TBiscoito {
    */
   public function usarBiscoitoJS() {
     $this->usarScript('plugins/phpjs/js/php.default.min.js');
-    include('biscoito.js.erros.php');
     include('biscoito.js.php');
   }
 
@@ -474,7 +462,7 @@ class TBiscoito {
    * Carrega a biblioteca JQuery para uso
    */
   public function usarJQuery() {
-    $this->usarScript(PATHJQUERY);
+    $this->usarScript(PATHJQUERY, false);
   }
 
   /**
@@ -489,9 +477,9 @@ class TBiscoito {
    * Carrega um script
    * @param string $src Caminho relativo do script a partir da raiz do site
    */
-  public function usarScript($src) {
+  public function usarScript($caminho, $noServidor = true) {
     $scriptTag = '<script type="text/javascript" src="%s%s"></script>';
-    echo sprintf($scriptTag, $this->getSite(), $src);
+    echo sprintf($scriptTag, ($noServidor) ? $this->getSite() : '', $caminho);
   }
 
   public function requisitarAcao($classe, $acao) {
@@ -522,6 +510,22 @@ class TBiscoito {
     ob_end_clean();
 
     return $requisicao;
+  }
+
+  private function VerificarDominio() {
+    $site = substr($this->getSite(), 7, -1);
+    $host = $_SERVER['HTTP_HOST'];
+    $request = $_SERVER['REQUEST_URI'];
+    $pontos = substr_count($host, '.');
+    if ($pontos > 0) { // Domínio não é localhost 
+      $exHost = explode('.', $host);
+      $exSite = explode('.', $site);
+      $subDominioHost = $exHost[0];
+      $subDominioSite = $exSite[0];
+      if (!intval($subDominioHost)) // Domínio não está na rede local
+        if (strpos($site, $host) > 0) // Não está no subdomínio do site
+          header("location: http://{$subDominioSite}.{$host}{$request}");
+    }
   }
 
 }

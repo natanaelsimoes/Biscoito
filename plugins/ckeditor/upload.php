@@ -2,7 +2,7 @@
 
 namespace Biscoito\Plugins\CKEditor;
 
-require_once('../../cms/lib/database/objeto.class.php');
+require_once('../../lib/database/objeto.class.php');
 require_once ('../../modulos/galeria/foto.class.php');
 
 use Biscoito\Modulos\Galeria\TFoto;

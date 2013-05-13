@@ -4,140 +4,91 @@ namespace Biscoito\Modulos\Usuario\TipoUsuario;
 
 class TTipoUsuarioControl {
 
-    public function __call($acao, $args) {
+  public function __call($acao, $args) {
 
-        global $_Biscoito;
+    global $_Biscoito;
 
-        switch ($_Biscoito->getVariaveisDaURL(2)) {
+    switch ($_Biscoito->getVariaveisDaURL(2)) {
 
-            case 'editar':
+      case 'editar':
 
-                TTipoUsuarioControl::Editar($_Biscoito->getVariaveisDaURL(3));
+        TTipoUsuarioControl::Editar($_Biscoito->getVariaveisDaURL(3));
 
-                break;
+        break;
 
-            case 'excluir':
+      case 'excluir':
 
-                TTipoUsuarioControl::Excluir($_Biscoito->getVariaveisDaURL(3));
+        TTipoUsuarioControl::Excluir($_Biscoito->getVariaveisDaURL(3));
 
-                break;
-        }
+        break;
     }
+  }
 
-    public static function ListarTiposUsuario() {
+  public static function ListarTiposUsuario() {    
+    $tiposUsuario = new TTipoUsuario;
+    return $tiposUsuario->ListarTodosOrdenadoPor('Nome');
+  }
 
-        $tiposUsuario = new TTipoUsuario;
+  public static function Gerenciar() {
 
-        $usuarioLogado = unserialize($_SESSION['BISCOITO_SESSAO_USUARIO']);
+    $tiposUsuario = new TTipoUsuario();
 
-        if (is_object($usuarioLogado))
-            switch ($usuarioLogado->getFlag()) {
+    $tiposUsuario = $tiposUsuario->ListarTodos();
 
-                case 'ADMINISTRADOR':
+    include('tipousuario.view.gerenciar.php');
+  }
 
-                    return $tiposUsuario->ListarTodosOnde("flag in ('ADMINISTRADOR','LOCAL')");
+  public static function Adicionar() {
 
-                    break;
+    $tipoUsuario = new TTipoUsuario();
 
-                case 'CAIXA':
-                case 'LOCAL':
+    $acao = 'Adicionar';
 
-                    return $tiposUsuario->ListarTodosOnde("flag in ('LOCAL', 'CAIXA')");
+    include('tipousuario.view.edicao.php');
+  }
 
-                    break;
-            }
-    }
+  public static function Editar($id) {
 
-    public static function Gerenciar() {
+    $tipoUsuario = new TTipoUsuario();
 
-        $tiposUsuario = new TTipoUsuario();
+    $tipoUsuario = $tipoUsuario->ListarPorId($id);
 
-        $tiposUsuario = $tiposUsuario->ListarTodos();
+    $acao = 'Editar';
 
-        include('tipousuario.view.gerenciar.php');
-    }
+    include('tipousuario.view.edicao.php');
+  }
 
-    public static function Adicionar() {
+  public static function Excluir($id) {
 
-        $tipoUsuario = new TTipoUsuario();
+    $tipoUsuario = new TTipoUsuario();
 
-        $acao = 'Adicionar';
+    $tipoUsuario = $tipoUsuario->ListarPorId($id);
 
-        include('tipousuario.view.edicao.php');
-    }
+    $tipoUsuario->DeletarRegistro();
+  }
 
-    public static function Editar($id) {
+  public function Salvar() {
+    $tipoUsuario = new TTipoUsuario();
+    $tipoUsuario->CarregarSerial($_REQUEST['obj']);
+    $tipoUsuario->setNome($_REQUEST['nome']);
+    $tipoUsuario->setFlag($_REQUEST['flag']);
+    $tipoUsuario->Salvar();
+  }
 
-        $tipoUsuario = new TTipoUsuario();
+  public static function getUsuariosDoTipo() {
+    $usuario = new \Biscoito\Modulos\Usuario\TUsuario();
+    echo count($usuario->ListarTodosOnde("tipousuario_id = {$_REQUEST['id']}"));
+  }
 
-        $tipoUsuario = $tipoUsuario->ListarPorId($id);
-
-        $acao = 'Editar';
-
-        include('tipousuario.view.edicao.php');
-    }
-
-    public static function Excluir($id) {
-
-        $tipoUsuario = new TTipoUsuario();
-
-        $tipoUsuario = $tipoUsuario->ListarPorId($id);
-
-        $tipoUsuario->DeletarRegistro();
-    }
-
-    public function Salvar() {
-
-        $tipoUsuario = new TTipoUsuario();
-
-        $tipoUsuario->CarregarSerial($_REQUEST['obj']);
-
-        $tipoUsuario->setNome($_REQUEST['nome']);
-
-        $tipoUsuario->setFlag($_REQUEST['flag']);
-
-        $tipoUsuario->Salvar();
-    }
-
-    public static function getUsuariosDoTipo() {
-
-        $usuario = new \Biscoito\Modulos\Usuario\TUsuario();
-
-        echo count($usuario->ListarTodosOnde("tipousuario_id = {$_REQUEST['id']}"));
-    }
-
-    public static function ExibirSelecao($usuario_id = null, $id = null) {
-
-        global $_Biscoito;
-
-        $tiposUsuario = new TTipoUsuario();
-
-        $usuarioLogado = unserialize($_SESSION['BISCOITO_SESSAO_USUARIO']);
-
-        switch ($usuarioLogado->getFlag()) {
-
-            case 'ADMINISTRADOR':
-
-                $tiposUsuario = $tiposUsuario->ListarTodosOnde("flag in ('ADMINISTRADOR','LOCAL')");
-
-                break;
-
-            case 'CAIXA':
-            case 'LOCAL':
-
-                $tiposUsuario = $tiposUsuario->ListarTodosOnde("flag in ('LOCAL', 'CAIXA')");
-
-                break;
-        }
-
-        $tiposUsuario = $_Biscoito->ordenarObjetos($tiposUsuario, 'nome', SORT_ASC);
-
-        $usuarioLogado = unserialize($_SESSION['BISCOITO_SESSAO_USUARIO']);
-
-        $readonly = ($usuarioLogado->getId() == $usuario_id);
-
-        include('tipousuario.view.select.php');
-    }
+  public static function ExibirSelecao($usuario_id = null, $id = null) {
+    global $_Biscoito;
+    global $_UsuarioLogado;
+    $tiposUsuario = new TTipoUsuario();
+    $tiposUsuario = $tiposUsuario->ListarTodos();
+    $tiposUsuario = $_Biscoito->ordenarObjetos($tiposUsuario, 'Nome', SORT_ASC);
+    $readonly = ($_UsuarioLogado->getId() == $usuario_id);
+    include('tipousuario.view.select.php');
+  }
 
 }
 

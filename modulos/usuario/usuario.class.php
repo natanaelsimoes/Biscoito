@@ -3,121 +3,101 @@
 namespace Biscoito\Modulos\Usuario;
 
 use Biscoito\Lib\Database\TObjeto;
-use Biscoito\Modulos\Loja;
 
 class TUsuario extends TObjeto {
 
-    private $nome;
-    private $nomeDoMeio;
-    private $sobrenome;
-    private $usuario;
-    private $senha;
-    private $ultimoLogin;
-    private $tipousuario_id;
-    private $loja_id;
-    private $status;
+  private $Nome;
 
-    public function getNome() {
-        return $this->nome;
-    }
+  public function getNome() {
+    return $this->Nome;
+  }
 
-    public function getNomeDoMeio() {
-        return $this->nomeDoMeio;
-    }
+  public function setNome($value) {
+    $this->Nome = $value;
+  }
 
-    public function getSobrenome() {
-        return $this->sobrenome;
-    }
+  private $NomeDoMeio;
 
-    public function getNomeCompleto() {
-        return trim(sprintf('%s %s %s', $this->nome, $this->nomeDoMeio, $this->sobrenome));
-    }
+  public function getNomeDoMeio() {
+    return $this->NomeDoMeio;
+  }
 
-    public function getUsuario() {
-        return $this->usuario;
-    }
+  public function setNomeDoMeio($value) {
+    $this->NomeDoMeio = $value;
+  }
 
-    public function getSenha() {
-        return $this->senha;
-    }
+  private $Sobrenome;
 
-    public function getUltimoLogin() {
-        return $this->ultimoLogin;
-    }
+  public function getSobrenome() {
+    return $this->Sobrenome;
+  }
 
-    public function getTipoUsuario_Id() {
-        return $this->tipousuario_id;
-    }
+  public function setSobrenome($value) {
+    $this->Sobrenome = $value;
+  }
 
-    public function getLoja_Id() {
-        return $this->loja_id;
-    }
+  private $Usuario;
 
-    public function getLoja() {
+  public function getUsuario() {
+    return $this->Usuario;
+  }
 
-        $loja = new Loja\TLoja;
+  public function setUsuario($value) {
+    $this->Usuario = $value;
+  }
 
-        if (!empty($this->loja_id))
-            $loja = $loja->ListarPorId($this->loja_id);
+  private $Senha;
 
-        return $loja;
-    }
+  public function getSenha() {
+    return $this->Senha;
+  }
 
-    public function getStatus() {
-        return $this->status;
-    }
+  public function setSenha($value) {
+    $this->Senha = $value;
+  }
 
-    public function getStatusStr() {
-        return ($this->status) ? 'ATIVADO' : 'DESATIVADO';
-    }
+  private $UltimoLogin;
 
-    public function getFlag() {
-        $tipoUsuario = new TipoUsuario\TTipoUsuario;
-        return $tipoUsuario->ListarPorId($this->getTipoUsuario_Id())->getFlag();
-    }
+  public function getUltimoLogin() {
+    return $this->UltimoLogin;
+  }
 
-    public function setNome($value) {
-        $this->nome = $value;
-    }
+  public function setUltimoLogin($value) {
+    $this->UltimoLogin = $value;
+  }
 
-    public function setNomeDoMeio($value) {
-        $this->nomeDoMeio = $value;
-    }
+  private $TipoUsuario_Id;
 
-    public function setSobrenome($value) {
-        $this->sobrenome = $value;
-    }
+  public function getTipoUsuario_Id() {
+    return $this->TipoUsuario_Id;
+  }
 
-    public function setSenha($value) {
-        $this->senha = $value;
-    }
+  public function setTipoUsuario_Id($value) {
+    $this->TipoUsuario_Id = $value;
+  }
 
-    public function setUsuario($value) {
-        $this->usuario = $value;
-    }
+  private $Status;
 
-    public function setUltimoLogin($value) {
-        $this->ultimoLogin = $value;
-    }
+  public function getStatus() {
+    return $this->Status;
+  }
 
-    public function setTipoUsuario_Id($value) {
-        $this->tipousuario_id = $value;
-    }
+  public function setStatus($value) {
+    $this->Status = $value;
+  }
 
-    public function setLoja_Id($value) {
-        $this->loja_id = $value;
-    }
+  public function getNomeCompleto() {
+    return trim(sprintf('%s %s %s', $this->nome, $this->nomeDoMeio, $this->sobrenome));
+  }
 
-    public function setStatus($value) {
-        $this->status = $value;
-    }
+  public function getStatusStr() {
+    return ($this->Status) ? 'ATIVADO' : 'DESATIVADO';
+  }
 
-    public function getTipoUsuario() {
-
-        $tipoUsuario = new TipoUsuario\TTipoUsuario;
-
-        return $tipoUsuario->ListarPorId($this->getTipoUsuario_Id());
-    }
+  public function getTipoUsuario() {
+    $tipoUsuario = new TipoUsuario\TTipoUsuario;
+    return $tipoUsuario->ListarPorId($this->getTipoUsuario_Id());
+  }
 
 }
 

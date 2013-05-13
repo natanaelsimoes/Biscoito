@@ -50,37 +50,37 @@ include_once('logomarca.js.php');
 </div>   
 
 <div class="modal hide" id="ModalLogomarca">
-    
+
     <div class="modal-header"><h2>Nova Logomarca</h2></div>
-    
+
     <div class="modal-body">
-        
-        <div class="alert alert-info">A nova logomarca ser· sobreposta na posiÁ„o <span id="posicaoTexto"></span></div>
-        
+
+        <div class="alert alert-info">A nova logomarca ser√° sobreposta na posi√ß√£o <span id="posicaoTexto"></span></div>
+
         <form name="FrmLogomarca" id="FrmLogomarca" method="POST" enctype="multipart/form-data" class="form-horizontal" action="<?php echo $GLOBALS['_Biscoito']->getSite(); ?>administrador/galeria/logomarca/salvar/">
-        
+
             <div class="control-group">
-            
+
                 <label for="logo">Imagem: </label>
-                
+
                 <input type="file" name="logo" id="logo">
-                
+
             </div>            
-            
+
             <input type="hidden" name="posicao" id="posicao">
-            
+
         </form>        
-        
+
     </div>
-    
+
     <div class="modal-footer">                
-        
+
         <button class="btn btn-danger" data-dismiss="modal"><i class="icon-cancel-2"></i> Cancelar</button>
 
         <button class="btn btn-success" onclick="btnSalvar_Click(this)"><i class="icon-checkmark-3"></i> Salvar</button>
-    
+
     </div>
-    
+
 </div>
 
 <div class="clear"></div>        

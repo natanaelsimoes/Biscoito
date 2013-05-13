@@ -56,7 +56,7 @@ body {
    padding-top: 24px;
    padding-bottom: 88px;
    position: relative;
-   font-family: "OpenSansRegular",Tahoma,Arial,Helvetica,Sans-Serif;
+   font-family: "OpenSansRegular","Segoe UI",Tahoma,Arial,Helvetica,Sans-Serif;
    font-size: 11px;
    font-weight: normal;
 }
@@ -206,7 +206,7 @@ em {
 }
 
 p {
-   font-family: "OpenSansLightRegular",Arial,Helvetica,Sans-Serif;
+   font-family: "OpenSansLightRegular","Segoe UI Light",Arial,Helvetica,Sans-Serif;
 }
 
 
@@ -223,7 +223,7 @@ select, option {
 
 a.win-command,
 input, button, select, textarea {
-   font-family: "OpenSansLightRegular",Arial,Helvetica,Sans-Serif;
+   font-family: "OpenSansLightRegular","Segoe UI Light",Arial,Helvetica,Sans-Serif;
    /*font-size: 11px;*/
    height: 28px;
    line-height: 30px;
