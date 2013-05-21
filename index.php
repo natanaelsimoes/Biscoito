@@ -4,6 +4,13 @@ namespace Biscoito;
 
 use Biscoito\Lib;
 
+require_once('lib/util/cache.class.php');
+
+global $_Cache;
+
+$_Cache = Lib\Util\Cache::getInstance();
+$_Cache->getCache();
+
 require 'lib/biscoito.class.php';
 require 'lib/biscoitoconfig.class.php';
 require 'lib/biscoitorouter.class.php';
@@ -33,7 +40,7 @@ global $_UsuarioLogado;
 $_BiscoitoConfig = Lib\TBiscoitoConfig::singleton();
 $_Biscoito = Lib\TBiscoito::singleton();
 if (array_key_exists('BISCOITO_SESSAO_USUARIO', $_SESSION) & !empty($_SESSION['BISCOITO_SESSAO_USUARIO']))
-  $_UsuarioLogado = unserialize($_SESSION['BISCOITO_SESSAO_USUARIO']);
+    $_UsuarioLogado = unserialize($_SESSION['BISCOITO_SESSAO_USUARIO']);
 $classeGateway = $_Biscoito->getClasseGateway();
 $controleGateway = new $classeGateway;
 $controleGateway->Rotear();
